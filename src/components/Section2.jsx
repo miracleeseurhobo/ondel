@@ -38,7 +38,7 @@ function FeatureRow({ reverse = false, heading, body, art, reveal = true, tall =
     ? 'lg:order-2 lg:items-start'
     : 'lg:order-1 lg:items-end lg:text-left'
   const artAlign = reverse ? 'lg:order-1 lg:justify-end' : 'lg:order-2 lg:justify-start'
-  const headingCls = 'text-section text-neutral-900 leading-[1.1]'
+  const headingCls = 'text-section text-neutral-900'
   const bodyCls = 'mt-6 text-body text-neutral-500 max-w-[380px]'
 
   return (

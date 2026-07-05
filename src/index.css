@@ -15,9 +15,9 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Fluid display type — scales with the viewport, capped at the desktop size */
-  --fs-display: clamp(2.5rem, 5.4vw, 64px); /* hero + statement headers */
-  --fs-section: clamp(1.9rem, 4vw, 44px); /* section + feature headers */
-  --lh-display: 1.05; /* display leading — a touch looser at the calmer size */
+  --fs-display: 44px; /* every header shares one consistent size */
+  --fs-section: 44px;
+  --lh-display: 1.05; /* 46.2 / 44 */
 
   /* Static body / UI type */
   --fs-body: 16px;
@@ -152,14 +152,14 @@ body {
     font-size: var(--fs-display);
     font-weight: 400;
     line-height: var(--lh-display);
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
   }
   .text-section {
     font-family: var(--font-serif);
     font-size: var(--fs-section);
     font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.005em;
+    line-height: var(--lh-display);
+    letter-spacing: normal;
   }
   .text-body {
     font-family: var(--font-sans);
