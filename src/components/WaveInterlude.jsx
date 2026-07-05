@@ -6,13 +6,22 @@ import Reveal from './Reveal'
 export default function WaveInterlude() {
   return (
     <section className="relative bg-[#fafafa] py-16 sm:py-20">
-      <div className="flex flex-col items-center gap-8 sm:gap-12">
-        <Reveal
-          as="h2"
-          className="max-w-3xl px-5 text-center text-display text-neutral-900"
-        >
-          Discover where your music belongs.
-        </Reveal>
+      <div className="flex flex-col items-center gap-10 sm:gap-14">
+        <div className="flex flex-col items-center gap-5">
+          <Reveal
+            as="h2"
+            className="max-w-3xl px-5 text-center text-display text-neutral-900"
+          >
+            Discover where your music belongs.
+          </Reveal>
+          <Reveal
+            as="p"
+            className="max-w-2xl px-5 text-center text-body text-neutral-500"
+          >
+            Ondel reads the signals in your music and points you to the
+            playlists, audiences, and moments where it truly fits.
+          </Reveal>
+        </div>
 
         {/* Film-strip carousel — full-bleed, auto-playing loop (WebM + MP4) */}
         <div className="w-full overflow-hidden">

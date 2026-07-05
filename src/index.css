@@ -8,8 +8,28 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* Font families — single source of truth */
+  --font-serif: 'Instrument Serif', ui-serif, 'Times New Roman', Times, serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Fluid display type — scales with the viewport, capped at the desktop size */
+  --fs-display: clamp(2.5rem, 5.4vw, 64px); /* hero + statement headers */
+  --fs-section: clamp(1.9rem, 4vw, 44px); /* section + feature headers */
+  --lh-display: 1.05; /* display leading — a touch looser at the calmer size */
+
+  /* Static body / UI type */
+  --fs-body: 16px;
+  --fs-body-sm: 13px;
+  --fs-label: 11px;
+  --fs-button: 15px;
+  --fs-mono-sm: 10px;
+  --fs-mono-md: 14px;
+}
+
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   background: #fafafa;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -86,67 +106,68 @@ body {
   }
 }
 
-/* Typography tokens — Offloop Cinematic Dark spec */
+/* Typography tokens — one scale, driven by the :root variables above */
 @layer components {
   .text-display {
-    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
-    font-size: 41.6px;
+    font-family: var(--font-serif);
+    font-size: var(--fs-display);
     font-weight: 400;
-    line-height: 45.76px;
-    letter-spacing: 0.416px;
+    line-height: var(--lh-display);
+    letter-spacing: -0.01em;
   }
   .text-section {
-    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
-    font-size: 36px;
+    font-family: var(--font-serif);
+    font-size: var(--fs-section);
     font-weight: 400;
-    line-height: 40px;
+    line-height: 1.05;
+    letter-spacing: -0.005em;
   }
   .text-body {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
     font-weight: 400;
-    line-height: 24px;
+    line-height: 1.5;
   }
   .text-body-sm {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: var(--fs-body-sm);
     font-weight: 400;
-    line-height: 14.95px;
+    line-height: 1.15;
   }
   .text-body-sm-medium {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: var(--fs-body-sm);
     font-weight: 500;
-    line-height: 14.95px;
+    line-height: 1.15;
   }
   .text-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
+    font-family: var(--font-sans);
+    font-size: var(--fs-label);
     font-weight: 400;
     line-height: 16px;
   }
   .text-label-semibold {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
+    font-family: var(--font-sans);
+    font-size: var(--fs-label);
     font-weight: 600;
     line-height: 16px;
   }
   .text-button {
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
+    font-family: var(--font-sans);
+    font-size: var(--fs-button);
     font-weight: 600;
-    line-height: 15px;
+    line-height: 1;
   }
   .text-mono-sm {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono-sm);
     font-weight: 400;
-    line-height: 12.8px;
+    line-height: 1.28;
   }
   .text-mono-md {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono-md);
     font-weight: 400;
-    line-height: 14px;
+    line-height: 1;
   }
 }
