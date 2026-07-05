@@ -225,17 +225,15 @@ export default function Hero({ progress = 0 }) {
               type="submit"
               className="flex items-center gap-1.5 bg-white text-ink text-button rounded-full px-5 py-2.5 hover:bg-white/90 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
             >
-              Join the beta
+              Request Invite
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </button>
           </form>
 
-          <a
-            href="#"
-            className="mt-5 rounded text-button text-white/90 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-          >
-            Discover the hidden signals
-          </a>
+          <p className="mt-5 max-w-[420px] text-body-sm font-normal leading-normal text-white/50">
+            We're onboarding a small group of independent artists and teams
+            building their next release.
+          </p>
         </main>
       </div>
     </div>
