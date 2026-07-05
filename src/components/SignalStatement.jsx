@@ -1,17 +1,10 @@
 import { useRef } from 'react'
-import { useScrollProgress } from '../hooks/useScrollProgress'
+import { useRevealProgress } from '../hooks/useScrollProgress'
 
 const TEXT =
   'Every song leaves clues about its future—who it will resonate with, where it belongs, and the opportunities quietly taking shape around it. Ondel reveals those hidden signals so you can make better decisions before you release.'
 
 const WORDS = TEXT.split(' ')
-
-// Map raw scroll progress into the reveal window: start once the section is a
-// little into view and finish as it passes center, so the words stay lit while
-// the statement sits centered on screen.
-function easeReveal(p) {
-  return Math.min(1, Math.max(0, (p - 0.12) / 0.5))
-}
 
 // Manifesto — words brighten from dim to solid as you scroll through, driven by
 // a single CSS variable (--reveal) so the browser recomputes each word's opacity
@@ -19,8 +12,8 @@ function easeReveal(p) {
 // it smooth and Safari-safe; reduced motion shows everything solid.
 export default function SignalStatement() {
   const ref = useRef(null)
-  const { progress, reduced } = useScrollProgress(ref)
-  const reveal = reduced ? 1 : easeReveal(progress)
+  const { progress } = useRevealProgress(ref)
+  const reveal = progress
   const last = WORDS.length - 1
 
   return (

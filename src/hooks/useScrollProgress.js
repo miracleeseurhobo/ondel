@@ -38,6 +38,50 @@ export function useSmoothed(target, smoothing = 0.12) {
   return value
 }
 
+// Progress 0..1 for a SHORT element travelling up through the viewport, keyed
+// off its center: 0 when the center sits low (~85% down), 1 once it rises to
+// ~35% down — then it holds. Reversible. Use this for normal-height sections
+// (useScrollProgress only moves for elements taller than the viewport).
+export function useRevealProgress(ref) {
+  const reduced = usePrefersReducedMotion()
+  const [progress, setProgress] = useState(0)
+  const frame = useRef(0)
+
+  useEffect(() => {
+    if (reduced) {
+      setProgress(1)
+      return
+    }
+    const el = ref.current
+    if (!el) return
+
+    const compute = () => {
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight || 1
+      const center = rect.top + rect.height / 2
+      // center 0.85*vh -> 0 ; center 0.35*vh -> 1 (0.5*vh of scroll travel)
+      const p = Math.min(Math.max((0.85 * vh - center) / (0.5 * vh), 0), 1)
+      setProgress(p)
+    }
+
+    const onScroll = () => {
+      cancelAnimationFrame(frame.current)
+      frame.current = requestAnimationFrame(compute)
+    }
+
+    compute()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    return () => {
+      cancelAnimationFrame(frame.current)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [ref, reduced])
+
+  return { progress, reduced }
+}
+
 // Progress 0..1 as `ref` element scrolls up through the viewport.
 // 0 = element top at viewport top; 1 = element bottom reaches viewport bottom.
 export function useScrollProgress(ref) {
