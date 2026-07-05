@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { useRevealProgress } from '../hooks/useScrollProgress'
 
 const TEXT =
-  'Every song leaves clues about its future—who it will resonate with, where it belongs, and the opportunities quietly taking shape around it. Ondel reveals those hidden signals so you can make better decisions before you release.'
+  'Your song already has a story unfolding. People who will love it. Places where it belongs. Opportunities quietly taking shape around it. Ondel helps you see that story before the world does.'
 
 const WORDS = TEXT.split(' ')
 
