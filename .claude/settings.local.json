@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" \"http://localhost:5173/animo-film-strip-1440p.webm\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type} %{size_download}\\\\n\" \"http://localhost:5173/animo-film-strip-1440p.webm?v=2\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" \"http://localhost:5173/animo-film-strip.mp4\")"
+    ]
+  }
+}

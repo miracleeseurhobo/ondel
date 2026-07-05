@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #fafafa;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  text-align: left;
+  border: none;
+  min-height: 100vh;
+  display: block;
+}
+
+/* Blueprint frame — draws in on first paint, then drifts an ambient hatch */
+@keyframes bp-draw-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes bp-draw-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+@keyframes bp-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes bp-hatch {
+  to { background-position: 240px 240px; }
+}
+.bp-rule-x {
+  transform-origin: left center;
+  animation: bp-draw-x 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.bp-rule-y {
+  transform-origin: center top;
+  animation: bp-draw-y 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.bp-cross {
+  opacity: 0;
+  animation: bp-fade 0.6s ease 0.75s both;
+}
+.bp-hatch {
+  opacity: 0;
+  animation: bp-fade 1.2s ease 0.4s both, bp-hatch var(--bp-drift, 24s) linear 0.4s infinite;
+}
+.bp-hatch-static {
+  animation: bp-fade 1.2s ease 0.4s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bp-rule-x,
+  .bp-rule-y,
+  .bp-cross,
+  .bp-hatch,
+  .bp-hatch-static {
+    animation: bp-fade 0.5s ease both !important;
+    transform: none !important;
+  }
+}
+
+/* Animated border beam */
+@keyframes beam-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+.beam-spin {
+  animation: beam-spin 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .beam-spin {
+    animation: none;
+  }
+}
+
+/* Typography tokens — Offloop Cinematic Dark spec */
+@layer components {
+  .text-display {
+    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+    font-size: 41.6px;
+    font-weight: 400;
+    line-height: 45.76px;
+    letter-spacing: 0.416px;
+  }
+  .text-section {
+    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 40px;
+  }
+  .text-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+  .text-body-sm {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 14.95px;
+  }
+  .text-body-sm-medium {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 14.95px;
+  }
+  .text-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 16px;
+  }
+  .text-label-semibold {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 16px;
+  }
+  .text-button {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
+  }
+  .text-mono-sm {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12.8px;
+  }
+  .text-mono-md {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14px;
+  }
+}
