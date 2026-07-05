@@ -1,45 +1,20 @@
-import { useState, useEffect } from 'react'
-import VaporizeTextCycle from './VaporizeText'
+import Reveal from './Reveal'
 
-// Standalone section: vaporizing headline + film-strip carousel. No chatbox,
-// no hero overlap — a normal section in the flow.
+// Standalone section: a quiet headline over the film-strip carousel. The
+// carousel (product UI) is the moment here — no particle/canvas effect, so it
+// doesn't compete with the ASCII wave or the magic-text reveal elsewhere.
 export default function WaveInterlude() {
-  const [fontSize, setFontSize] = useState(40)
-
-  useEffect(() => {
-    const update = () => {
-      const w = window.innerWidth
-      setFontSize(Math.round(Math.min(54, Math.max(20, w * 0.04))))
-    }
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
-
   return (
     <section className="relative bg-[#fafafa] py-16 sm:py-20">
-      <div className="flex flex-col items-center gap-8 sm:gap-10">
-        {/* Vaporizing headline */}
-        <div className="h-32 w-full max-w-5xl px-5 sm:h-36">
-          <VaporizeTextCycle
-            texts={['Discover where your music belongs.']}
-            font={{
-              fontFamily: 'Instrument Serif, ui-serif, Georgia, serif',
-              fontSize: `${fontSize}px`,
-              fontWeight: 400,
-            }}
-            color="rgb(23, 23, 23)"
-            spread={4}
-            density={6}
-            animation={{ vaporizeDuration: 2.2, fadeInDuration: 1.2, waitDuration: 1 }}
-            direction="left-to-right"
-            alignment="center"
-            tag="h2"
-            loop={false}
-          />
-        </div>
+      <div className="flex flex-col items-center gap-8 sm:gap-12">
+        <Reveal
+          as="h2"
+          className="max-w-3xl px-5 text-center text-display text-neutral-900"
+        >
+          Discover where your music belongs.
+        </Reveal>
 
-        {/* Film-strip carousel — full-bleed, auto-playing loop */}
+        {/* Film-strip carousel — full-bleed, auto-playing loop (WebM + MP4) */}
         <div className="w-full overflow-hidden">
           <video
             autoPlay
