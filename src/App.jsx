@@ -3,7 +3,6 @@ import Hero from './components/Hero'
 import SignalStatement from './components/SignalStatement'
 import WaveInterlude from './components/WaveInterlude'
 import Section2 from './components/Section2'
-import CreatorPlan from './components/CreatorPlan'
 import Faq from './components/Faq'
 import AntigravityCard from './components/AntigravityCard'
 import SiteFooter from './components/SiteFooter'
@@ -11,18 +10,18 @@ import { useScrollProgress } from './hooks/useScrollProgress'
 
 export default function App() {
   const stageRef = useRef(null)
-  const planRef = useRef(null)
+  const statementRef = useRef(null)
   const { progress, reduced } = useScrollProgress(stageRef)
-  const [planNear, setPlanNear] = useState(false)
+  const [statementNear, setStatementNear] = useState(false)
 
-  // Hide the chatbox as the section right after Section 2 (the creator-plan
-  // dashboard) approaches, so the pinned chatbox vanishes gracefully on the way
-  // out instead of snapping.
+  // Hide the chatbox as the manifesto (the section right after Section 2)
+  // approaches, so the pinned chatbox vanishes gracefully on the way out
+  // instead of snapping.
   useEffect(() => {
-    const el = planRef.current
+    const el = statementRef.current
     if (!el) return
     const io = new IntersectionObserver(
-      ([entry]) => setPlanNear(entry.isIntersecting),
+      ([entry]) => setStatementNear(entry.isIntersecting),
       // Fires while the section is still below the fold, so the chatbox is gone
       // just before it enters — but late enough to linger through "Ask Ondie".
       { rootMargin: '0px 0px 12% 0px' },
@@ -43,16 +42,13 @@ export default function App() {
       {/* Section 2's first row is scroll-linked to the hero's white-out, so the
           same scroll carries the transition straight into content — no empty
           gap to scroll past after the parallax. */}
-      <Section2 progress={reduced ? 1 : progress} reduced={reduced} hideChatbox={planNear} />
+      <Section2 progress={reduced ? 1 : progress} reduced={reduced} hideChatbox={statementNear} />
 
-      {/* Bold product beat — "turn one song into weeks of content" + dashboard
-          mock. Chatbox vanishes as this approaches. */}
-      <div ref={planRef}>
-        <CreatorPlan />
+      {/* Manifesto statement — chatbox vanishes as this approaches; words
+          brighten progressively as you scroll through. */}
+      <div ref={statementRef}>
+        <SignalStatement />
       </div>
-
-      {/* Manifesto statement — words brighten progressively as you scroll through */}
-      <SignalStatement />
 
       {/* Particle headline + film-strip carousel — its own section (no chatbox) */}
       <WaveInterlude />
