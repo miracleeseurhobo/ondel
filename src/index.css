@@ -82,6 +82,11 @@ body {
   min-height: 100vh; /* fallback for browsers without dvh */
   min-height: 100dvh;
   display: block;
+  /* Guard against stray horizontal scroll on small phones (e.g. the offset
+     DisplayCards deck at ≤340px). `clip` clips without creating a scroll
+     container, so it doesn't break the sticky hero the way overflow-x:hidden
+     would. Ignored by Safari <16 (graceful — no regression). */
+  overflow-x: clip;
 }
 
 /* Blueprint frame — draws in on first paint, then drifts an ambient hatch */
