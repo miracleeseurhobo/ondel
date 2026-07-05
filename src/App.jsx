@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import SignalStatement from './components/SignalStatement'
 import WaveInterlude from './components/WaveInterlude'
 import Section2 from './components/Section2'
+import CreatorPlan from './components/CreatorPlan'
 import Faq from './components/Faq'
 import AntigravityCard from './components/AntigravityCard'
 import SiteFooter from './components/SiteFooter'
@@ -47,6 +48,9 @@ export default function App() {
       <div ref={statementRef}>
         <SignalStatement />
       </div>
+
+      {/* Bold product beat — "turn one song into weeks of content" + dashboard mock */}
+      <CreatorPlan />
 
       {/* Particle headline + film-strip carousel — its own section (no chatbox) */}
       <WaveInterlude />
