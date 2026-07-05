@@ -11,7 +11,9 @@
       "Bash(node -e \"console.log\\('radix accordion:', require\\('./node_modules/@radix-ui/react-accordion/package.json'\\).version\\)\")",
       "Bash(curl -s -o /dev/null -w \"app: %{http_code}\\\\n\" \"http://192.168.1.57:5173/\")",
       "Bash(sed 's/\\\\x1b\\\\[[0-9;]*m//g' /private/tmp/claude-501/-Users-macbook-Desktop-Ondel/d1cd9c2c-dbc0-4bbe-9bef-e7ac8f56f532/tasks/bdllni0bw.output)",
-      "Bash(git -c user.name=Ondel -c user.email=team@quely.io commit -q -m ' *)"
+      "Bash(git -c user.name=Ondel -c user.email=team@quely.io commit -q -m ' *)",
+      "Bash(npm install *)",
+      "Bash(node -e \"console.log\\('puppeteer-core:', require\\('./node_modules/puppeteer-core/package.json'\\).version\\)\")"
     ]
   }
 }
