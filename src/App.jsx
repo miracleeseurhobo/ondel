@@ -11,18 +11,19 @@ import { useScrollProgress } from './hooks/useScrollProgress'
 
 export default function App() {
   const stageRef = useRef(null)
-  const statementRef = useRef(null)
+  const planRef = useRef(null)
   const { progress, reduced } = useScrollProgress(stageRef)
-  const [statementNear, setStatementNear] = useState(false)
+  const [planNear, setPlanNear] = useState(false)
 
-  // Hide the chatbox as the statement section approaches — it vanishes into the
-  // statement, which then resolves before the carousel.
+  // Hide the chatbox as the section right after Section 2 (the creator-plan
+  // dashboard) approaches, so the pinned chatbox vanishes gracefully on the way
+  // out instead of snapping.
   useEffect(() => {
-    const el = statementRef.current
+    const el = planRef.current
     if (!el) return
     const io = new IntersectionObserver(
-      ([entry]) => setStatementNear(entry.isIntersecting),
-      // Fires while the statement is still below the fold, so the chatbox is gone
+      ([entry]) => setPlanNear(entry.isIntersecting),
+      // Fires while the section is still below the fold, so the chatbox is gone
       // just before it enters — but late enough to linger through "Ask Ondie".
       { rootMargin: '0px 0px 12% 0px' },
     )
@@ -42,15 +43,16 @@ export default function App() {
       {/* Section 2's first row is scroll-linked to the hero's white-out, so the
           same scroll carries the transition straight into content — no empty
           gap to scroll past after the parallax. */}
-      <Section2 progress={reduced ? 1 : progress} reduced={reduced} hideChatbox={statementNear} />
+      <Section2 progress={reduced ? 1 : progress} reduced={reduced} hideChatbox={planNear} />
 
-      {/* Manifesto statement — chatbox vanishes into it, words resolve on scroll */}
-      <div ref={statementRef}>
-        <SignalStatement />
+      {/* Bold product beat — "turn one song into weeks of content" + dashboard
+          mock. Chatbox vanishes as this approaches. */}
+      <div ref={planRef}>
+        <CreatorPlan />
       </div>
 
-      {/* Bold product beat — "turn one song into weeks of content" + dashboard mock */}
-      <CreatorPlan />
+      {/* Manifesto statement — words brighten progressively as you scroll through */}
+      <SignalStatement />
 
       {/* Particle headline + film-strip carousel — its own section (no chatbox) */}
       <WaveInterlude />

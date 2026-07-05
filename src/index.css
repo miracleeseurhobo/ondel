@@ -35,6 +35,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Scroll-linked manifesto reveal — each word's opacity is derived from the
+   shared --reveal progress and the word's own threshold --i (0.06 = fade window,
+   matching the 0.94 threshold spread in SignalStatement). */
+.reveal-word {
+  opacity: clamp(0.14, calc((var(--reveal) - var(--i)) / 0.06), 1);
+  transition: opacity 0.12s linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-word {
+    transition: none;
+  }
+}
+
 /* FAQ accordion — animate height using the size Radix measures */
 @keyframes accordion-down {
   from { height: 0; opacity: 0; }
