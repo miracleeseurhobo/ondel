@@ -5,7 +5,12 @@
       "Bash(curl -s http://localhost:5173)",
       "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" \"http://localhost:5173/animo-film-strip-1440p.webm\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type} %{size_download}\\\\n\" \"http://localhost:5173/animo-film-strip-1440p.webm?v=2\")",
-      "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" \"http://localhost:5173/animo-film-strip.mp4\")"
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" \"http://localhost:5173/animo-film-strip.mp4\")",
+      "Bash(kill 2087)",
+      "Bash(lsof -nP -iTCP:5173 -sTCP:LISTEN)",
+      "Bash(node -e \"console.log\\('radix accordion:', require\\('./node_modules/@radix-ui/react-accordion/package.json'\\).version\\)\")",
+      "Bash(curl -s -o /dev/null -w \"app: %{http_code}\\\\n\" \"http://192.168.1.57:5173/\")",
+      "Bash(sed 's/\\\\x1b\\\\[[0-9;]*m//g' /private/tmp/claude-501/-Users-macbook-Desktop-Ondel/d1cd9c2c-dbc0-4bbe-9bef-e7ac8f56f532/tasks/bdllni0bw.output)"
     ]
   }
 }

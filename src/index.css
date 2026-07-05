@@ -35,6 +35,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* FAQ accordion — animate height using the size Radix measures */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+.faq-content {
+  overflow: hidden;
+}
+.faq-content[data-state='open'] {
+  animation: accordion-down 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-content[data-state='closed'] {
+  animation: accordion-up 0.18s ease-in;
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq-content[data-state='open'],
+  .faq-content[data-state='closed'] {
+    animation: none;
+  }
+}
+
 #root {
   width: 100%;
   max-width: 100%;

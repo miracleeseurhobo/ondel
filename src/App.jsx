@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import SignalStatement from './components/SignalStatement'
 import WaveInterlude from './components/WaveInterlude'
 import Section2 from './components/Section2'
+import Faq from './components/Faq'
 import AntigravityCard from './components/AntigravityCard'
 import SiteFooter from './components/SiteFooter'
 import { useScrollProgress } from './hooks/useScrollProgress'
@@ -49,6 +50,9 @@ export default function App() {
 
       {/* Particle headline + film-strip carousel — its own section (no chatbox) */}
       <WaveInterlude />
+
+      {/* FAQ — resolve objections right before the closing CTA */}
+      <Faq />
 
       {/* Dark CTA card above the footer — ASCII field + headline + buttons */}
       <AntigravityCard />
