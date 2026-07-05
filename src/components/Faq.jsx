@@ -1,5 +1,4 @@
 import * as Accordion from '@radix-ui/react-accordion'
-import { ChevronDown } from 'lucide-react'
 
 // Answers may be a single string or an array of paragraphs.
 const FAQS = [
@@ -67,14 +66,19 @@ export default function Faq() {
                 className="border-b border-black/[0.08]"
               >
                 <Accordion.Header className="flex">
-                  <Accordion.Trigger className="group flex flex-1 items-center justify-between gap-6 rounded-sm py-5 text-left transition-colors hover:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/60 [&[data-state=open]>svg]:rotate-180">
+                  <Accordion.Trigger className="group flex flex-1 items-center justify-between gap-6 rounded-sm py-5 text-left transition-colors hover:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/60">
                     <span className="text-body font-medium text-neutral-900">
                       {item.q}
                     </span>
-                    <ChevronDown
-                      className="h-5 w-5 shrink-0 text-neutral-400 transition-transform duration-200"
+                    {/* Plus/minus mark — the vertical bar rotates into the
+                        horizontal one, morphing + into − on the panel's easing. */}
+                    <span
+                      className="relative h-4 w-4 shrink-0 text-neutral-400 transition-colors group-hover:text-neutral-800"
                       aria-hidden="true"
-                    />
+                    >
+                      <span className="absolute left-0 top-1/2 h-[1.5px] w-full -translate-y-1/2 rounded-full bg-current" />
+                      <span className="absolute left-1/2 top-0 h-full w-[1.5px] -translate-x-1/2 rounded-full bg-current transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[state=open]:rotate-90 motion-reduce:transition-none" />
+                    </span>
                   </Accordion.Trigger>
                 </Accordion.Header>
                 <Accordion.Content className="faq-content">

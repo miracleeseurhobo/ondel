@@ -37,21 +37,21 @@ body {
 
 /* FAQ accordion — animate height using the size Radix measures */
 @keyframes accordion-down {
-  from { height: 0; }
-  to { height: var(--radix-accordion-content-height); }
+  from { height: 0; opacity: 0; }
+  to { height: var(--radix-accordion-content-height); opacity: 1; }
 }
 @keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); }
-  to { height: 0; }
+  from { height: var(--radix-accordion-content-height); opacity: 1; }
+  to { height: 0; opacity: 0; }
 }
 .faq-content {
   overflow: hidden;
 }
 .faq-content[data-state='open'] {
-  animation: accordion-down 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: accordion-down 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .faq-content[data-state='closed'] {
-  animation: accordion-up 0.18s ease-in;
+  animation: accordion-up 0.22s cubic-bezier(0.4, 0, 1, 1);
 }
 @media (prefers-reduced-motion: reduce) {
   .faq-content[data-state='open'],
