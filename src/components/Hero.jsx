@@ -135,6 +135,12 @@ export default function Hero({ progress = 0 }) {
           opacity: contentOpacity,
           transform: `translateY(${contentShift}px)`,
           pointerEvents: contentOpacity < 0.1 ? 'none' : 'auto',
+          // Keep nav/text clear of the notch, Dynamic Island, home indicator and
+          // landscape sensor housing while the video floods edge-to-edge behind.
+          paddingTop: 'env(safe-area-inset-top)',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingLeft: 'env(safe-area-inset-left)',
+          paddingRight: 'env(safe-area-inset-right)',
         }}
       >
         {/* Navigation */}
@@ -207,6 +213,8 @@ export default function Hero({ progress = 0 }) {
             <input
               id="hero-email"
               type="email"
+              autoComplete="email"
+              inputMode="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
