@@ -14,7 +14,7 @@
 - No new npm dependencies; use only `react`, `lucide-react`, Tailwind utilities, and the existing type-token classes in `src/index.css` (`text-display`, `text-body`, `text-body-sm`, `text-body-sm-medium`, `text-label-semibold`, `text-button`).
 - Animate `transform`/`opacity` only — no animating width/height/top/left; no layout reads in the scroll hot path (no CLS).
 - Respect `prefers-reduced-motion: reduce` — skip pinning and zoom; hero renders at normal viewport height and Section 2 flows in plainly.
-- Assistant chat name is **"Ondie"** exactly as in the scrbox eenshot; product name is **"Ondel"**. Do not normalize.
+- Assistant chat name is **"Ondie"** exactly as in the scrbox effect for eenshot; product name is **"Ondel"**. Do not normalize.
 - Video keeps `autoPlay loop muted playsInline`; source is `/Background%20.mp4`.
 - Section 2 is static/visual only — no real AI, no network.
 - Project is **not** a git repo and has **no test runner**: verification = `npm run build` (compile gate) + `npm run lint` + visual observation on the running dev server (http://localhost:5174/). "Checkpoint" replaces "commit".
