@@ -75,7 +75,7 @@ export default function SiteFooter() {
             <p className="mt-3 text-mono-sm uppercase tracking-wider text-neutral-500">
               I accept the conditions
             </p>
-            <div className="mt-6 flex gap-4">
+            <div className="mt-4 flex gap-1 -ml-3">
               {socials.map((s) => (
                 <a
                   key={s.label}
@@ -83,7 +83,7 @@ export default function SiteFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="rounded text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
                 >
                   <svg className="size-5" viewBox="0 0 24 24" aria-hidden="true">
                     <path fill="currentColor" d={s.path} />
