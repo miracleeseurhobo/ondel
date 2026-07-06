@@ -188,13 +188,13 @@ export default function Hero({ progress = 0 }) {
 
         {menuOpen && (
           <div className="md:hidden mx-5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-5">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <a
                   key={link}
                   href="#"
                   onClick={() => setMenuOpen(false)}
-                  className="rounded text-body text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                  className="flex min-h-[44px] items-center rounded text-body text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                 >
                   {link}
                 </a>
