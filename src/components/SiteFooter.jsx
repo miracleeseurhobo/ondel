@@ -67,7 +67,7 @@ export default function SiteFooter() {
               <button
                 type="submit"
                 aria-label="Subscribe to newsletter"
-                className="rounded text-neutral-900 transition-colors hover:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                className="-m-3.5 inline-flex items-center justify-center p-3.5 rounded text-neutral-900 transition-colors hover:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
               >
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </button>
