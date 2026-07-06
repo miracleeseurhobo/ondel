@@ -1,9 +1,24 @@
+import { useRef, useEffect } from 'react'
 import Reveal from './Reveal'
+import { usePrefersReducedMotion } from '../hooks/useScrollProgress'
 
 // Standalone section: a quiet headline over the film-strip carousel. The
 // carousel (product UI) is the moment here — no particle/canvas effect, so it
 // doesn't compete with the ASCII wave or the magic-text reveal elsewhere.
 export default function WaveInterlude() {
+  const reduced = usePrefersReducedMotion()
+  const videoRef = useRef(null)
+
+  // The carousel loops forever; hold it on a static frame when the visitor
+  // has asked for reduced motion (covers a preference toggled after mount).
+  useEffect(() => {
+    const v = videoRef.current
+    if (v && reduced) {
+      v.pause()
+      v.currentTime = 0
+    }
+  }, [reduced])
+
   return (
     <section className="relative bg-[#fafafa] py-16 sm:py-20">
       <div className="flex flex-col items-center gap-10 sm:gap-14">
@@ -23,10 +38,12 @@ export default function WaveInterlude() {
           </Reveal>
         </div>
 
-        {/* Film-strip carousel — full-bleed, auto-playing loop (WebM + MP4) */}
+        {/* Film-strip carousel — full-bleed loop (WebM + MP4); paused under
+            reduced motion. */}
         <div className="w-full overflow-hidden">
           <video
-            autoPlay
+            ref={videoRef}
+            autoPlay={!reduced}
             loop
             muted
             playsInline
