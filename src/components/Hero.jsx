@@ -205,7 +205,7 @@ export default function Hero({ progress = 0 }) {
 
           <form
             onSubmit={handleSubmit}
-            className="mt-8 flex items-center gap-2 w-full max-w-[460px] rounded-full bg-white/10 backdrop-blur-md border border-white/15 p-1.5 pl-5 transition-colors focus-within:border-white/40 focus-within:ring-2 focus-within:ring-white/40"
+            className="mt-8 flex items-center gap-2 w-full max-w-[460px] rounded-full bg-white/10 backdrop-blur-md border border-white/15 p-1 pl-5 transition-colors focus-within:border-white/40 focus-within:ring-2 focus-within:ring-white/40"
           >
             <label htmlFor="hero-email" className="sr-only">
               Email address
@@ -218,12 +218,12 @@ export default function Hero({ progress = 0 }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
-              className="flex-1 min-w-0 bg-transparent text-white placeholder-white/40 text-body outline-none"
+              className="flex-1 min-w-0 bg-transparent text-white placeholder-white/40 text-body py-2.5 outline-none"
             />
             <MoreHorizontal className="hidden sm:block w-5 h-5 text-white/40 flex-shrink-0" aria-hidden="true" />
             <button
               type="submit"
-              className="flex items-center gap-1.5 bg-white text-ink text-button rounded-full px-5 py-2.5 hover:bg-white/90 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
+              className="flex items-center gap-1.5 bg-white text-ink text-button rounded-full px-5 py-3.5 hover:bg-white/90 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
             >
               Request Invite
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
