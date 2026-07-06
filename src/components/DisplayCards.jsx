@@ -17,7 +17,7 @@ function DisplayCard({
   return (
     <div
       className={cn(
-        'relative flex h-32 w-[15rem] sm:h-36 sm:w-[22rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-neutral-200 bg-white/70 backdrop-blur-sm px-4 py-3 transition-all duration-700 hover:border-neutral-300 hover:bg-white [&>*]:flex [&>*]:items-center [&>*]:gap-2',
+        'relative flex min-h-[8rem] w-[15rem] sm:h-36 sm:w-[22rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-neutral-200 bg-white/70 backdrop-blur-sm px-4 py-3 transition-all duration-700 hover:border-neutral-300 hover:bg-white [&>*]:flex [&>*]:items-center [&>*]:gap-2',
         className,
       )}
     >
@@ -27,7 +27,7 @@ function DisplayCard({
         </span>
         <p className={cn('text-body font-medium', titleClassName)}>{title}</p>
       </div>
-      <p className="whitespace-nowrap text-body text-neutral-700">{description}</p>
+      <p className="text-body text-neutral-700 sm:whitespace-nowrap">{description}</p>
       <p className="text-body-sm text-neutral-400">{date}</p>
     </div>
   )
