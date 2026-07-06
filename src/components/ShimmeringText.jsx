@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { usePrefersReducedMotion } from '../hooks/useScrollProgress'
 
 function cn(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -14,6 +15,18 @@ export function ShimmeringText({
   shimmeringColor = '#d4d4d4', // neutral-300
   ...props
 }) {
+  const reduced = usePrefersReducedMotion()
+
+  // Reduced motion: render the text statically — the shimmer is an infinite
+  // loop, so it must not run when the user has asked for reduced motion.
+  if (reduced) {
+    return (
+      <span className={cn('relative inline-block', className)} style={{ color }} {...props}>
+        {text}
+      </span>
+    )
+  }
+
   return (
     <motion.span
       className={cn('relative inline-block [perspective:500px]', className)}
