@@ -62,7 +62,7 @@ export default function SiteFooter() {
                 autoComplete="email"
                 inputMode="email"
                 placeholder="you@email.com"
-                className="w-full bg-transparent text-body text-neutral-800 placeholder-neutral-400 outline-none"
+                className="w-full min-h-[44px] bg-transparent text-body text-neutral-800 placeholder-neutral-400 outline-none"
               />
               <button
                 type="submit"

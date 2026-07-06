@@ -213,7 +213,7 @@ export default function Section2({ progress = 1, reduced = false, hideChatbox = 
                   onFocus={() => setFocused(true)}
                   onBlur={() => setFocused(false)}
                   placeholder={placeholder}
-                  className="w-full rounded-md bg-transparent px-3 py-2 text-body text-neutral-800 placeholder-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                  className="w-full min-h-[44px] rounded-md bg-transparent px-3 py-2 text-body text-neutral-800 placeholder-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
                 />
                 <div className="mt-2 flex items-center justify-between">
                   <div className="flex items-center gap-1">
