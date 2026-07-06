@@ -93,15 +93,19 @@ export default function SiteFooter() {
             </div>
           </div>
 
-          {/* Products — name-only one-liners (descriptor kept as a tooltip) */}
+          {/* Products — not shipped yet, so shown as non-clickable "Soon" items
+              (descriptor kept as a tooltip) rather than dead links. */}
           <nav aria-label="Products">
             <p className="text-mono-md text-neutral-900">Products</p>
             <ul className="mt-4 space-y-2.5">
               {products.map((p) => (
-                <li key={p.name}>
-                  <a href="#" title={p.desc} className={linkCls}>
+                <li key={p.name} className="flex items-center gap-2">
+                  <span title={p.desc} className="text-body text-neutral-400">
                     {p.name}
-                  </a>
+                  </span>
+                  <span className="rounded-full border border-neutral-300 px-1.5 py-0.5 text-mono-sm uppercase tracking-wider text-neutral-400">
+                    Soon
+                  </span>
                 </li>
               ))}
             </ul>
