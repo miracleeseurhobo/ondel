@@ -25,10 +25,10 @@ export default function AntigravityCard() {
             Plan better song releases with Ondel.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <button className="text-button rounded-full bg-white px-6 py-3 text-ink transition-colors hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0f]">
+            <button className="text-button inline-flex min-h-[44px] items-center justify-center rounded-full bg-white px-6 py-3 text-ink transition-colors hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0f]">
               Join the beta
             </button>
-            <button className="text-button rounded-full border border-white/15 bg-white/10 px-6 py-3 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+            <button className="text-button inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/15 bg-white/10 px-6 py-3 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
               See how it works
             </button>
           </div>
