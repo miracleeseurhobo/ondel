@@ -195,17 +195,17 @@ export default function Hero({ progress = 0 }) {
         )}
 
         {/* Hero content — bottom anchored */}
-        <main className="flex-1 flex flex-col items-center justify-end text-center px-5 pb-14 sm:pb-20 lg:pb-24">
+        <main className="flex-1 flex flex-col items-center justify-end text-center px-5 pb-14 sm:pb-20 lg:pb-24 [@media(max-height:600px)]:!pb-6">
           <h1 className="text-display text-white max-w-[900px]">
             Know your release before the world does.
           </h1>
-          <p className="mt-5 text-body text-white/60 max-w-[560px]">
+          <p className="mt-5 [@media(max-height:600px)]:mt-2 text-body text-white/60 max-w-[560px]">
             Ondel helps independent artists discover playlists, audience signals, and hidden opportunities with an AI release manager built for music before and after release.
           </p>
 
           <form
             onSubmit={handleSubmit}
-            className="mt-8 flex items-center gap-2 w-full max-w-[460px] rounded-full bg-white/10 backdrop-blur-md border border-white/15 p-1 pl-5 transition-colors focus-within:border-white/40 focus-within:ring-2 focus-within:ring-white/40"
+            className="mt-8 [@media(max-height:600px)]:mt-4 flex items-center gap-2 w-full max-w-[460px] rounded-full bg-white/10 backdrop-blur-md border border-white/15 p-1 pl-5 transition-colors focus-within:border-white/40 focus-within:ring-2 focus-within:ring-white/40"
           >
             <label htmlFor="hero-email" className="sr-only">
               Email address
@@ -230,7 +230,7 @@ export default function Hero({ progress = 0 }) {
             </button>
           </form>
 
-          <p className="mt-5 max-w-[420px] text-body-sm font-normal leading-normal text-white/50">
+          <p className="mt-5 [@media(max-height:600px)]:mt-2 max-w-[420px] text-body-sm font-normal leading-normal text-white/50">
             We're onboarding a small group of independent artists and teams
             building their next release.
           </p>
