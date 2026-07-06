@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Menu, X, ArrowRight, MoreHorizontal } from 'lucide-react'
+import { usePrefersReducedMotion } from '../hooks/useScrollProgress'
 
 const OndelLogo = ({ className }) => (
   <svg
@@ -38,6 +39,7 @@ export default function Hero({ progress = 0 }) {
   const [email, setEmail] = useState('')
   const videoRef = useRef(null)
   const scrubbing = useRef(false)
+  const reduced = usePrefersReducedMotion()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -83,9 +85,19 @@ export default function Hero({ progress = 0 }) {
       }
     } else {
       scrubbing.current = false
-      if (v.paused) v.play().catch(() => {})
+      if (!reduced && v.paused) v.play().catch(() => {})
     }
-  }, [p])
+  }, [p, reduced])
+
+  // Reduced motion: hold the background video on a static frame instead of
+  // looping the ambient crowd.
+  useEffect(() => {
+    const v = videoRef.current
+    if (v && reduced) {
+      v.pause()
+      v.currentTime = 0
+    }
+  }, [reduced])
 
   const videoScale = 1 + p * MAX_ZOOM
   // Headset light blooms outward, then floods to full #fafafa by ~0.88 — so the
@@ -102,7 +114,7 @@ export default function Hero({ progress = 0 }) {
       <video
         ref={videoRef}
         aria-hidden="true"
-        autoPlay
+        autoPlay={!reduced}
         muted
         playsInline
         preload="auto"
