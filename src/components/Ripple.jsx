@@ -12,10 +12,18 @@ function Ripple({
   step = 40,
   baseOpacity = 0.22, // innermost ring; fades outward
   glow = false, // soft radial gradient behind the rings for depth
+  fadeEdges = false, // mask top/bottom so the field blends into the surface
 }) {
   const fieldSize = baseSize + numCircles * step
+  const fadeMask = fadeEdges
+    ? 'linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%)'
+    : undefined
   return (
-    <div className={`pointer-events-none ${className}`} aria-hidden="true">
+    <div
+      className={`pointer-events-none ${className}`}
+      aria-hidden="true"
+      style={fadeEdges ? { maskImage: fadeMask, WebkitMaskImage: fadeMask } : undefined}
+    >
       {glow && (
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
