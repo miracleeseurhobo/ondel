@@ -47,9 +47,9 @@ export default function SignIn() {
         color="#2b2e40"
         glowColor="#7c4dff"
         gap={16}
-        radius={1.4}
-        speedMin={0.25}
-        speedMax={1.2}
+        radius={1.7}
+        speedMin={1.2}
+        speedMax={4.5}
       />
       {/* Violet halo behind the card */}
       <div
@@ -58,16 +58,20 @@ export default function SignIn() {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 w-full max-w-[400px]">
-        {/* Wordmark → back home */}
-        <Link
-          to="/"
-          className="mb-10 inline-flex items-center gap-2 text-[#e3e8ff] transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9900ff]/50 rounded"
-        >
-          <OndelLogo className="h-6 w-6" />
-          <span className="font-inter text-lg font-semibold tracking-tight">Ondel</span>
-        </Link>
+      {/* Wordmark → back home, pinned top-left (clears the notch) */}
+      <Link
+        to="/"
+        className="absolute z-20 inline-flex items-center gap-2 rounded text-[#e3e8ff] transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9900ff]/50"
+        style={{
+          top: 'calc(env(safe-area-inset-top) + 1.25rem)',
+          left: 'calc(env(safe-area-inset-left) + 1.25rem)',
+        }}
+      >
+        <OndelLogo className="h-6 w-6" />
+        <span className="font-inter text-lg font-semibold tracking-tight">Ondel</span>
+      </Link>
 
+      <div className="relative z-10 w-full max-w-[400px]">
         <h1 className="font-inter text-[clamp(2rem,7vw,2.75rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#e3e8ff]">
           Sign in to Ondel
         </h1>

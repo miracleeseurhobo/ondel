@@ -73,7 +73,7 @@ export default function DottedGlowBackground({
         const r = Math.round(base[0] + (glow[0] - base[0]) * g)
         const gg = Math.round(base[1] + (glow[1] - base[1]) * g)
         const b = Math.round(base[2] + (glow[2] - base[2]) * g)
-        const a = (0.14 + g * 0.42) * opacity
+        const a = (0.12 + g * 0.55) * opacity
         ctx.beginPath()
         ctx.arc(d.x, d.y, radius, 0, Math.PI * 2)
         ctx.fillStyle = `rgba(${r},${gg},${b},${a})`
