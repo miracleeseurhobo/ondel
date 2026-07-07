@@ -10,12 +10,13 @@ function Ripple({
   numCircles = 4,
   baseSize = 68,
   step = 40,
+  baseOpacity = 0.22, // innermost ring; fades outward
 }) {
   return (
     <div className={`pointer-events-none ${className}`} aria-hidden="true">
       {Array.from({ length: numCircles }).map((_, i) => {
         const size = baseSize + i * step
-        const opacity = Math.max(0.22 - i * 0.05, 0.05)
+        const opacity = Math.max(baseOpacity - i * 0.045, 0.05)
         return (
           <div
             key={i}
