@@ -35,6 +35,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Signal ripple (Ripple.jsx) — concentric rings breathe outward behind a node.
+   Static under reduced motion. */
+@keyframes ripple-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.06); }
+}
+.ripple-ring {
+  animation: ripple-pulse 3.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ripple-ring {
+    animation: none;
+  }
+}
+
 /* Scroll-linked manifesto reveal — each word's opacity is derived from the
    shared --reveal progress and the word's own threshold --i (0.06 = fade window,
    matching the 0.94 threshold spread in SignalStatement). */

@@ -1,6 +1,7 @@
 import { forwardRef, memo, useEffect, useId, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { usePrefersReducedMotion } from '../hooks/useScrollProgress'
+import Ripple from './Ripple'
 
 // --- Brand glyphs -----------------------------------------------------------
 const SpotifyIcon = ({ className }) => (
@@ -136,10 +137,13 @@ function BeamConnect() {
         ))}
       </div>
 
-      {/* Ondel */}
-      <Node ref={ondelRef} big>
-        <OndelMark className="h-8 w-8 text-neutral-900" />
-      </Node>
+      {/* Ondel — central receiver, with a subtle signal ripple behind it */}
+      <div className="relative flex items-center justify-center">
+        <Ripple className="absolute inset-0" />
+        <Node ref={ondelRef} big>
+          <OndelMark className="h-8 w-8 text-neutral-900" />
+        </Node>
+      </div>
 
       {/* Beams flowing from each service into Ondel */}
       {nodeRefs.map((ref, i) => (
