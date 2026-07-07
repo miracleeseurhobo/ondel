@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { useRevealProgress } from '../hooks/useScrollProgress'
+import Ripple from './Ripple'
 
 const TEXT =
   'Your song already has a story unfolding. People who will love it. Places where it belongs. Opportunities quietly taking shape around it. Ondel helps you see that story before the world does.'
@@ -17,9 +18,11 @@ export default function SignalStatement() {
   const last = WORDS.length - 1
 
   return (
-    <section ref={ref} className="bg-[#fafafa] px-6 py-28 sm:py-36">
+    <section ref={ref} className="relative overflow-hidden bg-[#fafafa] px-6 py-28 sm:py-36">
+      {/* Signal ripple field — "opportunities quietly taking shape around it" */}
+      <Ripple className="absolute inset-0" numCircles={6} baseSize={240} step={116} />
       <p
-        className="mx-auto max-w-4xl text-center font-display leading-[1.3] tracking-tight text-neutral-900 text-[clamp(1.6rem,3vw,2.5rem)]"
+        className="relative z-10 mx-auto max-w-4xl text-center font-display leading-[1.3] tracking-tight text-neutral-900 text-[clamp(1.6rem,3vw,2.5rem)]"
         style={{ '--reveal': reveal }}
       >
         {WORDS.map((w, i) => (
