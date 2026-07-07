@@ -172,9 +172,9 @@ export default function Hero({ progress = 0 }) {
                 {link}
               </a>
             ))}
-            <button className="text-button text-white bg-white/10 hover:bg-white/20 border border-white/15 backdrop-blur-md rounded-full px-5 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+            <a href="#signin" className="inline-flex items-center text-button text-white bg-white/10 hover:bg-white/20 border border-white/15 backdrop-blur-md rounded-full px-5 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
               Sign in
-            </button>
+            </a>
           </div>
 
           <button
@@ -199,9 +199,13 @@ export default function Hero({ progress = 0 }) {
                   {link}
                 </a>
               ))}
-              <button className="mt-1 w-full text-button text-white bg-white/10 border border-white/15 rounded-full px-5 py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+              <a
+                href="#signin"
+                onClick={() => setMenuOpen(false)}
+                className="mt-1 flex min-h-[44px] w-full items-center justify-center text-button text-white bg-white/10 border border-white/15 rounded-full px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              >
                 Sign in
-              </button>
+              </a>
             </div>
           </div>
         )}
