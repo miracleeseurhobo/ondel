@@ -11,9 +11,21 @@ function Ripple({
   baseSize = 68,
   step = 40,
   baseOpacity = 0.22, // innermost ring; fades outward
+  glow = false, // soft radial gradient behind the rings for depth
 }) {
+  const fieldSize = baseSize + numCircles * step
   return (
     <div className={`pointer-events-none ${className}`} aria-hidden="true">
+      {glow && (
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            width: `${fieldSize}px`,
+            height: `${fieldSize}px`,
+            background: `radial-gradient(circle, rgb(${color} / 0.10) 0%, rgb(${color} / 0.05) 38%, rgb(${color} / 0.02) 58%, transparent 72%)`,
+          }}
+        />
+      )}
       {Array.from({ length: numCircles }).map((_, i) => {
         const size = baseSize + i * step
         const opacity = Math.max(baseOpacity - i * 0.045, 0.05)

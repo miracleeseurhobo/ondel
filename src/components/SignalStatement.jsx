@@ -20,7 +20,7 @@ export default function SignalStatement() {
   return (
     <section ref={ref} className="relative overflow-hidden bg-[#fafafa] px-6 py-28 sm:py-36">
       {/* Signal ripple field — "opportunities quietly taking shape around it" */}
-      <Ripple className="absolute inset-0" numCircles={6} baseSize={240} step={116} baseOpacity={0.36} />
+      <Ripple className="absolute inset-0" numCircles={6} baseSize={240} step={116} baseOpacity={0.36} glow />
       <p
         className="relative z-10 mx-auto max-w-4xl text-center font-display leading-[1.3] tracking-tight text-neutral-900 text-[clamp(1.6rem,3vw,2.5rem)]"
         style={{ '--reveal': reveal }}
