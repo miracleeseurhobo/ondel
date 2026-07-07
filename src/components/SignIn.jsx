@@ -14,7 +14,7 @@ const OndelLogo = ({ className }) => (
 function Slot({ char, isActive, hasFakeCaret }) {
   return (
     <div
-      className={`relative flex h-12 w-9 items-center justify-center font-inter text-[1.5rem] text-[#e3e8ff] border-y border-r border-white/10 bg-[#20232e] outline outline-[#9900ff] transition-all duration-200 first:rounded-l-xl first:border-l last:rounded-r-xl sm:h-14 sm:w-11 sm:text-[1.6rem] ${
+      className={`relative flex h-12 w-9 items-center justify-center font-inter text-[1.5rem] text-[#e3e8ff] border-y border-r border-white/10 bg-[#20232e] outline outline-[#96d9ff] transition-all duration-200 first:rounded-l-xl first:border-l last:rounded-r-xl sm:h-14 sm:w-11 sm:text-[1.6rem] ${
         isActive ? 'z-10 outline-2' : 'outline-0'
       }`}
     >
@@ -60,8 +60,8 @@ export default function SignIn() {
     >
       {/* Dotted glow field — lavender/violet shimmer, masked to center */}
       <DottedGlowBackground
-        color="#2b2e40"
-        glowColor="#7c4dff"
+        color="#253244"
+        glowColor="#96d9ff"
         gap={16}
         radius={1.7}
         speedMin={1.2}
@@ -70,17 +70,17 @@ export default function SignIn() {
       {/* Violet halo behind the card */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2"
-        style={{ background: 'radial-gradient(circle, rgba(153,0,255,0.18), transparent 62%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(150,217,255,0.16), transparent 62%)' }}
         aria-hidden="true"
       />
 
       {/* Wordmark → back home, pinned top-left (clears the notch) */}
       <Link
         to="/"
-        className="absolute z-20 inline-flex items-center gap-2 rounded text-[#e3e8ff] transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9900ff]/50"
+        className="absolute z-20 inline-flex items-center gap-2 rounded text-[#e3e8ff] transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#96d9ff]/50"
         style={{
-          top: 'calc(env(safe-area-inset-top) + 1.25rem)',
-          left: 'calc(env(safe-area-inset-left) + 1.25rem)',
+          top: 'calc(env(safe-area-inset-top) + 1.75rem)',
+          left: 'calc(env(safe-area-inset-left) + 1.75rem)',
         }}
       >
         <OndelLogo className="h-6 w-6" />
@@ -88,9 +88,7 @@ export default function SignIn() {
       </Link>
 
       <div className="relative z-10 w-full max-w-[400px]">
-        <h1 className="font-inter text-[clamp(2rem,7vw,2.75rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#e3e8ff]">
-          Enter your code
-        </h1>
+        <h1 className="text-display text-white">Enter your code</h1>
         <p className="mt-3 font-inter text-[15px] leading-relaxed text-[#9095a4]">
           We sent a 6-digit code to your email. Enter it below to continue.
         </p>
@@ -128,8 +126,8 @@ export default function SignIn() {
           <button
             type="button"
             onClick={verify}
-            className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-[#9900ff] font-inter text-[15px] font-medium text-white transition-[box-shadow,background-color] hover:bg-[#a41aff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c98cff]"
-            style={{ boxShadow: '0 0 26px 0 rgba(153,0,255,0.55), inset 1px 1px 1px 0 rgba(255,255,255,0.25)' }}
+            className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-[#96d9ff] font-inter text-[15px] font-semibold text-[#06131c] transition-[box-shadow,background-color] hover:bg-[#aee2ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c7ebff] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0d12]"
+            style={{ boxShadow: '0 0 26px 0 rgba(150,217,255,0.45), inset 1px 1px 1px 0 rgba(255,255,255,0.4)' }}
           >
             Verify
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -140,7 +138,7 @@ export default function SignIn() {
             <button
               type="button"
               onClick={() => setCode('')}
-              className="rounded text-[#ccd1e9] transition-colors hover:text-[#e3e8ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9900ff]/50"
+              className="rounded text-[#ccd1e9] transition-colors hover:text-[#e3e8ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#96d9ff]/50"
             >
               Resend
             </button>
@@ -151,7 +149,7 @@ export default function SignIn() {
           New to Ondel?{' '}
           <Link
             to="/"
-            className="rounded text-[#ccd1e9] underline-offset-4 transition-colors hover:text-[#e3e8ff] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9900ff]/50"
+            className="rounded text-[#ccd1e9] underline-offset-4 transition-colors hover:text-[#e3e8ff] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#96d9ff]/50"
           >
             Request an invite
           </Link>
