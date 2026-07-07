@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import DottedGlowBackground from './DottedGlowBackground'
 
@@ -59,13 +60,13 @@ export default function SignIn() {
 
       <div className="relative z-10 w-full max-w-[400px]">
         {/* Wordmark → back home */}
-        <a
-          href="#"
+        <Link
+          to="/"
           className="mb-10 inline-flex items-center gap-2 text-[#e3e8ff] transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9900ff]/50 rounded"
         >
           <OndelLogo className="h-6 w-6" />
           <span className="font-inter text-lg font-semibold tracking-tight">Ondel</span>
-        </a>
+        </Link>
 
         <h1 className="font-inter text-[clamp(2rem,7vw,2.75rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#e3e8ff]">
           Sign in to Ondel
@@ -149,12 +150,12 @@ export default function SignIn() {
 
         <p className="mt-6 text-center font-inter text-[14px] text-[#9095a4]">
           New to Ondel?{' '}
-          <a
-            href="#"
+          <Link
+            to="/"
             className="rounded text-[#ccd1e9] underline-offset-4 transition-colors hover:text-[#e3e8ff] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9900ff]/50"
           >
             Request an invite
-          </a>
+          </Link>
         </p>
       </div>
     </main>

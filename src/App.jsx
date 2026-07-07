@@ -6,7 +6,6 @@ import Section2 from './components/Section2'
 import Faq from './components/Faq'
 import AntigravityCard from './components/AntigravityCard'
 import SiteFooter from './components/SiteFooter'
-import SignIn from './components/SignIn'
 import { useScrollProgress } from './hooks/useScrollProgress'
 
 export default function App() {
@@ -14,14 +13,6 @@ export default function App() {
   const statementRef = useRef(null)
   const { progress, reduced } = useScrollProgress(stageRef)
   const [statementNear, setStatementNear] = useState(false)
-  const [route, setRoute] = useState(() => window.location.hash)
-
-  // Minimal hash routing: #signin renders the sign-in view (no router dep).
-  useEffect(() => {
-    const onHash = () => setRoute(window.location.hash)
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
 
   // Hide the chatbox as the manifesto (the section right after Section 2)
   // approaches, so the pinned chatbox vanishes gracefully on the way out
@@ -38,8 +29,6 @@ export default function App() {
     io.observe(el)
     return () => io.disconnect()
   }, [])
-
-  if (route === '#signin') return <SignIn />
 
   return (
     <>
