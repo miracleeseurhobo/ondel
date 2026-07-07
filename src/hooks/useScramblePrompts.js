@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { usePrefersReducedMotion } from './useScrollProgress'
 
 const defaultChars =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -14,10 +15,12 @@ export function useScramblePrompts(
 ) {
   const [display, setDisplay] = useState(prompts[0] ?? '')
   const idxRef = useRef(0)
+  const reduced = usePrefersReducedMotion()
 
   useEffect(() => {
-    if (!active || prompts.length === 0) {
-      // Freeze on a clean sentence while the user is interacting.
+    // Freeze on a clean sentence while the user is interacting — or entirely
+    // when reduced motion is preferred (the scramble is continuous motion).
+    if (!active || reduced || prompts.length === 0) {
       setDisplay(prompts[idxRef.current] ?? '')
       return
     }
@@ -71,7 +74,7 @@ export function useScramblePrompts(
       clearTimeout(timer)
       clearInterval(interval)
     }
-  }, [active, prompts, holdMs, duration, speed, characterSet])
+  }, [active, reduced, prompts, holdMs, duration, speed, characterSet])
 
   return display
 }
