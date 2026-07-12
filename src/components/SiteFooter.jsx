@@ -29,7 +29,7 @@ const socials = [
 ]
 
 const linkCls =
-  'rounded text-body text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400'
+  'inline-flex min-h-[44px] items-center rounded text-body text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400'
 
 export default function SiteFooter() {
   return (
