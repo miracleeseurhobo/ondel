@@ -18,32 +18,24 @@ const OAUTH_SHADOW =
 
 // Playlist deck for the sign-in preview — the same "animated card" as the
 // landing, auto-looping (DisplayCards loop) and themed as playlist placements.
-// Here it wears the hero's sky-blue + glass look: frosted translucent surfaces
-// on the blue scene, badges in the hero's blue family (sky/cyan/periwinkle),
-// and a navy fade so back cards dissolve into the panel. The reveal (grayscale →
-// colour) keys off the group's data-open state.
+// The fade colour matches the panel (#f0f0f3) so back cards blend out; the
+// reveal (grayscale → colour) keys off the group's data-open state.
 //
 // Motion mirrors the landing's wave: the same ease-out curve as <Reveal>
 // (cubic-bezier .22,1,.36,1), and a per-card transition-delay stepped like the
 // manifesto ripple (~180ms/ring) so the cards rise one after another — a wave
 // rolling through the stack — rather than all together.
 const CARD_EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]'
-const GLASS_SURFACE =
-  'border border-white/15 bg-white/10 backdrop-blur-md shadow-[0_12px_40px_-12px_rgba(3,10,26,0.7),inset_0_1px_0_0_rgba(255,255,255,0.14)]'
 const CARD_FADE =
-  "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[#0a1a33] after:to-transparent after:content-['']"
+  "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[#f0f0f3] after:to-transparent after:content-['']"
 const CARD_REVEAL =
-  "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:bg-[#0a1a33]/70 before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
-
-const GLASS_BODY = { descClassName: 'text-white/65', dateClassName: 'text-white/40' }
+  "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:outline-1 before:outline-neutral-200 before:bg-[#f0f0f3]/60 before:bg-blend-overlay before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
 
 const PLAYLIST_CARDS = [
   {
     icon: <ListMusic className="size-4 text-white" />,
-    badgeClassName: 'bg-sky-400 shadow-[0_0_20px_-2px_#38bdf8]',
-    titleClassName: 'text-sky-100',
-    surfaceClassName: GLASS_SURFACE,
-    ...GLASS_BODY,
+    badgeClassName: 'bg-blue-500',
+    titleClassName: 'text-blue-600',
     title: 'New Music Friday',
     description: 'Editorial · 4.1M followers',
     date: 'Pitched · 2h ago',
@@ -51,10 +43,8 @@ const PLAYLIST_CARDS = [
   },
   {
     icon: <Disc3 className="size-4 text-white" />,
-    badgeClassName: 'bg-cyan-400 shadow-[0_0_20px_-2px_#22d3ee]',
-    titleClassName: 'text-cyan-100',
-    surfaceClassName: GLASS_SURFACE,
-    ...GLASS_BODY,
+    badgeClassName: 'bg-fuchsia-500',
+    titleClassName: 'text-fuchsia-600',
     title: 'Indie Pop Rising',
     description: '94% match · 82k followers',
     date: 'Added yesterday',
@@ -62,10 +52,8 @@ const PLAYLIST_CARDS = [
   },
   {
     icon: <Radio className="size-4 text-white" />,
-    badgeClassName: 'bg-indigo-400 shadow-[0_0_20px_-2px_#818cf8]',
-    titleClassName: 'text-indigo-100',
-    surfaceClassName: GLASS_SURFACE,
-    ...GLASS_BODY,
+    badgeClassName: 'bg-emerald-500',
+    titleClassName: 'text-emerald-600',
     title: 'Bedroom Pop',
     description: 'Curator pick · 31k followers',
     date: 'Under review',
@@ -302,36 +290,11 @@ export default function SignIn() {
           )}
         </div>
 
-        {/* Product preview — desktop only (mobile is the centered gate). A
-            sky-blue + glass scene lifted from the hero: a deep-navy base, a
-            luminous bloom at the hero's focal point (48%/42%), faint glass-wall
-            mullions, and the frosted playlist deck floating within. */}
-        <div className="relative hidden items-center justify-center overflow-hidden bg-[#081324] p-10 lg:flex">
-          {/* Luminous sky bloom (hero brand blue) */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(115% 95% at 48% 42%, rgba(150,217,255,0.30) 0%, rgba(122,162,255,0.16) 32%, rgba(8,19,36,0) 66%)',
-            }}
-          />
-          {/* Glass-wall mullions — faint vertical seams with a lit edge */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,0) calc(25% - 2px), rgba(255,255,255,0.10) calc(25% - 2px), rgba(255,255,255,0.10) calc(25% - 1px), rgba(255,255,255,0.03) calc(25% - 1px), rgba(255,255,255,0.03) 25%)',
-            }}
-          />
-          {/* Cinematic edge vignette */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(130% 120% at 50% 50%, rgba(3,10,26,0) 42%, rgba(3,10,26,0.85) 100%)',
-            }}
-          />
-          <div className="relative -translate-x-12 -translate-y-2">
+        {/* Product preview — desktop only (mobile is the centered gate). The
+            looping playlist deck stands in for the product until the real
+            mockup lands. */}
+        <div className="relative hidden items-center justify-center overflow-hidden border-l border-black/[0.06] bg-[#f0f0f3] p-10 lg:flex">
+          <div className="-translate-x-12 -translate-y-2">
             <DisplayCards loop cards={PLAYLIST_CARDS} />
           </div>
         </div>

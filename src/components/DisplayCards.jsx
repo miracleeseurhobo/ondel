@@ -14,17 +14,11 @@ function DisplayCard({
   date = 'Just now',
   badgeClassName = 'bg-blue-500',
   titleClassName = 'text-blue-600',
-  // Surface + body text are themeable so the deck can render light (landing) or
-  // frosted-glass (sign-in) without a second component. Defaults = landing look.
-  surfaceClassName = 'border-2 border-neutral-200 bg-white/70 backdrop-blur-sm hover:border-neutral-300 hover:bg-white',
-  descClassName = 'text-neutral-700',
-  dateClassName = 'text-neutral-400',
 }) {
   return (
     <div
       className={cn(
-        'relative flex min-h-[8rem] w-[15rem] sm:h-36 sm:w-[22rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl px-4 py-3 transition-all duration-700 [&>*]:flex [&>*]:items-center [&>*]:gap-2',
-        surfaceClassName,
+        'relative flex min-h-[8rem] w-[15rem] sm:h-36 sm:w-[22rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-neutral-200 bg-white/70 backdrop-blur-sm px-4 py-3 transition-all duration-700 hover:border-neutral-300 hover:bg-white [&>*]:flex [&>*]:items-center [&>*]:gap-2',
         className,
       )}
     >
@@ -34,8 +28,8 @@ function DisplayCard({
         </span>
         <p className={cn('text-body font-medium', titleClassName)}>{title}</p>
       </div>
-      <p className={cn('text-body sm:whitespace-nowrap', descClassName)}>{description}</p>
-      <p className={cn('text-body-sm', dateClassName)}>{date}</p>
+      <p className="text-body text-neutral-700 sm:whitespace-nowrap">{description}</p>
+      <p className="text-body-sm text-neutral-400">{date}</p>
     </div>
   )
 }
