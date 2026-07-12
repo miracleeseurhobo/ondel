@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Menu, X, ArrowRight, MoreHorizontal } from 'lucide-react'
 import { usePrefersReducedMotion } from '../hooks/useScrollProgress'
+
+// The Ondel app (dashboard) lives on its own subdomain — the marketing site
+// hands off to it for sign-in. Update if the app domain changes.
+const APP_URL = 'https://app.tryondel.com'
 
 const OndelLogo = ({ className }) => (
   <svg
@@ -173,9 +176,9 @@ export default function Hero({ progress = 0 }) {
                 {link}
               </a>
             ))}
-            <Link to="/signin" className="inline-flex items-center text-button text-white bg-white/10 hover:bg-white/20 border border-white/15 backdrop-blur-md rounded-full px-5 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+            <a href={APP_URL} className="inline-flex items-center text-button text-white bg-white/10 hover:bg-white/20 border border-white/15 backdrop-blur-md rounded-full px-5 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
               Sign in
-            </Link>
+            </a>
           </div>
 
           <button
@@ -200,13 +203,13 @@ export default function Hero({ progress = 0 }) {
                   {link}
                 </a>
               ))}
-              <Link
-                to="/signin"
+              <a
+                href={APP_URL}
                 onClick={() => setMenuOpen(false)}
                 className="mt-1 flex min-h-[44px] w-full items-center justify-center text-button text-white bg-white/10 border border-white/15 rounded-full px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
               >
                 Sign in
-              </Link>
+              </a>
             </div>
           </div>
         )}
