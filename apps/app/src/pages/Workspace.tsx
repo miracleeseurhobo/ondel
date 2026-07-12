@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   Home,
@@ -93,6 +93,7 @@ function StatCard({
 
 export default function Workspace() {
   const [prompt, setPrompt] = useState('')
+  const navigate = useNavigate()
 
   return (
     <div className="flex min-h-dvh" style={{ background: '#EEF1F7', color: INK }}>
@@ -172,6 +173,7 @@ export default function Workspace() {
             </button>
             <button
               type="button"
+              onClick={() => navigate('/start')}
               className="flex h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium text-white"
               style={{ background: INK }}
             >
@@ -263,7 +265,7 @@ export default function Workspace() {
         </div>
 
         <Rise delay={0.42} className="mt-8 text-center">
-          <Link to="/" className="text-[13px] underline underline-offset-2" style={{ color: FAINT }}>
+          <Link to="/start" className="text-[13px] underline underline-offset-2" style={{ color: FAINT }}>
             Back to start
           </Link>
         </Rise>

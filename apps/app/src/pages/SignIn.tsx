@@ -131,7 +131,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
               ))}
             </p>
             <Link
-              to="/app"
+              to="/"
               aria-hidden={reveal < 0.9}
               tabIndex={reveal < 0.9 ? -1 : 0}
               className="mt-10 inline-flex h-11 w-full items-center justify-center rounded-xl bg-black text-[15px] font-medium text-white transition-[opacity,transform] duration-300 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40"
@@ -141,7 +141,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 transform: reveal >= 0.9 ? 'none' : 'translateY(8px)',
                 pointerEvents: reveal >= 0.9 ? 'auto' : 'none',
               }}
-              onClick={() => navigate('/app')}
+              onClick={() => navigate("/")}
             >
               Continue
             </Link>

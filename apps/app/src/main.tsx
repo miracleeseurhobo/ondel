@@ -28,7 +28,7 @@ function ClerkSignIn() {
     void signIn.authenticateWithRedirect({
       strategy: strategy as OAuth,
       redirectUrl: '/sso-callback',
-      redirectUrlComplete: '/app',
+      redirectUrlComplete: '/',
     })
   }
   return <SignIn onOAuth={onOAuth} />
@@ -53,9 +53,11 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Index />} />
+        {/* Home = the signed-in workspace (Clerk-guarded when configured). */}
+        <Route path="/" element={<WorkspaceRoute />} />
+        {/* Prompt / new-release entry + onboarding flow. */}
+        <Route path="/start" element={<Index />} />
         <Route path="/signin" element={CLERK_KEY ? <ClerkSignIn /> : <SignIn />} />
-        <Route path="/app" element={<WorkspaceRoute />} />
         {CLERK_KEY ? <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} /> : null}
       </Routes>
     </BrowserRouter>
