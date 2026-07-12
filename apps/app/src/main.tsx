@@ -1,10 +1,18 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { ClerkProvider, AuthenticateWithRedirectCallback, useSignIn } from '@clerk/clerk-react'
+import {
+  ClerkProvider,
+  AuthenticateWithRedirectCallback,
+  useSignIn,
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+} from '@clerk/clerk-react'
 import './index.css'
 import Index from './pages/Index'
 import SignIn from './pages/SignIn'
+import Workspace from './pages/Workspace'
 
 // Auth is opt-in: with VITE_CLERK_PUBLISHABLE_KEY set, the OAuth buttons run the
 // real Clerk redirect flow; without it, the sign-in falls back to the UI-only
@@ -20,10 +28,25 @@ function ClerkSignIn() {
     void signIn.authenticateWithRedirect({
       strategy: strategy as OAuth,
       redirectUrl: '/sso-callback',
-      redirectUrlComplete: '/',
+      redirectUrlComplete: '/app',
     })
   }
   return <SignIn onOAuth={onOAuth} />
+}
+
+// Protect the workspace when Clerk is configured; render directly otherwise.
+function WorkspaceRoute() {
+  if (!CLERK_KEY) return <Workspace />
+  return (
+    <>
+      <SignedIn>
+        <Workspace />
+      </SignedIn>
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+    </>
+  )
 }
 
 function AppRouter() {
@@ -32,6 +55,7 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/signin" element={CLERK_KEY ? <ClerkSignIn /> : <SignIn />} />
+        <Route path="/app" element={<WorkspaceRoute />} />
         {CLERK_KEY ? <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} /> : null}
       </Routes>
     </BrowserRouter>
