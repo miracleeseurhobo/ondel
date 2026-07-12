@@ -165,6 +165,66 @@ body {
   }
 }
 
+/* Gradient shimmer text — adapted from BIAsia/gradient-shimmer. A bright band
+   swept across the text via background-clip:text; the band gradient is sized
+   wider than the text and its position animates. Reduced motion → solid text. */
+.gradient-shimmer {
+  background-image: linear-gradient(
+    105deg,
+    #1a1a1a 0%,
+    #1a1a1a 38%,
+    #c8c8cc 50%,
+    #1a1a1a 62%,
+    #1a1a1a 100%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shimmer-sweep 1.9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes gradient-shimmer-sweep {
+  from {
+    background-position: 160% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gradient-shimmer {
+    animation: none;
+    background: none;
+    color: #1a1a1a;
+    -webkit-text-fill-color: #1a1a1a;
+  }
+}
+
+/* Sign-in state crossfade — the auth form → syncing → success swap. Fades and
+   rises in, with a touch of blur to mask the content change (per craft rules). */
+@keyframes sync-view-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.sync-view-enter {
+  animation: sync-view-enter 0.42s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sync-view-enter {
+    animation: none;
+  }
+}
+
 /* Typography tokens — one scale, driven by the :root variables above */
 @layer components {
   .text-display {

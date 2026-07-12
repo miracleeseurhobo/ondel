@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Check } from 'lucide-react'
+import GradientShimmerText from './GradientShimmerText'
 
 const SYS = {
   fontFamily:
@@ -61,10 +62,17 @@ function OAuthButton({ glyph, label, onClick }) {
 export default function SignIn() {
   const [showMore, setShowMore] = useState(false)
   const [email, setEmail] = useState('')
+  // idle → syncing → success. Mock only: any provider/email kicks off the same
+  // "syncing artist data" success flow (no backend). See startSync below.
+  const [status, setStatus] = useState('idle')
+  const timerRef = useRef(null)
 
-  const notConnected = (e) => {
+  useEffect(() => () => clearTimeout(timerRef.current), [])
+
+  const startSync = (e) => {
     e?.preventDefault?.()
-    alert('Authentication is not connected yet — join the waitlist from the home page.')
+    setStatus('syncing')
+    timerRef.current = setTimeout(() => setStatus('success'), 2500)
   }
 
   return (
@@ -78,6 +86,36 @@ export default function SignIn() {
             paddingBottom: 'max(4rem, env(safe-area-inset-bottom))',
           }}
         >
+          {status === 'syncing' && (
+            <div key="syncing" className="sync-view-enter flex w-full max-w-[370px] flex-col items-center text-center">
+              <OndelLogo className="h-9 w-9 text-black" />
+              <h1 className="mt-7 text-[28px] font-medium leading-[34px] tracking-[-0.3px]">
+                <GradientShimmerText>Syncing your artist data</GradientShimmerText>
+              </h1>
+              <p className="mt-2.5 text-[15px] leading-[21px] text-[#646465]">
+                Connecting your catalog and release history…
+              </p>
+            </div>
+          )}
+
+          {status === 'success' && (
+            <div key="success" className="sync-view-enter flex w-full max-w-[370px] flex-col items-center text-center">
+              <div
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white"
+                style={{ boxShadow: CTA_SHADOW }}
+              >
+                <Check className="h-6 w-6" strokeWidth={2.5} aria-hidden="true" />
+              </div>
+              <h1 className="mt-6 text-[28px] font-medium leading-[34px] tracking-[-0.3px] text-black">
+                You&rsquo;re in
+              </h1>
+              <p className="mt-2.5 text-[15px] leading-[21px] text-[#646465]">
+                Your workspace is being prepared.
+              </p>
+            </div>
+          )}
+
+          {status === 'idle' && (
           <div className="w-full max-w-[370px]">
             <div className="flex flex-col items-center">
               <Link
@@ -100,7 +138,7 @@ export default function SignIn() {
               <OAuthButton
                 glyph={<GoogleGlyph className="h-[18px] w-[18px]" />}
                 label="Continue with Google"
-                onClick={notConnected}
+                onClick={startSync}
               />
 
               <div
@@ -115,12 +153,12 @@ export default function SignIn() {
                     <OAuthButton
                       glyph={<AppleGlyph className="h-[18px] w-[18px]" />}
                       label="Continue with Apple"
-                      onClick={notConnected}
+                      onClick={startSync}
                     />
                     <OAuthButton
                       glyph={<SpotifyGlyph className="h-[18px] w-[18px]" />}
                       label="Continue with Spotify"
-                      onClick={notConnected}
+                      onClick={startSync}
                     />
                   </div>
                 </div>
@@ -150,7 +188,7 @@ export default function SignIn() {
             </div>
 
             {/* Email */}
-            <form onSubmit={notConnected} className="flex flex-col gap-2.5">
+            <form onSubmit={startSync} className="flex flex-col gap-2.5">
               <label htmlFor="signin-email" className="sr-only">
                 Email address
               </label>
@@ -186,6 +224,7 @@ export default function SignIn() {
               .
             </p>
           </div>
+          )}
         </div>
 
         {/* Product-preview placeholder — desktop only (mobile is the centered gate) */}
