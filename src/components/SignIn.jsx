@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronDown, Check } from 'lucide-react'
+import { ChevronDown, Check, ArrowLeft } from 'lucide-react'
 import GradientShimmerText from './GradientShimmerText'
 
 const SYS = {
@@ -75,17 +75,34 @@ export default function SignIn() {
     timerRef.current = setTimeout(() => setStatus('success'), 2500)
   }
 
+  const goBack = () => {
+    clearTimeout(timerRef.current)
+    setStatus('idle')
+  }
+
   return (
     <main className="min-h-dvh bg-[#f6f6f8] text-black" style={SYS}>
       <div className="grid min-h-dvh lg:grid-cols-2">
         {/* Auth column */}
         <div
-          className="flex items-center justify-center px-5 py-16"
+          className="relative flex items-center justify-center px-5 py-16"
           style={{
             paddingTop: 'max(4rem, env(safe-area-inset-top))',
             paddingBottom: 'max(4rem, env(safe-area-inset-bottom))',
           }}
         >
+          {status !== 'idle' && (
+            <button
+              type="button"
+              onClick={goBack}
+              aria-label="Back to sign in"
+              className="absolute left-4 flex h-11 w-11 items-center justify-center rounded-full text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+              style={{ top: 'max(1rem, env(safe-area-inset-top))' }}
+            >
+              <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+            </button>
+          )}
+
           {status === 'syncing' && (
             <div key="syncing" className="sync-view-enter flex w-full max-w-[370px] flex-col items-center text-center">
               <OndelLogo className="h-9 w-9 text-black" />
