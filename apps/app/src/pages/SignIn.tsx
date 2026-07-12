@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useReducedMotion } from 'framer-motion'
 import { ChevronDown, ArrowLeft } from 'lucide-react'
 import SiriOrb from '../components/SiriOrb'
+import { mockSignIn } from '../lib/auth'
 
 // Shadow tokens (Lemni Light) — depth is shadow-driven, no borders.
 const CTA_SHADOW = 'rgba(0,0,0,0.4) 0px 2px 5px 0px'
@@ -141,7 +142,10 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 transform: reveal >= 0.9 ? 'none' : 'translateY(8px)',
                 pointerEvents: reveal >= 0.9 ? 'auto' : 'none',
               }}
-              onClick={() => navigate("/")}
+              onClick={() => {
+                mockSignIn()
+                navigate('/')
+              }}
             >
               Continue
             </Link>

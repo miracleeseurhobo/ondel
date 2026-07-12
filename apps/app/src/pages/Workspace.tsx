@@ -15,7 +15,9 @@ import {
   ArrowUpRight,
   ListMusic,
   Radio,
+  LogOut,
 } from 'lucide-react'
+import { mockSignOut } from '../lib/auth'
 
 const INK = '#11315D'
 const SUBTLE = 'rgba(13,27,75,0.55)'
@@ -134,17 +136,25 @@ export default function Workspace() {
             <Sparkles className="h-[18px] w-[18px]" />
             Ask Ondie
           </button>
-          <div className="flex items-center gap-3 rounded-xl px-2 py-2">
+          <button
+            type="button"
+            onClick={() => {
+              mockSignOut()
+              navigate('/signin')
+            }}
+            className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-white/60"
+          >
             <span className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-medium text-white" style={{ background: '#3D82DE' }}>
               O
             </span>
-            <div className="leading-tight">
+            <div className="flex-1 leading-tight">
               <div className="text-[13px] font-medium">Your workspace</div>
               <div className="text-[11px]" style={{ color: FAINT }}>
                 Free plan
               </div>
             </div>
-          </div>
+            <LogOut className="h-4 w-4" style={{ color: FAINT }} aria-label="Sign out" />
+          </button>
         </div>
       </aside>
 
