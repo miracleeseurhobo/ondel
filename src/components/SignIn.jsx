@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronDown, Check, ArrowLeft, ListMusic, Disc3, Radio } from 'lucide-react'
-import GradientShimmerText from './GradientShimmerText'
+import { ChevronDown, ArrowLeft, ListMusic, Disc3, Radio } from 'lucide-react'
 import DisplayCards from './DisplayCards'
+import SiriOrb from './SiriOrb'
+import { usePrefersReducedMotion } from '../hooks/useScrollProgress'
 
 const SYS = {
   fontFamily:
@@ -61,6 +62,12 @@ const PLAYLIST_CARDS = [
   },
 ]
 
+// Progressive welcome — reuses the landing manifesto's word-reveal (.reveal-word)
+// as an onboarding message, written in the manifesto's own voice and cadence.
+const WELCOME =
+  "Welcome to Ondel. Your song already has a story unfolding. The people who'll love it. The places it belongs. Let's bring it into focus."
+const WELCOME_WORDS = WELCOME.split(' ')
+
 const OndelLogo = ({ className }) => (
   <svg viewBox="0 0 256 256" className={className} fill="currentColor" aria-hidden="true">
     <path d="M 228 0 C 172.772 0 128 44.772 128 100 L 128 0 L 0 0 L 0 28 C 0 83.228 44.772 128 100 128 L 0 128 L 0 256 L 28 256 C 83.228 256 128 211.228 128 156 L 128 256 L 256 256 L 256 228 C 256 172.772 211.228 128 156 128 L 256 128 L 256 0 Z" />
@@ -106,25 +113,44 @@ function OAuthButton({ glyph, label, onClick }) {
 // shadow-driven depth, system-ui). Google primary + collapsible Apple/Spotify
 // + email. UI-only (no backend). Reuses the Ondel brand mark.
 export default function SignIn() {
+  const reduced = usePrefersReducedMotion()
   const [showMore, setShowMore] = useState(false)
   const [email, setEmail] = useState('')
-  // idle → syncing → success. Mock only: any provider/email kicks off the same
-  // "syncing artist data" success flow (no backend). See startSync below.
+  // idle → welcome. Mock only: any provider/email opens the welcome moment —
+  // a Siri orb + a manifesto message that reveals progressively (no backend).
   const [status, setStatus] = useState('idle')
-  const timerRef = useRef(null)
+  const [reveal, setReveal] = useState(0)
 
-  useEffect(() => () => clearTimeout(timerRef.current), [])
+  // Drive the manifesto word-reveal over time — the timed counterpart of the
+  // landing's scroll-driven <SignalStatement>. Reduced motion shows it solid.
+  useEffect(() => {
+    if (status !== 'welcome') {
+      setReveal(0)
+      return
+    }
+    if (reduced) {
+      setReveal(1)
+      return
+    }
+    let raf
+    let start = null
+    const DURATION = 3200
+    const tick = (t) => {
+      if (start === null) start = t
+      const p = Math.min((t - start) / DURATION, 1)
+      setReveal(1 - Math.pow(1 - p, 3)) // ease-out
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [status, reduced])
 
-  const startSync = (e) => {
+  const enterWelcome = (e) => {
     e?.preventDefault?.()
-    setStatus('syncing')
-    timerRef.current = setTimeout(() => setStatus('success'), 2500)
+    setStatus('welcome')
   }
 
-  const goBack = () => {
-    clearTimeout(timerRef.current)
-    setStatus('idle')
-  }
+  const goBack = () => setStatus('idle')
 
   return (
     <main className="min-h-dvh bg-[#f6f6f8] text-black" style={SYS}>
@@ -149,31 +175,22 @@ export default function SignIn() {
             </button>
           )}
 
-          {status === 'syncing' && (
-            <div key="syncing" className="sync-view-enter flex w-full max-w-[370px] flex-col items-center text-center">
-              <OndelLogo className="h-9 w-9 text-black" />
-              <h1 className="mt-7 text-[28px] font-medium leading-[34px] tracking-[-0.3px]">
-                <GradientShimmerText>Syncing your artist data</GradientShimmerText>
-              </h1>
-              <p className="mt-2.5 text-[15px] leading-[21px] text-[#646465]">
-                Connecting your catalog and release history…
-              </p>
-            </div>
-          )}
-
-          {status === 'success' && (
-            <div key="success" className="sync-view-enter flex w-full max-w-[370px] flex-col items-center text-center">
-              <div
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white"
-                style={{ boxShadow: CTA_SHADOW }}
+          {status === 'welcome' && (
+            <div key="welcome" className="sync-view-enter flex w-full max-w-[400px] flex-col items-center text-center">
+              <SiriOrb size="132px" />
+              <p
+                className="mt-9 font-display text-[24px] leading-[1.4] tracking-tight text-neutral-900"
+                style={{ '--reveal': reveal }}
               >
-                <Check className="h-6 w-6" strokeWidth={2.5} aria-hidden="true" />
-              </div>
-              <h1 className="mt-6 text-[28px] font-medium leading-[34px] tracking-[-0.3px] text-black">
-                You&rsquo;re in
-              </h1>
-              <p className="mt-2.5 text-[15px] leading-[21px] text-[#646465]">
-                Your workspace is being prepared.
+                {WELCOME_WORDS.map((w, i) => (
+                  <span
+                    key={i}
+                    className="reveal-word"
+                    style={{ '--i': ((i / (WELCOME_WORDS.length - 1)) * 0.94).toFixed(4) }}
+                  >
+                    {i < WELCOME_WORDS.length - 1 ? `${w} ` : w}
+                  </span>
+                ))}
               </p>
             </div>
           )}
@@ -201,7 +218,7 @@ export default function SignIn() {
               <OAuthButton
                 glyph={<GoogleGlyph className="h-[18px] w-[18px]" />}
                 label="Continue with Google"
-                onClick={startSync}
+                onClick={enterWelcome}
               />
 
               <div
@@ -216,12 +233,12 @@ export default function SignIn() {
                     <OAuthButton
                       glyph={<AppleGlyph className="h-[18px] w-[18px]" />}
                       label="Continue with Apple"
-                      onClick={startSync}
+                      onClick={enterWelcome}
                     />
                     <OAuthButton
                       glyph={<SpotifyGlyph className="h-[18px] w-[18px]" />}
                       label="Continue with Spotify"
-                      onClick={startSync}
+                      onClick={enterWelcome}
                     />
                   </div>
                 </div>
@@ -251,7 +268,7 @@ export default function SignIn() {
             </div>
 
             {/* Email */}
-            <form onSubmit={startSync} className="flex flex-col gap-2.5">
+            <form onSubmit={enterWelcome} className="flex flex-col gap-2.5">
               <label htmlFor="signin-email" className="sr-only">
                 Email address
               </label>
