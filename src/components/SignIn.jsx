@@ -134,11 +134,15 @@ export default function SignIn() {
     }
     let raf
     let start = null
-    const DURATION = 5200
+    // Reveal at an average reading pace (~200 wpm ≈ 300ms/word), scaled to the
+    // word count, so the eye can track and absorb each word as it lands. Linear
+    // (steady cadence) — an ease curve would front-load the reveal and fight the
+    // reader's rhythm.
+    const DURATION = WELCOME_WORDS.length * 300
     const tick = (t) => {
       if (start === null) start = t
       const p = Math.min((t - start) / DURATION, 1)
-      setReveal(1 - Math.pow(1 - p, 3)) // ease-out
+      setReveal(p)
       if (p < 1) raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
