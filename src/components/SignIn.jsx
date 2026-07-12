@@ -19,9 +19,13 @@ const OAUTH_SHADOW =
 // Playlist deck for the sign-in preview — the same "animated card" as the
 // landing, auto-looping (DisplayCards loop) and themed as playlist placements.
 // The fade colour matches the panel (#f0f0f3) so back cards blend out; the
-// reveal (grayscale → colour) keys off the group's data-open state, and a
-// strong ease-in-out gives the fan-out weight.
-const CARD_EASE = 'ease-[cubic-bezier(0.77,0,0.175,1)]'
+// reveal (grayscale → colour) keys off the group's data-open state.
+//
+// Motion mirrors the landing's wave: the same ease-out curve as <Reveal>
+// (cubic-bezier .22,1,.36,1), and a per-card transition-delay stepped like the
+// manifesto ripple (~180ms/ring) so the cards rise one after another — a wave
+// rolling through the stack — rather than all together.
+const CARD_EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]'
 const CARD_FADE =
   "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[#f0f0f3] after:to-transparent after:content-['']"
 const CARD_REVEAL =
@@ -44,7 +48,7 @@ const PLAYLIST_CARDS = [
     title: 'Indie Pop Rising',
     description: '94% match · 82k followers',
     date: 'Added yesterday',
-    className: `[grid-area:stack] ${CARD_EASE} translate-x-8 translate-y-8 group-data-[open=true]:-translate-y-1 sm:translate-x-16 sm:translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
+    className: `[grid-area:stack] ${CARD_EASE} delay-[180ms] translate-x-8 translate-y-8 group-data-[open=true]:-translate-y-1 sm:translate-x-16 sm:translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
   },
   {
     icon: <Radio className="size-4 text-white" />,
@@ -53,7 +57,7 @@ const PLAYLIST_CARDS = [
     title: 'Bedroom Pop',
     description: 'Curator pick · 31k followers',
     date: 'Under review',
-    className: `[grid-area:stack] ${CARD_EASE} translate-x-16 translate-y-16 group-data-[open=true]:translate-y-8 sm:translate-x-32 sm:translate-y-20 ${CARD_FADE}`,
+    className: `[grid-area:stack] ${CARD_EASE} delay-[360ms] translate-x-16 translate-y-16 group-data-[open=true]:translate-y-8 sm:translate-x-32 sm:translate-y-20 ${CARD_FADE}`,
   },
 ]
 
