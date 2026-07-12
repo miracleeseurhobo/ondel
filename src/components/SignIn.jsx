@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ChevronDown } from 'lucide-react'
 
 const SYS = {
   fontFamily:
@@ -103,11 +104,13 @@ export default function SignIn() {
               />
 
               <div
-                className={`grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none ${
+                className={`-mx-2 grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none ${
                   showMore ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
                 }`}
               >
-                <div className="overflow-hidden">
+                {/* px-2/pb-2 give the button drop-shadows room inside the clip;
+                    the -mx-2 above keeps the buttons aligned with Google's width */}
+                <div className="overflow-hidden px-2 pb-2">
                   <div className="flex flex-col gap-2.5 pt-2.5">
                     <OAuthButton
                       glyph={<AppleGlyph className="h-[18px] w-[18px]" />}
@@ -127,9 +130,15 @@ export default function SignIn() {
                 type="button"
                 onClick={() => setShowMore((v) => !v)}
                 aria-expanded={showMore}
-                className="mx-auto flex min-h-[44px] items-center rounded-md px-2 text-[14px] text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+                className="mx-auto flex min-h-[44px] items-center gap-1 rounded-md px-2 text-[14px] text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
               >
                 {showMore ? 'Fewer options' : 'More sign-in options'}
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ease-out motion-reduce:transition-none ${
+                    showMore ? 'rotate-180' : ''
+                  }`}
+                  aria-hidden="true"
+                />
               </button>
             </div>
 
