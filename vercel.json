@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build -w apps/landing",
+  "buildCommand": "cd apps/landing && npm run build",
   "outputDirectory": "apps/landing/dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
