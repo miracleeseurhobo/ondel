@@ -162,7 +162,7 @@ export default function SignIn() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="h-11 w-full rounded-xl bg-white/50 pl-5 pr-2.5 text-[15px] text-black placeholder-[#646465] outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+                className="h-11 w-full rounded-xl bg-white/50 pl-5 pr-2.5 text-[16px] text-black placeholder-[#646465] outline-none focus-visible:ring-2 focus-visible:ring-black/25"
                 style={{ boxShadow: INPUT_SHADOW }}
               />
               <button
