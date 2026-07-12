@@ -134,7 +134,7 @@ export default function SignIn() {
     }
     let raf
     let start = null
-    const DURATION = 3200
+    const DURATION = 4200
     const tick = (t) => {
       if (start === null) start = t
       const p = Math.min((t - start) / DURATION, 1)
@@ -176,10 +176,10 @@ export default function SignIn() {
           )}
 
           {status === 'welcome' && (
-            <div key="welcome" className="sync-view-enter flex w-full max-w-[400px] flex-col items-center text-center">
+            <div key="welcome" className="sync-view-enter flex w-full max-w-[440px] flex-col items-center text-center">
               <SiriOrb size="132px" />
               <p
-                className="mt-9 font-display text-[24px] leading-[1.4] tracking-tight text-neutral-900"
+                className="mt-9 font-display text-[clamp(1.75rem,6.5vw,2.5rem)] font-medium leading-[1.15] tracking-tight text-neutral-900"
                 style={{ '--reveal': reveal }}
               >
                 {WELCOME_WORDS.map((w, i) => (
@@ -192,6 +192,21 @@ export default function SignIn() {
                   </span>
                 ))}
               </p>
+              {/* Continue — sign-in CTA style; fades in once the message lands */}
+              <Link
+                to="/"
+                aria-hidden={reveal < 0.9}
+                tabIndex={reveal < 0.9 ? -1 : 0}
+                className="mt-10 inline-flex h-11 w-full items-center justify-center rounded-xl bg-black text-[15px] font-medium text-white transition-[opacity,transform] duration-300 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40"
+                style={{
+                  boxShadow: CTA_SHADOW,
+                  opacity: reveal >= 0.9 ? 1 : 0,
+                  transform: reveal >= 0.9 ? 'none' : 'translateY(8px)',
+                  pointerEvents: reveal >= 0.9 ? 'auto' : 'none',
+                }}
+              >
+                Continue
+              </Link>
             </div>
           )}
 
