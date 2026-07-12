@@ -1,6 +1,0 @@
-{
-  "installCommand": "npm install",
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": "apps/landing/dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
