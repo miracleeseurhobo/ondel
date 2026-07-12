@@ -1,5 +1,6 @@
-import { memo } from 'react'
+import { memo, useState, useEffect } from 'react'
 import { Radar, AudioLines, TrendingUp } from 'lucide-react'
+import { usePrefersReducedMotion } from '../hooks/useScrollProgress'
 
 function cn(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -71,10 +72,30 @@ const defaultCards = [
   },
 ]
 
-function DisplayCards({ cards }) {
+// `loop` auto-cycles the reveal (fan-out + colourise) on a calm timer instead of
+// waiting for hover — for the ambient sign-in preview. Cards opt in by keying
+// their motion on the group's data-open state (group-data-[open=true]:…), so the
+// hover-driven landing deck is unaffected. Reduced motion holds the deck open.
+function DisplayCards({ cards, loop = false }) {
   const displayCards = cards || defaultCards
+  const reduced = usePrefersReducedMotion()
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (!loop) return
+    if (reduced) {
+      setOpen(true)
+      return
+    }
+    const id = setInterval(() => setOpen((o) => !o), 2600)
+    return () => clearInterval(id)
+  }, [loop, reduced])
+
   return (
-    <div className="grid [grid-template-areas:'stack'] place-items-center">
+    <div
+      data-open={open ? 'true' : 'false'}
+      className="group grid [grid-template-areas:'stack'] place-items-center"
+    >
       {displayCards.map((cardProps, index) => (
         <DisplayCard key={index} {...cardProps} />
       ))}

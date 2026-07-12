@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronDown, Check, ArrowLeft } from 'lucide-react'
+import { ChevronDown, Check, ArrowLeft, ListMusic, Disc3, Radio } from 'lucide-react'
 import GradientShimmerText from './GradientShimmerText'
+import DisplayCards from './DisplayCards'
 
 const SYS = {
   fontFamily:
@@ -14,6 +15,47 @@ const INPUT_SHADOW =
 const CTA_SHADOW = 'rgba(0,0,0,0.4) 0px 2px 5px 0px'
 const OAUTH_SHADOW =
   'rgba(95,122,143,0.25) 0px 1px 2px 0px, rgb(255,255,255) 1px 1px 1px 0px inset'
+
+// Playlist deck for the sign-in preview — the same "animated card" as the
+// landing, auto-looping (DisplayCards loop) and themed as playlist placements.
+// The fade colour matches the panel (#f0f0f3) so back cards blend out; the
+// reveal (grayscale → colour) keys off the group's data-open state, and a
+// strong ease-in-out gives the fan-out weight.
+const CARD_EASE = 'ease-[cubic-bezier(0.77,0,0.175,1)]'
+const CARD_FADE =
+  "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[#f0f0f3] after:to-transparent after:content-['']"
+const CARD_REVEAL =
+  "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:outline-1 before:outline-neutral-200 before:bg-[#f0f0f3]/60 before:bg-blend-overlay before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
+
+const PLAYLIST_CARDS = [
+  {
+    icon: <ListMusic className="size-4 text-white" />,
+    badgeClassName: 'bg-blue-500',
+    titleClassName: 'text-blue-600',
+    title: 'New Music Friday',
+    description: 'Editorial · 4.1M followers',
+    date: 'Pitched · 2h ago',
+    className: `[grid-area:stack] ${CARD_EASE} group-data-[open=true]:-translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
+  },
+  {
+    icon: <Disc3 className="size-4 text-white" />,
+    badgeClassName: 'bg-fuchsia-500',
+    titleClassName: 'text-fuchsia-600',
+    title: 'Indie Pop Rising',
+    description: '94% match · 82k followers',
+    date: 'Added yesterday',
+    className: `[grid-area:stack] ${CARD_EASE} translate-x-8 translate-y-8 group-data-[open=true]:-translate-y-1 sm:translate-x-16 sm:translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
+  },
+  {
+    icon: <Radio className="size-4 text-white" />,
+    badgeClassName: 'bg-emerald-500',
+    titleClassName: 'text-emerald-600',
+    title: 'Bedroom Pop',
+    description: 'Curator pick · 31k followers',
+    date: 'Under review',
+    className: `[grid-area:stack] ${CARD_EASE} translate-x-16 translate-y-16 group-data-[open=true]:translate-y-8 sm:translate-x-32 sm:translate-y-20 ${CARD_FADE}`,
+  },
+]
 
 const OndelLogo = ({ className }) => (
   <svg viewBox="0 0 256 256" className={className} fill="currentColor" aria-hidden="true">
@@ -244,10 +286,12 @@ export default function SignIn() {
           )}
         </div>
 
-        {/* Product-preview placeholder — desktop only (mobile is the centered gate) */}
-        <div className="hidden items-center justify-center border-l border-black/[0.06] bg-[#f0f0f3] p-10 lg:flex">
-          <div className="flex aspect-[4/3] w-full max-w-xl items-center justify-center rounded-2xl border border-dashed border-black/15 bg-white/50">
-            <span className="text-[14px] text-[#9b9b9c]">Product preview — coming soon</span>
+        {/* Product preview — desktop only (mobile is the centered gate). The
+            looping playlist deck stands in for the product until the real
+            mockup lands. */}
+        <div className="relative hidden items-center justify-center overflow-hidden border-l border-black/[0.06] bg-[#f0f0f3] p-10 lg:flex">
+          <div className="-translate-x-12 -translate-y-2">
+            <DisplayCards loop cards={PLAYLIST_CARDS} />
           </div>
         </div>
       </div>
