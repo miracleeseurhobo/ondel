@@ -33,6 +33,30 @@ body,
   font-family: 'Inter Tight', sans-serif;
 }
 
+/* Graceful mobile layout — the reference page is desktop-fixed, so these
+   overrides keep the hero / heading / prompt inside small viewports. Inline
+   styles win over the cascade, hence !important. */
+@media (max-width: 640px) {
+  .ondel-main {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-top: 40px !important;
+  }
+  .ondel-heading {
+    width: auto !important;
+    max-width: 92vw !important;
+    font-size: 26px !important;
+    line-height: 28px !important;
+  }
+  .ondel-sub {
+    font-size: 13px !important;
+  }
+  /* let the assistant pill hug its label so the toolbar fits */
+  .ondel-pill {
+    width: auto !important;
+  }
+}
+
 /* Prompt typewriter caret */
 @keyframes promptCaretBlink {
   0%,
@@ -42,5 +66,37 @@ body,
   50%,
   100% {
     opacity: 0;
+  }
+}
+
+/* Manifesto welcome — word-by-word reveal driven by --reveal (0→1) and each
+   word's own --i threshold. Mirrors the landing manifesto. */
+.reveal-word {
+  opacity: clamp(0.14, calc((var(--reveal) - var(--i)) / 0.06), 1);
+}
+
+/* Sign-in state crossfade (form → welcome) */
+@keyframes sync-view-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.sync-view-enter {
+  animation: sync-view-enter 0.42s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-word {
+    opacity: 1;
+  }
+  .sync-view-enter {
+    animation: none;
   }
 }

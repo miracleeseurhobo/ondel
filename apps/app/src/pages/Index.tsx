@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ChevronDown, X } from 'lucide-react'
 
@@ -467,7 +468,7 @@ function Typewriter() {
 /* Send button                                                         */
 /* ------------------------------------------------------------------ */
 
-function SendButton() {
+function SendButton({ onSubmit }: { onSubmit?: () => void }) {
   const [hovered, setHovered] = useState(false)
   const [arrowToggle, setArrowToggle] = useState(0)
   const spinnerRef = useRef<HTMLDivElement>(null)
@@ -505,6 +506,7 @@ function SendButton() {
         setArrowToggle((n) => n + 1)
       }}
       onHoverEnd={() => setHovered(false)}
+      onClick={onSubmit}
       animate={{ scale: hovered ? 1.05 : 1 }}
       transition={{ duration: 0.2 }}
       style={{
@@ -673,6 +675,7 @@ function SidebarButton({ icon, filled }: { icon: string; filled: boolean }) {
 /* ------------------------------------------------------------------ */
 
 export default function Index() {
+  const navigate = useNavigate()
   return (
     <div
       style={{
@@ -712,6 +715,7 @@ export default function Index() {
 
       {/* Main column */}
       <div
+        className="ondel-main"
         style={{
           position: 'relative',
           zIndex: 5,
@@ -726,6 +730,7 @@ export default function Index() {
         <FolderStack />
 
         <motion.h1
+          className="ondel-heading"
           initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
@@ -746,6 +751,7 @@ export default function Index() {
         </motion.h1>
 
         <motion.p
+          className="ondel-sub"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.45, ease: 'easeOut' }}
@@ -780,6 +786,7 @@ export default function Index() {
               padding: '14px 14px 12px 16px',
               display: 'flex',
               flexDirection: 'column',
+              overflow: 'hidden',
             }}
           >
             <Typewriter />
@@ -789,6 +796,7 @@ export default function Index() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, transform: 'translateY(35%)' }}>
                 {/* Ondie expert pill */}
                 <div
+                  className="ondel-pill"
                   style={{
                     width: 110,
                     height: 28,
@@ -856,7 +864,7 @@ export default function Index() {
                 </div>
               </div>
 
-              <SendButton />
+              <SendButton onSubmit={() => navigate('/signin')} />
             </div>
           </div>
         </motion.div>

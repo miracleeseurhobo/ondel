@@ -1,15 +1,49 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ClerkProvider, AuthenticateWithRedirectCallback, useSignIn } from '@clerk/clerk-react'
 import './index.css'
 import Index from './pages/Index'
+import SignIn from './pages/SignIn'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+// Auth is opt-in: with VITE_CLERK_PUBLISHABLE_KEY set, the OAuth buttons run the
+// real Clerk redirect flow; without it, the sign-in falls back to the UI-only
+// mock (Siri-orb welcome). Either way the app builds and runs.
+const CLERK_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string | undefined
+
+type OAuth = 'oauth_google' | 'oauth_apple' | 'oauth_spotify'
+
+function ClerkSignIn() {
+  const { signIn, isLoaded } = useSignIn()
+  const onOAuth = (strategy: string) => {
+    if (!isLoaded || !signIn) return
+    void signIn.authenticateWithRedirect({
+      strategy: strategy as OAuth,
+      redirectUrl: '/sso-callback',
+      redirectUrlComplete: '/',
+    })
+  }
+  return <SignIn onOAuth={onOAuth} />
+}
+
+function AppRouter() {
+  return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/signin" element={CLERK_KEY ? <ClerkSignIn /> : <SignIn />} />
+        {CLERK_KEY ? <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} /> : null}
       </Routes>
     </BrowserRouter>
-  </StrictMode>,
+  )
+}
+
+const tree = CLERK_KEY ? (
+  <ClerkProvider publishableKey={CLERK_KEY}>
+    <AppRouter />
+  </ClerkProvider>
+) : (
+  <AppRouter />
 )
+
+createRoot(document.getElementById('root')!).render(<StrictMode>{tree}</StrictMode>)
