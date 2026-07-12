@@ -134,7 +134,7 @@ export default function SignIn() {
     }
     let raf
     let start = null
-    const DURATION = 4200
+    const DURATION = 5200
     const tick = (t) => {
       if (start === null) start = t
       const p = Math.min((t - start) / DURATION, 1)
