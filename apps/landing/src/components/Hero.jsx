@@ -4,7 +4,7 @@ import { usePrefersReducedMotion } from '../hooks/useScrollProgress'
 
 // The Ondel app (dashboard) lives on its own subdomain — the marketing site
 // hands off to it for sign-in. Update if the app domain changes.
-const APP_URL = 'https://app.tryondel.com'
+const APP_URL = 'https://app.tryondel.com/signin'
 
 const OndelLogo = ({ className }) => (
   <svg

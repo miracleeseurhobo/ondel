@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useReducedMotion } from 'framer-motion'
 import { ChevronDown, ArrowLeft } from 'lucide-react'
 import SiriOrb from '../components/SiriOrb'
-import { mockSignIn } from '../lib/auth'
+import { mockSignIn, mockSignOut } from '../lib/auth'
 
 // Shadow tokens (Lemni Light) — depth is shadow-driven, no borders.
 const CTA_SHADOW = 'rgba(0,0,0,0.4) 0px 2px 5px 0px'
@@ -86,6 +86,12 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
   }, [status, reduced])
+
+  // Landing on the sign-in page always starts a fresh (mock) session, so the
+  // sign-in + welcome simulation plays before the dashboard every time.
+  useEffect(() => {
+    mockSignOut()
+  }, [])
 
   const provider = (strategy: string) => {
     if (onOAuth) onOAuth(strategy)
