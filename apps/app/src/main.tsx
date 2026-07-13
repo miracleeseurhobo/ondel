@@ -12,12 +12,16 @@ import {
 import './index.css'
 import Index from './pages/Index'
 import SignIn from './pages/SignIn'
-import Workspace from './pages/Workspace'
+import WorkspaceLayout from './components/WorkspaceLayout'
+import Home from './pages/Home'
+import Releases from './pages/Releases'
+import Timeline from './pages/Timeline'
+import Signals from './pages/Signals'
+import Campaigns from './pages/Campaigns'
 import { isSignedIn } from './lib/auth'
 
 // Auth is opt-in: with VITE_CLERK_PUBLISHABLE_KEY set, the OAuth buttons run the
-// real Clerk redirect flow; without it, the sign-in falls back to the UI-only
-// mock (Siri-orb welcome). Either way the app builds and runs.
+// real Clerk redirect flow; without it, a persisted mock gate stands in.
 const CLERK_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string | undefined
 
 type OAuth = 'oauth_google' | 'oauth_apple' | 'oauth_spotify'
@@ -35,14 +39,13 @@ function ClerkSignIn() {
   return <SignIn onOAuth={onOAuth} />
 }
 
-// Protect the workspace. With Clerk configured, use its real guard; otherwise
-// fall back to the mock gate (localStorage) so the app still requires sign-in.
-function WorkspaceRoute() {
-  if (!CLERK_KEY) return isSignedIn() ? <Workspace /> : <Navigate to="/signin" replace />
+// The workspace (and all its sub-pages) live behind the auth gate + shared shell.
+function GuardedLayout() {
+  if (!CLERK_KEY) return isSignedIn() ? <WorkspaceLayout /> : <Navigate to="/signin" replace />
   return (
     <>
       <SignedIn>
-        <Workspace />
+        <WorkspaceLayout />
       </SignedIn>
       <SignedOut>
         <RedirectToSignIn />
@@ -55,9 +58,15 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Home = the signed-in workspace (Clerk-guarded when configured). */}
-        <Route path="/" element={<WorkspaceRoute />} />
-        {/* Prompt / new-release entry + onboarding flow. */}
+        {/* Signed-in workspace shell with nested pages */}
+        <Route element={<GuardedLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/releases" element={<Releases />} />
+          <Route path="/timeline" element={<Timeline />} />
+          <Route path="/signals" element={<Signals />} />
+          <Route path="/campaigns" element={<Campaigns />} />
+        </Route>
+        {/* Prompt / new-release entry + onboarding flow */}
         <Route path="/start" element={<Index />} />
         <Route path="/signin" element={CLERK_KEY ? <ClerkSignIn /> : <SignIn />} />
         {CLERK_KEY ? <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} /> : null}
