@@ -17,6 +17,9 @@ const WELCOME =
   "Welcome to Ondel. Your release already has a story unfolding. The people who'll love it. The places it belongs. Let's bring it into focus."
 const WELCOME_WORDS = WELCOME.split(' ')
 
+// Onboarding step indicator (Lemni-style footer) — Welcome is the active step.
+const STEPS = ['Welcome', 'Workspace', 'Plan', 'Tutorial']
+
 // Animated preview deck for the sign-in right panel (dual layout). Cards fan out
 // and colourise on a calm loop; the fade colour matches the panel.
 const CARD_EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]'
@@ -191,10 +194,34 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 navigate('/')
               }}
             >
-              Continue
+              Get started
             </Link>
           </div>
         </div>
+
+        {/* Onboarding step footer (Lemni-style) */}
+        <footer
+          className="fixed inset-x-0 bottom-0 z-10 flex flex-col items-center"
+          style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom))' }}
+        >
+          <div
+            className="mb-4 h-px w-full max-w-3xl"
+            style={{ background: 'linear-gradient(to right, transparent, rgba(13,27,75,0.1), transparent)' }}
+          />
+          <div className="flex items-center gap-5 text-[13px]">
+            {STEPS.map((s, i) => (
+              <div key={s} className="flex items-center gap-1.5">
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{ background: i === 0 ? '#0D1B4B' : 'rgba(13,27,75,0.22)' }}
+                />
+                <span style={{ color: i === 0 ? '#0D1B4B' : 'rgba(13,27,75,0.42)', fontWeight: i === 0 ? 500 : 400 }}>
+                  {s}
+                </span>
+              </div>
+            ))}
+          </div>
+        </footer>
       </main>
     )
   }
