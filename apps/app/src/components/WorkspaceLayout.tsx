@@ -51,7 +51,7 @@ export default function WorkspaceLayout() {
         <div>
           <button
             type="button"
-            onClick={() => navigate('/start')}
+            onClick={() => navigate('/')}
             className="mb-3 flex h-10 w-full items-center gap-2 rounded-xl px-3 text-[14px] text-white"
             style={{ background: 'linear-gradient(180deg, #70A8F2 0%, #3D82DE 100%)' }}
           >
@@ -99,7 +99,7 @@ export default function WorkspaceLayout() {
             </button>
             <button
               type="button"
-              onClick={() => navigate('/start')}
+              onClick={() => navigate('/')}
               className="flex h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium text-white"
               style={{ background: INK }}
             >

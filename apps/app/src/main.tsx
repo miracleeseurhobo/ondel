@@ -13,12 +13,7 @@ import './index.css'
 import Index from './pages/Index'
 import SignIn from './pages/SignIn'
 import WorkspaceLayout from './components/WorkspaceLayout'
-import Home from './pages/Home'
-import Releases from './pages/Releases'
-import ReleaseDetail from './pages/ReleaseDetail'
-import Timeline from './pages/Timeline'
-import Signals from './pages/Signals'
-import Campaigns from './pages/Campaigns'
+import BlankPage from './components/BlankPage'
 import { isSignedIn } from './lib/auth'
 
 // Auth is opt-in: with VITE_CLERK_PUBLISHABLE_KEY set, the OAuth buttons run the
@@ -59,17 +54,14 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Signed-in workspace shell with nested pages */}
+        {/* Signed-in workspace shell — Home is Ask Ondie; sections are blank for now */}
         <Route element={<GuardedLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/releases" element={<Releases />} />
-          <Route path="/releases/:id" element={<ReleaseDetail />} />
-          <Route path="/timeline" element={<Timeline />} />
-          <Route path="/signals" element={<Signals />} />
-          <Route path="/campaigns" element={<Campaigns />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/releases" element={<BlankPage title="Releases" />} />
+          <Route path="/timeline" element={<BlankPage title="Timeline" />} />
+          <Route path="/signals" element={<BlankPage title="Signals" />} />
+          <Route path="/campaigns" element={<BlankPage title="Campaigns" />} />
         </Route>
-        {/* Prompt / new-release entry + onboarding flow */}
-        <Route path="/start" element={<Index />} />
         <Route path="/signin" element={CLERK_KEY ? <ClerkSignIn /> : <SignIn />} />
         {CLERK_KEY ? <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} /> : null}
       </Routes>

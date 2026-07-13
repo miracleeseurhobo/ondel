@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ChevronDown, X } from 'lucide-react'
 
@@ -252,18 +251,6 @@ function PixelGrid({ side }: { side: 'left' | 'right' }) {
 /* Ondel wordmark (navbar)                                             */
 /* ------------------------------------------------------------------ */
 
-function OndelMark() {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 22, marginLeft: 22, height: 16 }}>
-      <svg width="16" height="16" viewBox="0 0 256 256" fill="#3D82DE" aria-hidden>
-        <path d="M 228 0 C 172.772 0 128 44.772 128 100 L 128 0 L 0 0 L 0 28 C 0 83.228 44.772 128 100 128 L 0 128 L 0 256 L 28 256 C 83.228 256 128 211.228 128 156 L 128 256 L 256 256 L 256 228 C 256 172.772 211.228 128 156 128 L 256 128 L 256 0 Z" />
-      </svg>
-      <span style={{ fontSize: 16, fontWeight: 500, lineHeight: '16px', letterSpacing: '-0.32px', color: '#11315D' }}>
-        Ondel
-      </span>
-    </div>
-  )
-}
 
 /* ------------------------------------------------------------------ */
 /* Folder / lights stack + floating cards                              */
@@ -633,55 +620,15 @@ function IconButton({ icon }: { icon: string }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Sidebar button                                                      */
-/* ------------------------------------------------------------------ */
-
-function SidebarButton({ icon, filled }: { icon: string; filled: boolean }) {
-  const [hover, setHover] = useState(false)
-  const bg = filled
-    ? hover
-      ? 'rgba(255,255,255,1)'
-      : 'rgba(255,255,255,0.90)'
-    : hover
-      ? 'rgba(255,255,255,0.5)'
-      : 'transparent'
-  return (
-    <button
-      type="button"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: 12,
-        border: filled ? '1px solid rgba(34,106,205,0.05)' : 'none',
-        background: bg,
-        backdropFilter: filled ? 'blur(8px)' : undefined,
-        WebkitBackdropFilter: filled ? 'blur(8px)' : undefined,
-        transition: 'background 0.2s',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-      }}
-    >
-      <img src={`${A}/${icon}`} alt="" style={{ width: 18, height: 18 }} />
-    </button>
-  )
-}
-
-/* ------------------------------------------------------------------ */
-/* Page                                                                */
+/* Ask Ondie — the dashboard home                                      */
 /* ------------------------------------------------------------------ */
 
 export default function Index() {
-  const navigate = useNavigate()
   return (
     <div
       style={{
         position: 'relative',
-        minHeight: '100vh',
-        background: '#EEF1F7',
+        minHeight: 'calc(100dvh - 132px)',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -690,28 +637,6 @@ export default function Index() {
     >
       <PixelGrid side="left" />
       <PixelGrid side="right" />
-
-      {/* Navbar */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 50 }}>
-        <OndelMark />
-      </div>
-
-      {/* Sidebar */}
-      <div
-        style={{
-          position: 'fixed',
-          left: 16,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 8,
-        }}
-      >
-        <SidebarButton icon="chat.svg" filled />
-        <SidebarButton icon="search.svg" filled={false} />
-      </div>
 
       {/* Main column */}
       <div
@@ -864,34 +789,10 @@ export default function Index() {
                 </div>
               </div>
 
-              <SendButton onSubmit={() => navigate('/signin')} />
+              <SendButton />
             </div>
           </div>
         </motion.div>
-      </div>
-
-      {/* Footer */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 20,
-          left: 0,
-          width: '100%',
-          zIndex: 5,
-          textAlign: 'center',
-          fontSize: 13,
-          fontWeight: 400,
-          color: 'rgba(13,27,75,0.45)',
-        }}
-      >
-        By sending a message to Ondie, you agree to our{' '}
-        <a href="#" style={{ color: 'rgba(13,27,75,0.65)', textDecoration: 'underline', textUnderlineOffset: 2 }}>
-          Terms
-        </a>{' '}
-        and have read our{' '}
-        <a href="#" style={{ color: 'rgba(13,27,75,0.65)', textDecoration: 'underline', textUnderlineOffset: 2 }}>
-          Privacy Policy.
-        </a>
       </div>
     </div>
   )
