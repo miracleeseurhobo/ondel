@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Home, Disc3, CalendarDays, Activity, Megaphone, Bell, LogOut, SquarePen } from 'lucide-react'
+import { Home, Disc3, CalendarDays, Activity, Megaphone, Bell, LogOut } from 'lucide-react'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
 import { mockSignOut } from '../lib/auth'
 
@@ -48,17 +48,6 @@ export default function WorkspaceLayout() {
               <OndelLogo className="h-[15px] w-[15px]" />
             </span>
             <span className="text-[16px] font-medium tracking-[-0.32px]">Ondel</span>
-            {/* Linear-style create icon — far right of the logo row */}
-            <button
-              type="button"
-              onClick={() => navigate('/')}
-              aria-label="New chat"
-              title="New chat"
-              className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white"
-              style={{ color: '#3D82DE' }}
-            >
-              <SquarePen className="h-[17px] w-[17px]" />
-            </button>
           </div>
 
           <nav className="mt-8 flex flex-col gap-1">
