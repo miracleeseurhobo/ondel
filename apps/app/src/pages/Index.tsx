@@ -517,7 +517,9 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
           height: 36,
           borderRadius: 12,
           background: 'linear-gradient(180deg, #70A8F2 0%, #3D82DE 100%)',
-          padding: 8,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           overflow: 'hidden',
           zIndex: 2,
           boxShadow:
@@ -707,9 +709,10 @@ export default function Index() {
               background: '#fff',
               borderRadius: 20,
               border: '1px solid rgba(34,106,205,0.05)',
-              padding: '14px 14px 12px 16px',
+              padding: '16px 14px 14px 16px',
               display: 'flex',
               flexDirection: 'column',
+              justifyContent: 'space-between',
               overflow: 'hidden',
             }}
           >
