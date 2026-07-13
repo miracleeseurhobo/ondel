@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { ChevronDown, X, Music2 } from 'lucide-react'
+import { ChevronDown, X } from 'lucide-react'
 
 // Remote assets (folder / lights / cards / icons) — the visual centrepiece.
 const A = 'https://qclay.design/lovable/sixsense'
@@ -331,44 +331,6 @@ function FolderStack() {
           style={{ position: 'absolute', bottom: l.bottom, left: l.left, width: l.w, height: l.h, zIndex: l.z }}
         />
       ))}
-
-      {/* Glowing music glyph in the folder mouth (overlays the folder's default symbol) */}
-      <motion.div
-        aria-hidden
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 1.2, ease: 'easeOut' }}
-        style={{
-          position: 'absolute',
-          bottom: 32,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 10,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        {/* soft bloom masking the original glyph */}
-        <span
-          style={{
-            position: 'absolute',
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(238,241,247,0.98) 38%, rgba(238,241,247,0) 74%)',
-          }}
-        />
-        <Music2
-          size={20}
-          strokeWidth={2.2}
-          style={{
-            position: 'relative',
-            color: '#00C2FF',
-            filter: 'drop-shadow(0 0 5px rgba(0,194,255,0.95)) drop-shadow(0 0 12px rgba(120,162,255,0.6))',
-          }}
-        />
-      </motion.div>
 
       {CARDS.map((c, i) => {
         const isHovered = hovered === i
