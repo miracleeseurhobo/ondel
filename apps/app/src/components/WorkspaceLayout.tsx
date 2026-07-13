@@ -27,15 +27,6 @@ export default function WorkspaceLayout() {
         className="sticky top-0 hidden h-dvh w-[236px] flex-col justify-between overflow-hidden px-4 py-6 md:flex"
         style={{ background: '#F3F4F6' }}
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%]"
-          style={{
-            background:
-              'linear-gradient(to top, rgba(150,217,255,0.36) 0%, rgba(122,162,255,0.16) 42%, rgba(243,244,246,0) 88%)',
-            filter: 'blur(26px)',
-          }}
-        />
         <div className="relative">
           <div className="flex items-center gap-2.5 px-1">
             <span
