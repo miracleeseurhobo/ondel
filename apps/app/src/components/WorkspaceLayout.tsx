@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Home, Disc3, CalendarDays, Activity, Megaphone, Sparkles, Plus, Bell, LogOut } from 'lucide-react'
+import { Home, Disc3, CalendarDays, Activity, Megaphone, Bell, LogOut, SquarePen } from 'lucide-react'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
 import { mockSignOut } from '../lib/auth'
 
@@ -14,6 +14,18 @@ const NAV = [
 const OndelLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 256 256" className={className} fill="currentColor" aria-hidden>
     <path d="M 228 0 C 172.772 0 128 44.772 128 100 L 128 0 L 0 0 L 0 28 C 0 83.228 44.772 128 100 128 L 0 128 L 0 256 L 28 256 C 83.228 256 128 211.228 128 156 L 128 256 L 256 256 L 256 228 C 256 172.772 211.228 128 156 128 L 256 128 L 256 0 Z" />
+  </svg>
+)
+
+const SpotifyGlyph = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" aria-hidden fill="#1DB954" className={className}>
+    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+  </svg>
+)
+
+const AppleGlyph = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" aria-hidden fill="#000" className={className}>
+    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 8.42 7.31c1.33.07 2.25.74 3.03.8 1.16-.24 2.27-.93 3.51-.84 1.47.12 2.58.7 3.31 1.74-3.04 1.82-2.32 5.82.44 6.93-.55 1.44-1.26 2.87-2.66 4.35zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
   </svg>
 )
 
@@ -37,7 +49,25 @@ export default function WorkspaceLayout() {
             </span>
             <span className="text-[16px] font-medium tracking-[-0.32px]">Ondel</span>
           </div>
-          <nav className="mt-8 flex flex-col gap-1">
+
+          {/* Linear-style "New chat" — subtle elevated button with brand icon + shortcut */}
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="mt-6 flex h-9 w-full items-center gap-2 rounded-lg border border-black/[0.06] bg-white px-2.5 text-[13.5px] font-medium transition-colors hover:bg-[#F8FAFF]"
+            style={{ color: INK, boxShadow: '0 1px 2px rgba(13,27,75,0.06)' }}
+          >
+            <SquarePen className="h-4 w-4" style={{ color: '#3D82DE' }} />
+            New chat
+            <kbd
+              className="ml-auto rounded px-1.5 py-0.5 text-[11px] font-medium leading-none"
+              style={{ background: 'rgba(61,130,222,0.1)', color: '#3D82DE' }}
+            >
+              C
+            </kbd>
+          </button>
+
+          <nav className="mt-5 flex flex-col gap-1">
             {NAV.map(({ to, label, icon: Icon, end }) => (
               <NavLink
                 key={to}
@@ -57,15 +87,6 @@ export default function WorkspaceLayout() {
           </nav>
         </div>
         <div className="relative">
-          <button
-            type="button"
-            onClick={() => navigate('/')}
-            className="mb-3 flex h-10 w-full items-center gap-2 rounded-xl px-3 text-[14px] text-white"
-            style={{ background: 'linear-gradient(180deg, #70A8F2 0%, #3D82DE 100%)' }}
-          >
-            <Sparkles className="h-[18px] w-[18px]" />
-            Ask Ondie
-          </button>
           <button
             type="button"
             onClick={() => {
@@ -114,14 +135,27 @@ export default function WorkspaceLayout() {
             >
               <Bell className="h-[18px] w-[18px]" style={{ color: SUBTLE }} />
             </button>
+            {/* Connect — stacked Spotify + Apple service logos */}
             <button
               type="button"
-              onClick={() => navigate('/')}
-              className="flex h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium text-white"
+              className="flex h-9 items-center gap-2.5 rounded-full py-1 pl-1 pr-3.5 text-[13px] font-medium text-white"
               style={{ background: INK }}
             >
-              <Plus className="h-4 w-4" />
-              New release
+              <span className="flex -space-x-2">
+                <span
+                  className="flex h-[26px] w-[26px] items-center justify-center overflow-hidden rounded-full"
+                  style={{ boxShadow: `0 0 0 2px ${INK}` }}
+                >
+                  <SpotifyGlyph className="h-[26px] w-[26px]" />
+                </span>
+                <span
+                  className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white"
+                  style={{ boxShadow: `0 0 0 2px ${INK}` }}
+                >
+                  <AppleGlyph className="h-[15px] w-[15px]" />
+                </span>
+              </span>
+              Connect
             </button>
           </div>
         </div>
