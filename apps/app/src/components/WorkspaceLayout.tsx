@@ -48,26 +48,20 @@ export default function WorkspaceLayout() {
               <OndelLogo className="h-[15px] w-[15px]" />
             </span>
             <span className="text-[16px] font-medium tracking-[-0.32px]">Ondel</span>
+            {/* Linear-style create icon — far right of the logo row */}
+            <button
+              type="button"
+              onClick={() => navigate('/')}
+              aria-label="New chat"
+              title="New chat"
+              className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white"
+              style={{ color: '#3D82DE' }}
+            >
+              <SquarePen className="h-[17px] w-[17px]" />
+            </button>
           </div>
 
-          {/* Linear-style "New chat" — subtle elevated button with brand icon + shortcut */}
-          <button
-            type="button"
-            onClick={() => navigate('/')}
-            className="mt-6 flex h-9 w-full items-center gap-2 rounded-lg border border-black/[0.06] bg-white px-2.5 text-[13.5px] font-medium transition-colors hover:bg-[#F8FAFF]"
-            style={{ color: INK, boxShadow: '0 1px 2px rgba(13,27,75,0.06)' }}
-          >
-            <SquarePen className="h-4 w-4" style={{ color: '#3D82DE' }} />
-            New chat
-            <kbd
-              className="ml-auto rounded px-1.5 py-0.5 text-[11px] font-medium leading-none"
-              style={{ background: 'rgba(61,130,222,0.1)', color: '#3D82DE' }}
-            >
-              C
-            </kbd>
-          </button>
-
-          <nav className="mt-5 flex flex-col gap-1">
+          <nav className="mt-8 flex flex-col gap-1">
             {NAV.map(({ to, label, icon: Icon, end }) => (
               <NavLink
                 key={to}
@@ -135,22 +129,22 @@ export default function WorkspaceLayout() {
             >
               <Bell className="h-[18px] w-[18px]" style={{ color: SUBTLE }} />
             </button>
-            {/* Connect — stacked Spotify + Apple service logos */}
+            {/* Connect — stacked Spotify + Apple service logos, brand-blue primary */}
             <button
               type="button"
               className="flex h-9 items-center gap-2.5 rounded-full py-1 pl-1 pr-3.5 text-[13px] font-medium text-white"
-              style={{ background: INK }}
+              style={{ background: '#3D82DE' }}
             >
               <span className="flex -space-x-2">
                 <span
                   className="flex h-[26px] w-[26px] items-center justify-center overflow-hidden rounded-full"
-                  style={{ boxShadow: `0 0 0 2px ${INK}` }}
+                  style={{ boxShadow: '0 0 0 2px #3D82DE' }}
                 >
                   <SpotifyGlyph className="h-[26px] w-[26px]" />
                 </span>
                 <span
                   className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white"
-                  style={{ boxShadow: `0 0 0 2px ${INK}` }}
+                  style={{ boxShadow: '0 0 0 2px #3D82DE' }}
                 >
                   <AppleGlyph className="h-[15px] w-[15px]" />
                 </span>
