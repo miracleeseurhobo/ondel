@@ -1,6 +1,6 @@
 import { memo, useEffect, useState, type ReactNode } from 'react'
 import { useReducedMotion } from 'framer-motion'
-import { ListMusic } from 'lucide-react'
+import { Icon } from './ui/icon'
 
 function cn(...classes: (string | false | undefined)[]) {
   return classes.filter(Boolean).join(' ')
@@ -18,7 +18,7 @@ export type DisplayCardProps = {
 
 function DisplayCard({
   className,
-  icon = <ListMusic className="size-4 text-white" />,
+  icon = <Icon name="music" size={16} className="text-white" />,
   title = 'Featured',
   description = 'Discover amazing content',
   date = 'Just now',

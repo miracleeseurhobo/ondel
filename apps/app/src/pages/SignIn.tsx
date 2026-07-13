@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties, type FormEvent, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useReducedMotion } from 'framer-motion'
-import { ChevronDown, ArrowLeft, ListMusic, Disc3, Radio, CheckCircle2, Plus } from 'lucide-react'
+import { Icon } from '../components/ui/icon'
 import SiriOrb from '../components/SiriOrb'
 import DisplayCards, { type DisplayCardProps } from '../components/DisplayCards'
 import { mockSignIn, mockSignOut } from '../lib/auth'
@@ -28,29 +28,31 @@ const CARD_FADE =
 const CARD_REVEAL =
   "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:outline-1 before:outline-neutral-200 before:bg-[#f0f0f3]/60 before:bg-blend-overlay before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
 
+// Neutral foundation: badges/titles use neutral-900; the deck reads as one
+// calm monochrome stack (see design-system/color.md).
 const PLAYLIST_CARDS: DisplayCardProps[] = [
   {
-    icon: <ListMusic className="size-4 text-white" />,
-    badgeClassName: 'bg-blue-500',
-    titleClassName: 'text-blue-600',
+    icon: <Icon name="music" size={16} className="text-white" />,
+    badgeClassName: 'bg-neutral-900',
+    titleClassName: 'text-neutral-900',
     title: 'New Music Friday',
     description: 'Editorial · 4.1M followers',
     date: 'Pitched · 2h ago',
     className: `[grid-area:stack] ${CARD_EASE} group-data-[open=true]:-translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
   },
   {
-    icon: <Disc3 className="size-4 text-white" />,
-    badgeClassName: 'bg-fuchsia-500',
-    titleClassName: 'text-fuchsia-600',
+    icon: <Icon name="releases" size={16} className="text-white" />,
+    badgeClassName: 'bg-neutral-900',
+    titleClassName: 'text-neutral-900',
     title: 'Indie Pop Rising',
     description: '94% match · 82k followers',
     date: 'Added yesterday',
     className: `[grid-area:stack] ${CARD_EASE} delay-[180ms] translate-x-8 translate-y-8 group-data-[open=true]:-translate-y-1 sm:translate-x-16 sm:translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
   },
   {
-    icon: <Radio className="size-4 text-white" />,
-    badgeClassName: 'bg-emerald-500',
-    titleClassName: 'text-emerald-600',
+    icon: <Icon name="radio" size={16} className="text-white" />,
+    badgeClassName: 'bg-neutral-900',
+    titleClassName: 'text-neutral-900',
     title: 'Bedroom Pop',
     description: 'Curator pick · 31k followers',
     date: 'Under review',
@@ -90,7 +92,7 @@ function OAuthButton({ glyph, label, onClick }: { glyph: ReactNode; label: strin
     <button
       type="button"
       onClick={onClick}
-      className="flex h-11 w-full items-center justify-center gap-2.5 rounded-xl bg-white text-[15px] font-medium text-black transition-transform duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+      className="flex h-11 w-full items-center justify-center gap-2.5 rounded-xl bg-white text-[15px] font-medium text-neutral-900 transition-transform duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
       style={{ boxShadow: OAUTH_SHADOW }}
     >
       {glyph}
@@ -108,20 +110,20 @@ function StepFooter({ active }: { active: number }) {
     >
       <div
         className="mb-4 h-px w-full max-w-3xl"
-        style={{ background: 'linear-gradient(to right, transparent, rgba(13,27,75,0.1), transparent)' }}
+        style={{ background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.08), transparent)' }}
       />
       <div className="flex items-center gap-5 text-[13px]">
         {STEPS.map((s, i) => (
           <div key={s} className="flex items-center gap-1.5">
             {i < active ? (
-              <CheckCircle2 className="h-3.5 w-3.5" style={{ color: '#0D1B4B' }} />
+              <Icon name="check" size={14} style={{ color: '#171717' }} />
             ) : (
               <span
                 className="h-1.5 w-1.5 rounded-full"
-                style={{ background: i === active ? '#0D1B4B' : 'rgba(13,27,75,0.22)' }}
+                style={{ background: i === active ? '#171717' : '#d4d4d4' }}
               />
             )}
-            <span style={{ color: i <= active ? '#0D1B4B' : 'rgba(13,27,75,0.42)', fontWeight: i === active ? 500 : 400 }}>
+            <span style={{ color: i <= active ? '#171717' : '#a3a3a3', fontWeight: i === active ? 500 : 400 }}>
               {s}
             </span>
           </div>
@@ -181,15 +183,15 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   // with the animated preview deck on the right.
   if (status === 'welcome') {
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-[#f6f6f8] px-5 text-black">
+      <main className="flex min-h-dvh items-center justify-center bg-neutral-100 px-5 text-neutral-900">
         <button
           type="button"
           onClick={() => setStatus('idle')}
           aria-label="Back to sign in"
-          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
           style={{ top: 'max(24px, env(safe-area-inset-top))', left: 24 }}
         >
-          <ArrowLeft className="h-5 w-5" aria-hidden />
+          <Icon name="arrowLeft" size={20} aria-hidden />
         </button>
         <div
           className="flex w-full items-center justify-center"
@@ -215,7 +217,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
               type="button"
               aria-hidden={reveal < 0.9}
               tabIndex={reveal < 0.9 ? -1 : 0}
-              className="mt-10 inline-flex h-11 w-full items-center justify-center rounded-xl bg-black text-[15px] font-medium text-white transition-[opacity,transform] duration-300 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40"
+              className="mt-10 inline-flex h-11 w-full items-center justify-center rounded-xl bg-brand text-[15px] font-medium text-white transition-[opacity,transform] duration-300 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
               style={{
                 boxShadow: CTA_SHADOW,
                 opacity: reveal >= 0.9 ? 1 : 0,
@@ -237,15 +239,15 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   if (status === 'workspace') {
     const initial = workspaceName.trim().charAt(0).toUpperCase() || 'S'
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-[#f6f6f8] px-5 text-black">
+      <main className="flex min-h-dvh items-center justify-center bg-neutral-100 px-5 text-neutral-900">
         <button
           type="button"
           onClick={() => setStatus('welcome')}
           aria-label="Back to welcome"
-          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
           style={{ top: 'max(24px, env(safe-area-inset-top))', left: 24 }}
         >
-          <ArrowLeft className="h-5 w-5" aria-hidden />
+          <Icon name="arrowLeft" size={20} aria-hidden />
         </button>
         <div
           className="flex w-full items-center justify-center"
@@ -262,29 +264,29 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
             {/* Avatar tile with the studio's initial + orange add badge */}
             <div className="relative">
               <span
-                className="flex h-16 w-16 items-center justify-center rounded-2xl text-[26px] font-medium text-white"
+                className="flex h-16 w-16 items-center justify-center rounded-xl text-[26px] font-medium text-white"
                 style={{ background: '#3D82DE', boxShadow: '0 6px 18px -6px rgba(61,130,222,0.55)' }}
               >
                 {initial}
               </span>
               <span
-                className="absolute -bottom-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-[3px] border-[#f6f6f8] text-white"
-                style={{ background: '#F97316' }}
+                className="absolute -bottom-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-[3px] border-neutral-100 text-white"
+                style={{ background: '#171717' }}
                 aria-hidden
               >
-                <Plus className="h-3.5 w-3.5" strokeWidth={3} />
+                <Icon name="plus" size={14} strokeWidth={3} className="text-white" />
               </span>
             </div>
 
-            <h1 className="mt-7 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-black">
+            <h1 className="mt-7 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-neutral-900">
               Create your studio
             </h1>
-            <p className="mt-2 text-center text-[15px] leading-[21px] text-[#646465]">
+            <p className="mt-2 text-center text-[15px] leading-[21px] text-neutral-500">
               Where every release, playlist pitch, and signal lives — set the tempo for your team.
             </p>
 
             <div className="mt-8 w-full text-left">
-              <label htmlFor="workspace-name" className="text-[13px] font-medium text-black">
+              <label htmlFor="workspace-name" className="text-[13px] font-medium text-neutral-900">
                 Studio name
               </label>
               <input
@@ -295,7 +297,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 autoFocus
                 maxLength={40}
                 placeholder="Midnight Records"
-                className="mt-2 h-11 w-full rounded-xl border-0 bg-white px-3.5 text-[15px] text-black outline-none transition-shadow placeholder:text-[#9a9a9c] focus:ring-2 focus:ring-black/15"
+                className="mt-2 h-11 w-full rounded-xl border-0 bg-white px-3.5 text-[15px] text-neutral-900 outline-none transition-shadow placeholder:text-neutral-400 focus:ring-2 focus:ring-black/15"
                 style={{ boxShadow: INPUT_SHADOW }}
               />
             </div>
@@ -303,7 +305,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
             <button
               type="submit"
               disabled={!workspaceName.trim()}
-              className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-xl bg-black text-[15px] font-medium text-white transition-[transform,opacity] duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 disabled:opacity-40"
+              className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-xl bg-brand text-[15px] font-medium text-white transition-[transform,opacity] duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 disabled:opacity-40"
               style={{ boxShadow: CTA_SHADOW }}
             >
               Create studio
@@ -317,7 +319,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   }
 
   return (
-    <main className="grid min-h-dvh grid-cols-1 bg-[#f6f6f8] text-black lg:grid-cols-2">
+    <main className="grid min-h-dvh grid-cols-1 bg-neutral-100 text-neutral-900 lg:grid-cols-2">
       {/* Auth column */}
       <div
         className="flex items-center justify-center px-5"
@@ -326,12 +328,12 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
         <div className="w-full max-w-[370px]">
             <div className="flex flex-col items-center">
               <Link to="/" aria-label="Ondel home" className="rounded-md transition-opacity hover:opacity-80">
-                <OndelLogo className="h-9 w-9 text-black" />
+                <OndelLogo className="h-9 w-9 text-neutral-900" />
               </Link>
-              <h1 className="mt-6 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-black">
+              <h1 className="mt-6 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-neutral-900">
                 Welcome to Ondel
               </h1>
-              <p className="mt-2 text-center text-[15px] leading-[21px] text-[#646465]">
+              <p className="mt-2 text-center text-[15px] leading-[21px] text-neutral-500">
                 Your AI operating system for music releases.
               </p>
             </div>
@@ -350,17 +352,17 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 type="button"
                 onClick={() => setShowMore((v) => !v)}
                 aria-expanded={showMore}
-                className="mx-auto flex min-h-[44px] items-center gap-1 rounded-md px-2 text-[14px] text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+                className="mx-auto flex min-h-[44px] items-center gap-1 rounded-md px-2 text-[14px] text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
               >
                 {showMore ? 'Fewer options' : 'More sign-in options'}
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ease-out motion-reduce:transition-none ${showMore ? 'rotate-180' : ''}`} aria-hidden />
+                <Icon name="chevronDown" className={`h-4 w-4 transition-transform duration-200 ease-out motion-reduce:transition-none ${showMore ? 'rotate-180' : ''}`} aria-hidden />
               </button>
             </div>
 
             <div className="my-5 flex items-center gap-3">
-              <span className="h-px flex-1 bg-black/10" />
-              <span className="text-[14px] text-[#9b9b9c]">or</span>
-              <span className="h-px flex-1 bg-black/10" />
+              <span className="h-px flex-1 bg-brand/10" />
+              <span className="text-[14px] text-neutral-400">or</span>
+              <span className="h-px flex-1 bg-brand/10" />
             </div>
 
             <form onSubmit={emailSubmit} className="flex flex-col gap-2.5">
@@ -373,22 +375,22 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="h-11 w-full rounded-xl bg-white/50 pl-5 pr-2.5 text-[16px] text-black placeholder-[#646465] outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+                className="h-11 w-full rounded-xl bg-white/50 pl-5 pr-2.5 text-[16px] text-neutral-900 placeholder-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-black/25"
                 style={{ boxShadow: INPUT_SHADOW }}
               />
               <button
                 type="submit"
-                className="h-11 w-full rounded-xl bg-black text-[15px] font-medium text-white transition-transform duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40"
+                className="h-11 w-full rounded-xl bg-brand text-[15px] font-medium text-white transition-transform duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
                 style={{ boxShadow: CTA_SHADOW }}
               >
                 Continue
               </button>
             </form>
 
-            <p className="mt-6 text-center text-[13px] leading-[18px] text-[#9b9b9c]">
+            <p className="mt-6 text-center text-[13px] leading-[18px] text-neutral-400">
               By continuing you agree to our{' '}
-              <a href="#" className="underline-offset-2 hover:text-black hover:underline">Terms</a> &amp;{' '}
-              <a href="#" className="underline-offset-2 hover:text-black hover:underline">Privacy</a>.
+              <a href="#" className="underline-offset-2 hover:text-neutral-900 hover:underline">Terms</a> &amp;{' '}
+              <a href="#" className="underline-offset-2 hover:text-neutral-900 hover:underline">Privacy</a>.
             </p>
           </div>
         </div>

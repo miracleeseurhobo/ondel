@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { ChevronDown, X } from 'lucide-react'
+import { Icon } from '../components/ui/icon'
 
 // Remote assets (folder / lights / cards / icons) — the visual centrepiece.
 const A = 'https://qclay.design/lovable/sixsense'
@@ -434,7 +434,7 @@ function Typewriter() {
   }, [])
 
   return (
-    <div style={{ height: 32, fontSize: 15, lineHeight: '22px', fontWeight: 400, color: '#0D1B4B', paddingBottom: 10 }}>
+    <div style={{ height: 32, fontSize: 15, lineHeight: '22px', fontWeight: 400, color: '#171717', paddingBottom: 10 }}>
       {text}
       <span
         style={{
@@ -442,7 +442,7 @@ function Typewriter() {
           width: 2,
           height: 18,
           marginLeft: 2,
-          background: '#0D1B4B',
+          background: '#171717',
           verticalAlign: 'text-bottom',
           animation: 'promptCaretBlink 1s steps(1) infinite',
         }}
@@ -507,7 +507,7 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
       }}
     >
       {/* halo */}
-      <div style={{ position: 'absolute', inset: 0, borderRadius: 15, background: 'rgba(151,195,255,0.15)', zIndex: 1 }} />
+      <div style={{ position: 'absolute', inset: 0, borderRadius: 12, background: 'rgba(151,195,255,0.15)', zIndex: 1 }} />
 
       {/* gradient square */}
       <div
@@ -606,7 +606,7 @@ function IconButton({ icon }: { icon: string }) {
       style={{
         width: 28,
         height: 28,
-        borderRadius: 6,
+        borderRadius: 8,
         border: '1px solid rgba(0,0,0,0.10)',
         background: 'rgba(255,255,255,0.80)',
         display: 'flex',
@@ -666,7 +666,7 @@ export default function Index() {
             fontWeight: 400,
             lineHeight: 1.05,
             letterSpacing: '-0.01em',
-            color: '#11315D',
+            color: '#171717',
             maxWidth: 520,
             margin: '32px auto 8px',
             textAlign: 'center',
@@ -682,7 +682,7 @@ export default function Index() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.45, ease: 'easeOut' }}
-          style={{ fontSize: 14, fontWeight: 400, color: 'rgba(13,27,75,0.50)', textAlign: 'center', marginBottom: 20 }}
+          style={{ fontSize: 14, fontWeight: 400, color: '#737373', textAlign: 'center', marginBottom: 20 }}
         >
           What do you want to plan today?
         </motion.p>
@@ -696,7 +696,7 @@ export default function Index() {
             width: 702,
             maxWidth: '100%',
             padding: 4,
-            borderRadius: 24,
+            borderRadius: 12,
             border: '0.5px solid rgba(0,0,0,0.05)',
             background: 'rgba(157,196,250,0.15)',
             backdropFilter: 'blur(50px)',
@@ -708,7 +708,7 @@ export default function Index() {
               width: '100%',
               height: 116,
               background: '#fff',
-              borderRadius: 20,
+              borderRadius: 8,
               border: '1px solid rgba(34,106,205,0.05)',
               padding: '16px 14px 14px 16px',
               display: 'flex',
@@ -751,7 +751,7 @@ export default function Index() {
                     <img src={`${A}/ai-select.svg`} alt="" style={{ width: 8, height: 8 }} />
                   </span>
                   <span style={{ fontSize: 12, lineHeight: '16px', color: '#5085CE', whiteSpace: 'nowrap' }}>Ondie</span>
-                  <ChevronDown size={12} color="#5085CE" style={{ marginLeft: 'auto', flexShrink: 0 }} />
+                  <Icon name="chevronDown" size={12} color="#5085CE" style={{ marginLeft: 'auto', flexShrink: 0 }} />
                 </div>
 
                 <IconButton icon="image.svg" />
@@ -764,7 +764,7 @@ export default function Index() {
                   style={{
                     width: 28,
                     height: 28,
-                    borderRadius: 6,
+                    borderRadius: 8,
                     border: '1px solid rgba(0,0,0,0.10)',
                     background: 'transparent',
                     fontSize: 16,
@@ -780,15 +780,15 @@ export default function Index() {
                   style={{
                     height: 28,
                     background: 'rgba(0,0,0,0.05)',
-                    borderRadius: 6,
+                    borderRadius: 8,
                     padding: '0 8px',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 4,
                   }}
                 >
-                  <span style={{ fontSize: 12, color: 'rgba(13,27,75,0.65)' }}>Single</span>
-                  <X size={12} color="rgba(0,0,0,0.35)" style={{ marginLeft: 2 }} />
+                  <span style={{ fontSize: 12, color: '#525252' }}>Single</span>
+                  <Icon name="close" size={12} color="rgba(0,0,0,0.35)" style={{ marginLeft: 2 }} />
                 </div>
               </div>
 

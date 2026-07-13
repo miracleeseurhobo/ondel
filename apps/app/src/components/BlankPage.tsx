@@ -1,4 +1,4 @@
-import { Hammer } from 'lucide-react'
+import { Icon } from './ui/icon'
 import { INK, SUBTLE, FAINT, PageHeading } from './workspace-ui'
 
 // Placeholder for nav sections we'll build out step by step from Home.
@@ -6,9 +6,9 @@ export default function BlankPage({ title }: { title: string }) {
   return (
     <div className="mx-auto max-w-4xl">
       <PageHeading title={title} />
-      <div className="mt-10 flex flex-col items-center justify-center rounded-2xl border border-dashed border-black/10 py-20 text-center">
-        <span className="flex h-12 w-12 items-center justify-center rounded-2xl" style={{ background: 'rgba(61,130,222,0.1)' }}>
-          <Hammer className="h-5 w-5" style={{ color: '#3D82DE' }} />
+      <div className="mt-10 flex flex-col items-center justify-center rounded-xl border border-dashed border-neutral-200 py-20 text-center">
+        <span className="flex h-12 w-12 items-center justify-center rounded-xl" style={{ background: 'rgba(61,130,222,0.1)' }}>
+          <Icon name="hammer" size={20} className="text-brand" />
         </span>
         <div className="mt-4 text-[16px] font-medium" style={{ color: INK }}>
           {title} is coming soon
