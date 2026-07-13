@@ -1,21 +1,7 @@
-import { Music2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Music2, ChevronRight } from 'lucide-react'
 import { INK, SUBTLE, FAINT, Card, Rise, PageHeading } from '../components/workspace-ui'
-
-type Status = 'In progress' | 'Draft' | 'Scheduled' | 'Released'
-
-const STATUS_COLOR: Record<Status, { bg: string; fg: string }> = {
-  'In progress': { bg: '#E8F1FF', fg: '#3D82DE' },
-  Draft: { bg: 'rgba(13,27,75,0.06)', fg: 'rgba(13,27,75,0.55)' },
-  Scheduled: { bg: '#EFE9FC', fg: '#8A63E8' },
-  Released: { bg: '#E4F6EE', fg: '#22B27B' },
-}
-
-const RELEASES: { title: string; type: string; status: Status; meta: string; cover: string }[] = [
-  { title: 'Midnight Bloom', type: 'Single', status: 'In progress', meta: 'Release week in 12 days', cover: 'linear-gradient(135deg,#5B8DEF,#2F5F9E)' },
-  { title: 'Neon Tide', type: 'EP · 5 tracks', status: 'Draft', meta: 'No date set', cover: 'linear-gradient(135deg,#8A63E8,#5B3FB0)' },
-  { title: 'Paper Skies', type: 'Single', status: 'Scheduled', meta: 'Out Aug 8', cover: 'linear-gradient(135deg,#22B27B,#128a5c)' },
-  { title: 'Slow River', type: 'Single', status: 'Released', meta: '128k streams · 2 mo ago', cover: 'linear-gradient(135deg,#E8804F,#c85a2a)' },
-]
+import { RELEASES, STATUS_COLOR } from '../lib/data'
 
 export default function Releases() {
   return (
@@ -26,7 +12,11 @@ export default function Releases() {
           {RELEASES.map((r) => {
             const c = STATUS_COLOR[r.status]
             return (
-              <div key={r.title} className="flex items-center gap-4 px-4 py-4 sm:px-5">
+              <Link
+                key={r.id}
+                to={`/releases/${r.id}`}
+                className="flex items-center gap-4 px-4 py-4 transition-colors hover:bg-black/[0.015] sm:px-5"
+              >
                 <span className="h-11 w-11 shrink-0 rounded-lg" style={{ background: r.cover }} aria-hidden />
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-[15px] font-medium" style={{ color: INK }}>
@@ -43,7 +33,8 @@ export default function Releases() {
                 <span className="shrink-0 rounded-full px-2.5 py-1 text-[12px] font-medium" style={{ background: c.bg, color: c.fg }}>
                   {r.status}
                 </span>
-              </div>
+                <ChevronRight className="h-4 w-4 shrink-0" style={{ color: FAINT }} />
+              </Link>
             )
           })}
         </Card>

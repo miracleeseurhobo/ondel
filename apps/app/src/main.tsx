@@ -15,6 +15,7 @@ import SignIn from './pages/SignIn'
 import WorkspaceLayout from './components/WorkspaceLayout'
 import Home from './pages/Home'
 import Releases from './pages/Releases'
+import ReleaseDetail from './pages/ReleaseDetail'
 import Timeline from './pages/Timeline'
 import Signals from './pages/Signals'
 import Campaigns from './pages/Campaigns'
@@ -62,6 +63,7 @@ function AppRouter() {
         <Route element={<GuardedLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/releases" element={<Releases />} />
+          <Route path="/releases/:id" element={<ReleaseDetail />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/signals" element={<Signals />} />
           <Route path="/campaigns" element={<Campaigns />} />
