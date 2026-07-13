@@ -1,8 +1,9 @@
 import { useEffect, useState, type CSSProperties, type FormEvent, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useReducedMotion } from 'framer-motion'
-import { ChevronDown, ArrowLeft } from 'lucide-react'
+import { ChevronDown, ArrowLeft, ListMusic, Disc3, Radio } from 'lucide-react'
 import SiriOrb from '../components/SiriOrb'
+import DisplayCards, { type DisplayCardProps } from '../components/DisplayCards'
 import { mockSignIn, mockSignOut } from '../lib/auth'
 
 // Shadow tokens (Lemni Light) — depth is shadow-driven, no borders.
@@ -15,6 +16,44 @@ const INPUT_SHADOW =
 const WELCOME =
   "Welcome to Ondel. Your release already has a story unfolding. The people who'll love it. The places it belongs. Let's bring it into focus."
 const WELCOME_WORDS = WELCOME.split(' ')
+
+// Animated preview deck for the sign-in right panel (dual layout). Cards fan out
+// and colourise on a calm loop; the fade colour matches the panel.
+const CARD_EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]'
+const CARD_FADE =
+  "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[#f0f0f3] after:to-transparent after:content-['']"
+const CARD_REVEAL =
+  "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:outline-1 before:outline-neutral-200 before:bg-[#f0f0f3]/60 before:bg-blend-overlay before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
+
+const PLAYLIST_CARDS: DisplayCardProps[] = [
+  {
+    icon: <ListMusic className="size-4 text-white" />,
+    badgeClassName: 'bg-blue-500',
+    titleClassName: 'text-blue-600',
+    title: 'New Music Friday',
+    description: 'Editorial · 4.1M followers',
+    date: 'Pitched · 2h ago',
+    className: `[grid-area:stack] ${CARD_EASE} group-data-[open=true]:-translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
+  },
+  {
+    icon: <Disc3 className="size-4 text-white" />,
+    badgeClassName: 'bg-fuchsia-500',
+    titleClassName: 'text-fuchsia-600',
+    title: 'Indie Pop Rising',
+    description: '94% match · 82k followers',
+    date: 'Added yesterday',
+    className: `[grid-area:stack] ${CARD_EASE} delay-[180ms] translate-x-8 translate-y-8 group-data-[open=true]:-translate-y-1 sm:translate-x-16 sm:translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
+  },
+  {
+    icon: <Radio className="size-4 text-white" />,
+    badgeClassName: 'bg-emerald-500',
+    titleClassName: 'text-emerald-600',
+    title: 'Bedroom Pop',
+    description: 'Curator pick · 31k followers',
+    date: 'Under review',
+    className: `[grid-area:stack] ${CARD_EASE} delay-[360ms] translate-x-16 translate-y-16 group-data-[open=true]:translate-y-8 sm:translate-x-32 sm:translate-y-20 ${CARD_FADE}`,
+  },
+]
 
 const OndelLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 256 256" className={className} fill="currentColor" aria-hidden>
@@ -102,25 +141,24 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
     setStatus('welcome')
   }
 
-  return (
-    <main className="flex min-h-dvh items-center justify-center bg-[#f6f6f8] px-5 text-black">
-      <div
-        className="relative flex w-full items-center justify-center"
-        style={{ paddingTop: 'max(4rem, env(safe-area-inset-top))', paddingBottom: 'max(4rem, env(safe-area-inset-bottom))' }}
-      >
-        {status !== 'idle' && (
-          <button
-            type="button"
-            onClick={() => setStatus('idle')}
-            aria-label="Back to sign in"
-            className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
-            style={{ top: 'max(24px, env(safe-area-inset-top))', left: 24 }}
-          >
-            <ArrowLeft className="h-5 w-5" aria-hidden />
-          </button>
-        )}
-
-        {status === 'welcome' ? (
+  // Welcome (manifesto) is single-centered; the sign-in form uses a dual layout
+  // with the animated preview deck on the right.
+  if (status === 'welcome') {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-[#f6f6f8] px-5 text-black">
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          aria-label="Back to sign in"
+          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+          style={{ top: 'max(24px, env(safe-area-inset-top))', left: 24 }}
+        >
+          <ArrowLeft className="h-5 w-5" aria-hidden />
+        </button>
+        <div
+          className="flex w-full items-center justify-center"
+          style={{ paddingTop: 'max(4rem, env(safe-area-inset-top))', paddingBottom: 'max(4rem, env(safe-area-inset-bottom))' }}
+        >
           <div className="sync-view-enter flex w-full max-w-[440px] flex-col items-center text-center">
             <SiriOrb size="132px" />
             <p
@@ -156,8 +194,19 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
               Continue
             </Link>
           </div>
-        ) : (
-          <div className="w-full max-w-[370px]">
+        </div>
+      </main>
+    )
+  }
+
+  return (
+    <main className="grid min-h-dvh grid-cols-1 bg-[#f6f6f8] text-black lg:grid-cols-2">
+      {/* Auth column */}
+      <div
+        className="flex items-center justify-center px-5"
+        style={{ paddingTop: 'max(4rem, env(safe-area-inset-top))', paddingBottom: 'max(4rem, env(safe-area-inset-bottom))' }}
+      >
+        <div className="w-full max-w-[370px]">
             <div className="flex flex-col items-center">
               <Link to="/" aria-label="Ondel home" className="rounded-md transition-opacity hover:opacity-80">
                 <OndelLogo className="h-9 w-9 text-black" />
@@ -225,8 +274,14 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
               <a href="#" className="underline-offset-2 hover:text-black hover:underline">Privacy</a>.
             </p>
           </div>
-        )}
-      </div>
+        </div>
+
+        {/* Right panel — animated preview deck (desktop only) */}
+        <div className="relative hidden items-center justify-center overflow-hidden border-l border-black/[0.06] bg-[#f0f0f3] p-10 lg:flex">
+          <div className="-translate-x-12 -translate-y-2">
+            <DisplayCards loop cards={PLAYLIST_CARDS} />
+          </div>
+        </div>
     </main>
   )
 }
