@@ -29,11 +29,11 @@ export default function WorkspaceLayout() {
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-72"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%]"
           style={{
             background:
-              'linear-gradient(180deg, rgba(150,217,255,0.32) 0%, rgba(122,162,255,0.14) 34%, rgba(243,244,246,0) 70%)',
-            filter: 'blur(22px)',
+              'linear-gradient(to top, rgba(150,217,255,0.36) 0%, rgba(122,162,255,0.16) 42%, rgba(243,244,246,0) 88%)',
+            filter: 'blur(26px)',
           }}
         />
         <div className="relative">
