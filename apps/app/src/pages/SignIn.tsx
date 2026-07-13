@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties, type FormEvent, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useReducedMotion } from 'framer-motion'
-import { ChevronDown, ArrowLeft, ListMusic, Disc3, Radio } from 'lucide-react'
+import { ChevronDown, ArrowLeft, ListMusic, Disc3, Radio, CheckCircle2, Plus } from 'lucide-react'
 import SiriOrb from '../components/SiriOrb'
 import DisplayCards, { type DisplayCardProps } from '../components/DisplayCards'
 import { mockSignIn, mockSignOut } from '../lib/auth'
@@ -99,13 +99,46 @@ function OAuthButton({ glyph, label, onClick }: { glyph: ReactNode; label: strin
   )
 }
 
+// Onboarding step footer (Lemni-style) — done steps get a check, current is dark.
+function StepFooter({ active }: { active: number }) {
+  return (
+    <footer
+      className="fixed inset-x-0 bottom-0 z-10 flex flex-col items-center"
+      style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom))' }}
+    >
+      <div
+        className="mb-4 h-px w-full max-w-3xl"
+        style={{ background: 'linear-gradient(to right, transparent, rgba(13,27,75,0.1), transparent)' }}
+      />
+      <div className="flex items-center gap-5 text-[13px]">
+        {STEPS.map((s, i) => (
+          <div key={s} className="flex items-center gap-1.5">
+            {i < active ? (
+              <CheckCircle2 className="h-3.5 w-3.5" style={{ color: '#0D1B4B' }} />
+            ) : (
+              <span
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ background: i === active ? '#0D1B4B' : 'rgba(13,27,75,0.22)' }}
+              />
+            )}
+            <span style={{ color: i <= active ? '#0D1B4B' : 'rgba(13,27,75,0.42)', fontWeight: i === active ? 500 : 400 }}>
+              {s}
+            </span>
+          </div>
+        ))}
+      </div>
+    </footer>
+  )
+}
+
 export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => void }) {
   const reduced = useReducedMotion()
   const navigate = useNavigate()
   const [showMore, setShowMore] = useState(false)
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'welcome'>('idle')
+  const [status, setStatus] = useState<'idle' | 'welcome' | 'workspace'>('idle')
   const [reveal, setReveal] = useState(0)
+  const [workspaceName, setWorkspaceName] = useState('Midnight Studio')
 
   useEffect(() => {
     if (status !== 'welcome') {
@@ -178,8 +211,8 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 </span>
               ))}
             </p>
-            <Link
-              to="/"
+            <button
+              type="button"
               aria-hidden={reveal < 0.9}
               tabIndex={reveal < 0.9 ? -1 : 0}
               className="mt-10 inline-flex h-11 w-full items-center justify-center rounded-xl bg-black text-[15px] font-medium text-white transition-[opacity,transform] duration-300 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40"
@@ -189,39 +222,96 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 transform: reveal >= 0.9 ? 'none' : 'translateY(8px)',
                 pointerEvents: reveal >= 0.9 ? 'auto' : 'none',
               }}
-              onClick={() => {
-                mockSignIn()
-                navigate('/')
-              }}
+              onClick={() => setStatus('workspace')}
             >
               Get started
-            </Link>
+            </button>
           </div>
         </div>
 
-        {/* Onboarding step footer (Lemni-style) */}
-        <footer
-          className="fixed inset-x-0 bottom-0 z-10 flex flex-col items-center"
-          style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom))' }}
+        <StepFooter active={0} />
+      </main>
+    )
+  }
+
+  if (status === 'workspace') {
+    const initial = workspaceName.trim().charAt(0).toUpperCase() || 'S'
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-[#f6f6f8] px-5 text-black">
+        <button
+          type="button"
+          onClick={() => setStatus('welcome')}
+          aria-label="Back to welcome"
+          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+          style={{ top: 'max(24px, env(safe-area-inset-top))', left: 24 }}
         >
-          <div
-            className="mb-4 h-px w-full max-w-3xl"
-            style={{ background: 'linear-gradient(to right, transparent, rgba(13,27,75,0.1), transparent)' }}
-          />
-          <div className="flex items-center gap-5 text-[13px]">
-            {STEPS.map((s, i) => (
-              <div key={s} className="flex items-center gap-1.5">
-                <span
-                  className="h-1.5 w-1.5 rounded-full"
-                  style={{ background: i === 0 ? '#0D1B4B' : 'rgba(13,27,75,0.22)' }}
-                />
-                <span style={{ color: i === 0 ? '#0D1B4B' : 'rgba(13,27,75,0.42)', fontWeight: i === 0 ? 500 : 400 }}>
-                  {s}
-                </span>
-              </div>
-            ))}
-          </div>
-        </footer>
+          <ArrowLeft className="h-5 w-5" aria-hidden />
+        </button>
+        <div
+          className="flex w-full items-center justify-center"
+          style={{ paddingTop: 'max(4rem, env(safe-area-inset-top))', paddingBottom: 'max(4rem, env(safe-area-inset-bottom))' }}
+        >
+          <form
+            className="sync-view-enter flex w-full max-w-[370px] flex-col items-center text-center"
+            onSubmit={(e) => {
+              e.preventDefault()
+              mockSignIn()
+              navigate('/')
+            }}
+          >
+            {/* Avatar tile with the studio's initial + orange add badge */}
+            <div className="relative">
+              <span
+                className="flex h-16 w-16 items-center justify-center rounded-2xl text-[26px] font-medium text-white"
+                style={{ background: '#3D82DE', boxShadow: '0 6px 18px -6px rgba(61,130,222,0.55)' }}
+              >
+                {initial}
+              </span>
+              <span
+                className="absolute -bottom-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-[3px] border-[#f6f6f8] text-white"
+                style={{ background: '#F97316' }}
+                aria-hidden
+              >
+                <Plus className="h-3.5 w-3.5" strokeWidth={3} />
+              </span>
+            </div>
+
+            <h1 className="mt-7 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-black">
+              Create your studio
+            </h1>
+            <p className="mt-2 text-center text-[15px] leading-[21px] text-[#646465]">
+              Where every release, playlist pitch, and signal lives — set the tempo for your team.
+            </p>
+
+            <div className="mt-8 w-full text-left">
+              <label htmlFor="workspace-name" className="text-[13px] font-medium text-black">
+                Studio name
+              </label>
+              <input
+                id="workspace-name"
+                type="text"
+                value={workspaceName}
+                onChange={(e) => setWorkspaceName(e.target.value)}
+                autoFocus
+                maxLength={40}
+                placeholder="Midnight Records"
+                className="mt-2 h-11 w-full rounded-xl border-0 bg-white px-3.5 text-[15px] text-black outline-none transition-shadow placeholder:text-[#9a9a9c] focus:ring-2 focus:ring-black/15"
+                style={{ boxShadow: INPUT_SHADOW }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={!workspaceName.trim()}
+              className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-xl bg-black text-[15px] font-medium text-white transition-[transform,opacity] duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 disabled:opacity-40"
+              style={{ boxShadow: CTA_SHADOW }}
+            >
+              Create studio
+            </button>
+          </form>
+        </div>
+
+        <StepFooter active={1} />
       </main>
     )
   }
