@@ -17,11 +17,12 @@ export default {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
-        // Single brand accent — primary CTAs, active nav, focus, links.
+        // Single accent — primary CTAs, active nav, focus, links. Parked on
+        // greyscale (black) for now; #3D82DE is retired until we revisit.
         // Everything else draws from Tailwind's built-in `neutral` scale.
         // See design-system/color.md.
         brand: {
-          DEFAULT: '#3D82DE',
+          DEFAULT: '#000000',
           fg: '#ffffff',
         },
         primary: {

@@ -30,8 +30,8 @@
     --ds-text: #171717; /* neutral-900 — primary text */
     --ds-text-secondary: #737373; /* neutral-500 */
     --ds-text-muted: #a3a3a3; /* neutral-400 */
-    /* Single brand accent */
-    --ds-brand: #3d82de;
+    /* Single accent — parked on greyscale (black) for now */
+    --ds-brand: #000000;
     --ds-brand-fg: #ffffff;
     /* Functional (forms only) */
     --ds-danger: #dc2626; /* red-600 */

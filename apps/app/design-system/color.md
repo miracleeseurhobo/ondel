@@ -19,14 +19,18 @@ Defined as CSS vars in `index.css` and mirrored by Tailwind's built-in
 | Text — primary | `--ds-text` | `text-neutral-900` | `#171717` |
 | Text — secondary | `--ds-text-secondary` | `text-neutral-500` | `#737373` |
 | Text — muted | `--ds-text-muted` | `text-neutral-400` | `#a3a3a3` |
-| **Brand accent** | `--ds-brand` | `bg-brand` / `text-brand` | `#3D82DE` |
+| **Accent** | `--ds-brand` | `bg-brand` / `text-brand` | `#000000` |
 | Accent foreground | `--ds-brand-fg` | `text-brand-fg` | `#ffffff` |
+
+The accent is **parked on greyscale (black) for now** — `#3D82DE` is retired
+until we revisit brand colour. Because the accent is a token (`--ds-brand` /
+Tailwind `brand`), changing it back is a one-line edit in `index.css` +
+`tailwind.config.js`.
 
 ### Where the accent is allowed
 
 Primary CTA, active nav item, focus rings, links, and the single most important
 highlight on a screen. Use it sparingly — if everything is accented, nothing is.
-Dark app chrome (e.g. deep backgrounds) uses `neutral-900`, not black hex.
 
 ## Functional colors (forms only)
 
@@ -41,8 +45,10 @@ icon/text, never color alone.
 ## Exceptions
 
 - **Third-party service logos** (Google, Apple, Spotify) render in their real
-  brand colors — legal + recognizability. They are the only multi-color marks
-  in the app.
+  brand colors — legal + recognizability.
+- **The sign-in animated preview deck** keeps its colourful badges (blue /
+  fuchsia / emerald) as a deliberate lively counterpoint to the neutral
+  onboarding.
 
 ## Retired colors
 

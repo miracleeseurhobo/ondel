@@ -26,7 +26,7 @@ function DashedBorder({ active }: { active: boolean }) {
         rx="12"
         ry="12"
         fill="none"
-        stroke={active ? '#3D82DE' : '#d4d4d4'}
+        stroke={active ? '#000000' : '#d4d4d4'}
         strokeWidth="2"
         strokeDasharray="7 9"
         strokeLinecap="round"
@@ -51,13 +51,14 @@ const CARD_FADE =
 const CARD_REVEAL =
   "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:outline-1 before:outline-neutral-200 before:bg-[#f0f0f3]/60 before:bg-blend-overlay before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
 
-// Neutral foundation: badges/titles use neutral-900; the deck reads as one
-// calm monochrome stack (see design-system/color.md).
+// The animated preview deck keeps its colours — a lively, colourful counterpoint
+// to the otherwise neutral onboarding (an intentional exception to the neutral
+// palette; see design-system/color.md).
 const PLAYLIST_CARDS: DisplayCardProps[] = [
   {
     icon: <Icon name="music" size={16} className="text-white" />,
-    badgeClassName: 'bg-neutral-900',
-    titleClassName: 'text-neutral-900',
+    badgeClassName: 'bg-blue-500',
+    titleClassName: 'text-blue-600',
     title: 'New Music Friday',
     description: 'Editorial · 4.1M followers',
     date: 'Pitched · 2h ago',
@@ -65,8 +66,8 @@ const PLAYLIST_CARDS: DisplayCardProps[] = [
   },
   {
     icon: <Icon name="releases" size={16} className="text-white" />,
-    badgeClassName: 'bg-neutral-900',
-    titleClassName: 'text-neutral-900',
+    badgeClassName: 'bg-fuchsia-500',
+    titleClassName: 'text-fuchsia-600',
     title: 'Indie Pop Rising',
     description: '94% match · 82k followers',
     date: 'Added yesterday',
@@ -74,8 +75,8 @@ const PLAYLIST_CARDS: DisplayCardProps[] = [
   },
   {
     icon: <Icon name="radio" size={16} className="text-white" />,
-    badgeClassName: 'bg-neutral-900',
-    titleClassName: 'text-neutral-900',
+    badgeClassName: 'bg-emerald-500',
+    titleClassName: 'text-emerald-600',
     title: 'Bedroom Pop',
     description: 'Curator pick · 31k followers',
     date: 'Under review',
@@ -305,13 +306,6 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
               navigate('/')
             }}
           >
-            <h1 className="text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-neutral-900">
-              Create your studio
-            </h1>
-            <p className="mt-2 text-center text-[15px] leading-[21px] text-neutral-500">
-              Where every release, playlist pitch, and signal lives — set the tempo for your team.
-            </p>
-
             {/* Studio image — folder dropzone (drag-drop or click to pick a local file) */}
             <div
               role="button"
@@ -334,8 +328,8 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 setDragging(false)
                 acceptFile(e.dataTransfer.files?.[0])
               }}
-              className="group relative mt-8 flex w-full cursor-pointer flex-col items-center justify-center rounded-xl px-6 py-7 text-center outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-brand/40"
-              style={{ backgroundColor: dragging ? 'rgba(61,130,222,0.05)' : 'transparent' }}
+              className="group relative flex w-full cursor-pointer flex-col items-center justify-center rounded-xl px-6 py-7 text-center outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-brand/40"
+              style={{ backgroundColor: dragging ? 'rgba(0,0,0,0.04)' : 'transparent' }}
             >
               <DashedBorder active={dragging} />
               {logo ? (
@@ -375,6 +369,13 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 {uploadError}
               </p>
             ) : null}
+
+            <h1 className="mt-7 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-neutral-900">
+              Create your studio
+            </h1>
+            <p className="mt-2 text-center text-[15px] leading-[21px] text-neutral-500">
+              Where every release, playlist pitch, and signal lives — set the tempo for your team.
+            </p>
 
             <div className="mt-6 w-full text-left">
               <label htmlFor="workspace-name" className="text-[13px] font-medium text-neutral-900">

@@ -43,7 +43,7 @@ export default function WorkspaceLayout() {
           <div className="flex items-center gap-2.5 px-1">
             <span
               className="flex h-8 w-8 items-center justify-center rounded-ds-md"
-              style={{ background: '#D6E4FB', color: '#171717' }}
+              style={{ background: '#e5e5e5', color: '#171717' }}
             >
               <OndelLogo className="h-[15px] w-[15px]" />
             </span>
@@ -59,7 +59,7 @@ export default function WorkspaceLayout() {
                 className="flex h-10 items-center gap-3 rounded-xl px-3 text-[14px] transition-colors"
                 style={({ isActive }) =>
                   isActive
-                    ? { background: 'rgba(255,255,255,0.9)', color: '#3D82DE', boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
+                    ? { background: 'rgba(255,255,255,0.9)', color: '#000000', boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
                     : { color: SUBTLE }
                 }
               >
@@ -78,7 +78,7 @@ export default function WorkspaceLayout() {
             }}
             className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-white/60"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-medium text-white" style={{ background: '#3D82DE' }}>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-medium text-white" style={{ background: '#000000' }}>
               O
             </span>
             <div className="flex-1 leading-tight">
@@ -103,7 +103,7 @@ export default function WorkspaceLayout() {
           <div className="flex items-center gap-2 md:hidden">
             <span
               className="flex h-8 w-8 items-center justify-center rounded-ds-md"
-              style={{ background: '#D6E4FB', color: '#171717' }}
+              style={{ background: '#e5e5e5', color: '#171717' }}
             >
               <OndelLogo className="h-[15px] w-[15px]" />
             </span>
@@ -118,22 +118,22 @@ export default function WorkspaceLayout() {
             >
               <Icon name="bell" className="h-[18px] w-[18px]" style={{ color: SUBTLE }} />
             </button>
-            {/* Connect — stacked Spotify + Apple service logos, brand-blue primary */}
+            {/* Connect — stacked Spotify + Apple service logos, black primary */}
             <button
               type="button"
               className="flex h-9 items-center gap-2.5 rounded-full py-1 pl-1 pr-3.5 text-[13px] font-medium text-white"
-              style={{ background: '#3D82DE' }}
+              style={{ background: '#000000' }}
             >
               <span className="flex -space-x-2">
                 <span
                   className="flex h-[26px] w-[26px] items-center justify-center overflow-hidden rounded-full"
-                  style={{ boxShadow: '0 0 0 2px #3D82DE' }}
+                  style={{ boxShadow: '0 0 0 2px #000000' }}
                 >
                   <SpotifyGlyph className="h-[26px] w-[26px]" />
                 </span>
                 <span
                   className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white"
-                  style={{ boxShadow: '0 0 0 2px #3D82DE' }}
+                  style={{ boxShadow: '0 0 0 2px #000000' }}
                 >
                   <AppleGlyph className="h-[15px] w-[15px]" />
                 </span>
@@ -160,7 +160,7 @@ export default function WorkspaceLayout() {
             to={to}
             end={end}
             className="flex min-h-[44px] flex-1 flex-col items-center justify-center gap-0.5 rounded-lg text-[10px]"
-            style={({ isActive }) => ({ color: isActive ? '#3D82DE' : FAINT })}
+            style={({ isActive }) => ({ color: isActive ? '#000000' : FAINT })}
           >
             <Icon name={icon} className="h-[18px] w-[18px]" />
             {label}
