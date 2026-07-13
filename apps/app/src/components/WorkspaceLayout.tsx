@@ -21,12 +21,29 @@ export default function WorkspaceLayout() {
   const navigate = useNavigate()
 
   return (
-    <div className="flex min-h-dvh" style={{ background: '#EEF1F7', color: INK }}>
-      {/* Sidebar (desktop) */}
-      <aside className="sticky top-0 hidden h-dvh w-[236px] flex-col justify-between px-4 py-6 md:flex">
-        <div>
-          <div className="flex items-center gap-2 px-2">
-            <OndelLogo className="h-5 w-5" />
+    <div className="flex min-h-dvh" style={{ background: '#F3F4F6', color: INK }}>
+      {/* Sidebar (desktop) — gray-100 fill with a soft sky-blue bloom that blends in */}
+      <aside
+        className="sticky top-0 hidden h-dvh w-[236px] flex-col justify-between overflow-hidden px-4 py-6 md:flex"
+        style={{ background: '#F3F4F6' }}
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-72"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(150,217,255,0.32) 0%, rgba(122,162,255,0.14) 34%, rgba(243,244,246,0) 70%)',
+            filter: 'blur(22px)',
+          }}
+        />
+        <div className="relative">
+          <div className="flex items-center gap-2.5 px-1">
+            <span
+              className="flex h-8 w-8 items-center justify-center rounded-[9px]"
+              style={{ background: '#D6E4FB', color: '#0D1B4B' }}
+            >
+              <OndelLogo className="h-[15px] w-[15px]" />
+            </span>
             <span className="text-[16px] font-medium tracking-[-0.32px]">Ondel</span>
           </div>
           <nav className="mt-8 flex flex-col gap-1">
@@ -48,7 +65,7 @@ export default function WorkspaceLayout() {
             ))}
           </nav>
         </div>
-        <div>
+        <div className="relative">
           <button
             type="button"
             onClick={() => navigate('/')}
@@ -80,16 +97,21 @@ export default function WorkspaceLayout() {
         </div>
       </aside>
 
-      {/* Main — floating elevated card */}
-      <div className="flex-1 p-3 pb-24 md:p-4 md:pb-4">
+      {/* Main — floating elevated card (subtle shadow, tight whitespace) */}
+      <div className="flex-1 p-2 pb-24 md:p-2.5 md:pb-2.5 md:pl-1">
         <div
-          className="flex min-h-[calc(100dvh-6rem)] flex-col overflow-hidden rounded-3xl bg-white md:min-h-[calc(100dvh-2rem)]"
-          style={{ boxShadow: '0 1px 2px rgba(13,27,75,0.05), 0 24px 60px -24px rgba(13,27,75,0.2)' }}
+          className="flex min-h-[calc(100dvh-6rem)] flex-col overflow-hidden rounded-2xl bg-white md:min-h-[calc(100dvh-1.25rem)]"
+          style={{ boxShadow: '0 1px 2px rgba(13,27,75,0.04), 0 4px 16px -8px rgba(13,27,75,0.1)' }}
         >
         {/* Top bar */}
         <div className="flex items-center justify-between px-6 pt-6 sm:px-8">
           <div className="flex items-center gap-2 md:hidden">
-            <OndelLogo className="h-5 w-5" />
+            <span
+              className="flex h-8 w-8 items-center justify-center rounded-[9px]"
+              style={{ background: '#D6E4FB', color: '#0D1B4B' }}
+            >
+              <OndelLogo className="h-[15px] w-[15px]" />
+            </span>
             <span className="text-[16px] font-medium">Ondel</span>
           </div>
           <div className="ml-auto flex items-center gap-2">
