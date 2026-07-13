@@ -113,8 +113,8 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
             type="button"
             onClick={() => setStatus('idle')}
             aria-label="Back to sign in"
-            className="absolute left-0 flex h-11 w-11 items-center justify-center rounded-full text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
-            style={{ top: 'max(0px, env(safe-area-inset-top))' }}
+            className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-[#646465] transition-colors hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+            style={{ top: 'max(24px, env(safe-area-inset-top))', left: 24 }}
           >
             <ArrowLeft className="h-5 w-5" aria-hidden />
           </button>

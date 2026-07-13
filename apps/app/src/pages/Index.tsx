@@ -629,7 +629,7 @@ export default function Index() {
     <div
       style={{
         position: 'relative',
-        minHeight: 'calc(100dvh - 132px)',
+        minHeight: 'calc(100dvh - 240px)',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',

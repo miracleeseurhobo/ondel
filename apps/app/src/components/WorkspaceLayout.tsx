@@ -80,10 +80,14 @@ export default function WorkspaceLayout() {
         </div>
       </aside>
 
-      {/* Main */}
-      <div className="flex-1">
+      {/* Main — floating elevated card */}
+      <div className="flex-1 p-3 pb-24 md:p-4 md:pb-4">
+        <div
+          className="flex min-h-[calc(100dvh-6rem)] flex-col overflow-hidden rounded-3xl bg-white md:min-h-[calc(100dvh-2rem)]"
+          style={{ boxShadow: '0 1px 2px rgba(13,27,75,0.05), 0 24px 60px -24px rgba(13,27,75,0.2)' }}
+        >
         {/* Top bar */}
-        <div className="flex items-center justify-between px-5 pt-6 sm:px-8 lg:px-12">
+        <div className="flex items-center justify-between px-6 pt-6 sm:px-8">
           <div className="flex items-center gap-2 md:hidden">
             <OndelLogo className="h-5 w-5" />
             <span className="text-[16px] font-medium">Ondel</span>
@@ -109,9 +113,10 @@ export default function WorkspaceLayout() {
           </div>
         </div>
 
-        <main className="px-5 pb-28 pt-5 sm:px-8 md:pb-10 lg:px-12">
+        <main className="flex-1 px-6 pb-8 pt-4 sm:px-8">
           <Outlet />
         </main>
+        </div>
       </div>
 
       {/* Mobile bottom nav */}
