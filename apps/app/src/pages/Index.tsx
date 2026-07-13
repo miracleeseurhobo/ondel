@@ -661,12 +661,13 @@ export default function Index() {
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
           style={{
-            fontSize: 32,
+            fontFamily: "'Instrument Serif', Georgia, serif",
+            fontSize: 44,
             fontWeight: 400,
-            lineHeight: '32px',
-            letterSpacing: '-0.64px',
+            lineHeight: 1.05,
+            letterSpacing: '-0.01em',
             color: '#11315D',
-            width: 385,
+            maxWidth: 520,
             margin: '32px auto 8px',
             textAlign: 'center',
           }}

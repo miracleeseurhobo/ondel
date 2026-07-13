@@ -43,10 +43,9 @@ body,
     padding-top: 40px !important;
   }
   .ondel-heading {
-    width: auto !important;
     max-width: 92vw !important;
-    font-size: 26px !important;
-    line-height: 28px !important;
+    font-size: 32px !important;
+    line-height: 1.08 !important;
   }
   .ondel-sub {
     font-size: 13px !important;
