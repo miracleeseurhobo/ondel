@@ -240,6 +240,9 @@ function PixelGrid({ side }: { side: 'left' | 'right' }) {
         height: GRID_H,
         zIndex: 0,
         pointerEvents: 'none',
+        // Calm monochrome (Serena direction) — desaturate the decorative grid.
+        filter: 'grayscale(1)',
+        opacity: 0.7,
         WebkitMaskImage: mask,
         maskImage: mask,
       }}
@@ -507,26 +510,26 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
       }}
     >
       {/* halo */}
-      <div style={{ position: 'absolute', inset: 0, borderRadius: 12, background: 'rgba(151,195,255,0.15)', zIndex: 1 }} />
+      <div style={{ position: 'absolute', inset: 0, borderRadius: 12, background: 'rgba(0,0,0,0.04)', zIndex: 1 }} />
 
-      {/* gradient square */}
+      {/* primary square (calm monochrome — Serena primary) */}
       <div
         style={{
           position: 'relative',
           width: 36,
           height: 36,
           borderRadius: 12,
-          background: 'linear-gradient(180deg, #70A8F2 0%, #3D82DE 100%)',
+          background: 'linear-gradient(180deg, #333333 0%, #1c1c1c 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',
           zIndex: 2,
           boxShadow:
-            'inset 0 1px 18px 2px rgba(173,208,255,0.20), inset 0 1px 4px 2px rgba(222,236,255,0.80), 0 42px 107px 0 rgba(61,130,222,0.34), 0 10px 10px 0 rgba(61,130,222,0.20), 0 3.714px 4.846px 0 rgba(61,130,222,0.15)',
+            'inset 0 1px 4px 1px rgba(255,255,255,0.10), 0 10px 24px -8px rgba(0,0,0,0.40), 0 3px 6px 0 rgba(0,0,0,0.20)',
         }}
       >
-        {/* spinning conic ring */}
+        {/* spinning conic ring — white sheen */}
         <div
           ref={spinnerRef}
           style={{
@@ -535,7 +538,7 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
             borderRadius: 13,
             padding: 1,
             background:
-              'conic-gradient(from 0deg, rgba(255,255,255,0) 0deg, #FFFFFF 60deg, #9EC7FF 120deg, rgba(255,255,255,0) 200deg, rgba(255,255,255,0) 360deg)',
+              'conic-gradient(from 0deg, rgba(255,255,255,0) 0deg, rgba(255,255,255,0.9) 60deg, rgba(255,255,255,0.35) 120deg, rgba(255,255,255,0) 200deg, rgba(255,255,255,0) 360deg)',
             WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
             WebkitMaskComposite: 'xor',
             mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
@@ -543,7 +546,7 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
           }}
         />
         {/* static fallback border */}
-        <div style={{ position: 'absolute', inset: 0, borderRadius: 12, border: '1px solid #9EC7FF', zIndex: 4 }} />
+        <div style={{ position: 'absolute', inset: 0, borderRadius: 12, border: '1px solid rgba(255,255,255,0.12)', zIndex: 4 }} />
         {/* dots overlay */}
         <img
           src={`${A}/dots.svg`}
@@ -577,7 +580,7 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
               initial={{ y: 0, opacity: 1 }}
               animate={{ y: -16, opacity: 0 }}
               transition={{ duration: 0.32, ease: [0.65, 0, 0.35, 1] }}
-              style={{ position: 'absolute', inset: 0, width: 16, height: 16 }}
+              style={{ position: 'absolute', inset: 0, width: 16, height: 16, filter: 'brightness(0) invert(1)' }}
             />
           )}
           <motion.img
@@ -587,7 +590,7 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
             initial={arrowToggle > 0 ? { y: 16, opacity: 0 } : { y: 0, opacity: 1 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.32, ease: [0.65, 0, 0.35, 1] }}
-            style={{ position: 'absolute', inset: 0, width: 16, height: 16 }}
+            style={{ position: 'absolute', inset: 0, width: 16, height: 16, filter: 'brightness(0) invert(1)' }}
           />
         </div>
       </div>
@@ -653,7 +656,10 @@ export default function Index() {
           width: '100%',
         }}
       >
-        <FolderStack />
+        {/* Desaturated to monochrome for the calm Serena hero */}
+        <div style={{ filter: 'grayscale(1)' }}>
+          <FolderStack />
+        </div>
 
         <motion.h1
           className="ondel-heading"
@@ -697,10 +703,8 @@ export default function Index() {
             maxWidth: '100%',
             padding: 4,
             borderRadius: 12,
-            border: '0.5px solid rgba(0,0,0,0.05)',
-            background: 'rgba(157,196,250,0.15)',
-            backdropFilter: 'blur(50px)',
-            WebkitBackdropFilter: 'blur(50px)',
+            border: '1px solid #f0f0f0',
+            background: '#f6f6f6',
           }}
         >
           <div
@@ -709,7 +713,7 @@ export default function Index() {
               height: 116,
               background: '#fff',
               borderRadius: 8,
-              border: '1px solid rgba(34,106,205,0.05)',
+              border: '1px solid #f0f0f0',
               padding: '16px 14px 14px 16px',
               display: 'flex',
               flexDirection: 'column',
@@ -728,7 +732,7 @@ export default function Index() {
                   style={{
                     width: 110,
                     height: 28,
-                    background: '#E8F1FF',
+                    background: '#f3f3f3',
                     borderRadius: 8,
                     padding: '0 8px',
                     display: 'flex',
@@ -741,17 +745,17 @@ export default function Index() {
                       width: 14,
                       height: 14,
                       borderRadius: 4,
-                      background: 'linear-gradient(166deg, #A0E4FF 9.8%, #9CA4FB 184.41%)',
+                      background: '#252525',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexShrink: 0,
                     }}
                   >
-                    <img src={`${A}/ai-select.svg`} alt="" style={{ width: 8, height: 8 }} />
+                    <img src={`${A}/ai-select.svg`} alt="" style={{ width: 8, height: 8, filter: 'brightness(0) invert(1)' }} />
                   </span>
-                  <span style={{ fontSize: 12, lineHeight: '16px', color: '#5085CE', whiteSpace: 'nowrap' }}>Ondie</span>
-                  <Icon name="chevronDown" size={12} color="#5085CE" style={{ marginLeft: 'auto', flexShrink: 0 }} />
+                  <span style={{ fontSize: 12, lineHeight: '16px', color: '#5e5e5e', whiteSpace: 'nowrap' }}>Ondie</span>
+                  <Icon name="chevronDown" size={12} color="#5e5e5e" style={{ marginLeft: 'auto', flexShrink: 0 }} />
                 </div>
 
                 <IconButton icon="image.svg" />
