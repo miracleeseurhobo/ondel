@@ -101,23 +101,24 @@ function Sparkle({ size = 14, color = 'currentColor' }: { size?: number; color?:
 }
 
 // Ondie AI mark — a smiley whose two eyes double as the note-heads of a beamed
-// eighth-note (♫): stems rise from each eye and a music beam links them.
+// eighth-note (♫). Balanced stroke hierarchy (head mass → beam → stem ≈ smile)
+// and even optical padding within the tile.
 function OndieFace({ size = 28 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden>
       <rect width="32" height="32" rx="9" fill="var(--ds-accent)" />
       <g fill="none" stroke="var(--ds-accent-fg)" strokeLinecap="round" strokeLinejoin="round">
-        {/* beam linking the two eye note-heads */}
-        <path d="M13.2 10 L22 8.6" strokeWidth="2.2" />
-        {/* stems from each eye up to the beam */}
-        <path d="M13.2 14.4 V10" strokeWidth="1.5" />
-        <path d="M22 14.4 V8.6" strokeWidth="1.5" />
+        {/* beam linking the two eye note-heads (a touch heavier than the stems) */}
+        <path d="M13.4 9.7 L21.4 9.0" strokeWidth="2.4" />
+        {/* stems */}
+        <path d="M13.4 15 V9.7" strokeWidth="1.8" />
+        <path d="M21.4 15 V9.0" strokeWidth="1.8" />
         {/* smile */}
-        <path d="M11.3 21.4 c1.4 1.6 4.3 2.1 6.7 1 .6-.28 1.2-.64 1.8-1.15" strokeWidth="1.6" />
+        <path d="M12.2 20.4 Q15.7 22.8 19.2 20.4" strokeWidth="1.8" />
       </g>
       {/* eyes = note-heads */}
-      <circle cx="11.6" cy="15.6" r="2.15" fill="var(--ds-accent-fg)" />
-      <circle cx="20.4" cy="15.6" r="2.15" fill="var(--ds-accent-fg)" />
+      <circle cx="11.7" cy="15.6" r="1.95" fill="var(--ds-accent-fg)" />
+      <circle cx="19.7" cy="15.6" r="1.95" fill="var(--ds-accent-fg)" />
     </svg>
   )
 }
