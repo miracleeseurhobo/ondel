@@ -16,6 +16,15 @@ import {
   Cancel01Icon,
   HammerIcon,
   MusicNote01Icon,
+  PackageAddIcon,
+  CalendarSearchIcon,
+  NotificationOff01Icon,
+  InstagramIcon,
+  TiktokIcon,
+  YoutubeIcon,
+  ThreadsIcon,
+  NewTwitterIcon,
+  SpotifyIcon,
 } from '@hugeicons/core-free-icons'
 
 // Ondel's icon vocabulary — Hugeicons, one entry per semantic role.
@@ -43,6 +52,16 @@ export const icons = {
   close: Cancel01Icon,
   hammer: HammerIcon,
   music: MusicNote01Icon,
+  newPost: PackageAddIcon,
+  fillPlan: CalendarSearchIcon,
+  quiet: NotificationOff01Icon,
+  // Platform brand marks (used as white glyphs on brand-colour tiles)
+  pInstagram: InstagramIcon,
+  pTiktok: TiktokIcon,
+  pYoutube: YoutubeIcon,
+  pThreads: ThreadsIcon,
+  pX: NewTwitterIcon,
+  pSpotify: SpotifyIcon,
 } as const
 
 export type IconName = keyof typeof icons

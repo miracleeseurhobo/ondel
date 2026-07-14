@@ -1,6 +1,10 @@
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
+import { motion } from 'framer-motion'
 import { Icon } from '../components/ui/icon'
 import { INK, SUBTLE, FAINT } from '../components/workspace-ui'
+
+type Post = { title: string; platforms: string[]; release?: boolean }
+type DayEdit = { quiet?: boolean; added?: Post[] }
 
 // A Serena-style release calendar (calm monochrome, hairline borders, platform
 // brand colours on post chips, one warm accent for "scheduled"), with a flush
@@ -245,19 +249,22 @@ function AskOndiePanel({ open, onClose }: { open: boolean; onClose: () => void }
 
 /* ---------- day cell ---------- */
 
-function DayCell({ cell, cur, isToday, isPast, isRelease, plan, tall, lastCol }: {
+function DayCell({ cell, cur, isToday, isPast, isRelease, posts, quiet, tall, lastCol, menuOpen, onAdd }: {
   cell: Cell
   cur: boolean
   isToday: boolean
   isPast: boolean
   isRelease: boolean | undefined
-  plan: Plan | undefined
+  posts: Post[]
+  quiet: boolean
   tall: boolean
   lastCol: boolean
+  menuOpen: boolean
+  onAdd: (day: number, e: MouseEvent<HTMLButtonElement>) => void
 }) {
   return (
     <div
-      className={`border-b p-2 ${tall ? 'min-h-[360px]' : 'min-h-[112px]'} ${lastCol ? '' : 'border-r'}`}
+      className={`group relative border-b p-2 ${tall ? 'min-h-[360px]' : 'min-h-[112px]'} ${lastCol ? '' : 'border-r'}`}
       style={{ borderColor: GRID, background: isRelease ? 'rgba(255,179,98,0.08)' : undefined }}
     >
       <div className="flex items-center justify-between px-0.5">
@@ -274,28 +281,60 @@ function DayCell({ cell, cur, isToday, isPast, isRelease, plan, tall, lastCol }:
             {cell.day}
           </span>
         )}
+
+        {/* release label — hidden on hover so the + can take the corner */}
         {isRelease ? (
-          <span className="text-[9px] font-medium uppercase tracking-wide" style={{ color: '#b06a1f' }}>
+          <span className="text-[9px] font-medium uppercase tracking-wide group-hover:hidden" style={{ color: '#b06a1f' }}>
             Release
           </span>
         ) : null}
+
+        {/* hover add / open-menu toggle (current month only) */}
+        {cur ? (
+          <button
+            type="button"
+            aria-label={menuOpen ? 'Close add menu' : 'Add to this day'}
+            onClick={(e) => onAdd(cell.day, e)}
+            className={`flex h-[22px] w-[22px] items-center justify-center rounded-md transition-opacity ${menuOpen ? 'bg-black/[0.06] opacity-100' : 'opacity-0 hover:bg-black/[0.06] group-hover:opacity-100'}`}
+          >
+            <Icon name={menuOpen ? 'close' : 'plus'} size={14} style={{ color: SUBTLE }} />
+          </button>
+        ) : null}
       </div>
 
-      {plan ? (
-        <div
-          className={`mt-1 flex items-center gap-1.5 rounded-md px-1.5 py-1 ${isPast ? 'opacity-55' : ''}`}
-          style={{ background: isRelease ? SCHEDULED : '#f3f3f3' }}
-        >
-          <PlatformDots platforms={plan.platforms} />
-          <span className="min-w-0 flex-1 truncate text-[11px] font-medium" style={{ color: isRelease ? '#3b2405' : INK }}>
-            {plan.title}
-          </span>
-          {!isPast && !isRelease ? (
-            <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{ background: SCHEDULED }} title="Scheduled" />
-          ) : null}
-        </div>
-      ) : null}
+      <div className="mt-1 space-y-1">
+        {posts.map((p, idx) => (
+          <div
+            key={idx}
+            className={`flex items-center gap-1.5 rounded-md px-1.5 py-1 ${isPast && !p.release ? 'opacity-55' : ''}`}
+            style={{ background: p.release ? SCHEDULED : '#f3f3f3' }}
+          >
+            <PlatformDots platforms={p.platforms} />
+            <span className="min-w-0 flex-1 truncate text-[11px] font-medium" style={{ color: p.release ? '#3b2405' : INK }}>
+              {p.title}
+            </span>
+            {!isPast && !p.release ? (
+              <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{ background: SCHEDULED }} title="Scheduled" />
+            ) : null}
+          </div>
+        ))}
+        {quiet ? (
+          <div className="flex items-center gap-1.5 rounded-md px-1.5 py-1" style={{ background: '#f6f6f6' }}>
+            <Icon name="quiet" size={12} style={{ color: '#a3a3a3' }} />
+            <span className="text-[11px] font-medium" style={{ color: '#9a9a9a' }}>Quiet day</span>
+          </div>
+        ) : null}
+      </div>
     </div>
+  )
+}
+
+function MenuItem({ icon, label, strong, onClick }: { icon: 'newPost' | 'fillPlan' | 'quiet'; label: string; strong?: boolean; onClick: () => void }) {
+  return (
+    <button type="button" onClick={onClick} className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors hover:bg-[#f3f3f3]">
+      <Icon name={icon} size={17} style={{ color: strong ? INK : SUBTLE }} />
+      <span className="text-[14px]" style={{ color: INK, fontWeight: strong ? 500 : 400 }}>{label}</span>
+    </button>
   )
 }
 
@@ -303,6 +342,27 @@ export default function Timeline() {
   const [cursor, setCursor] = useState({ year: CAMPAIGN.year, month: CAMPAIGN.month })
   const [view, setView] = useState<'month' | 'week'>('month')
   const [askOpen, setAskOpen] = useState(false)
+  const [menu, setMenu] = useState<{ day: number; left: number; top: number } | null>(null)
+  const [dayEdits, setDayEdits] = useState<Record<number, DayEdit>>({})
+
+  const openMenu = (day: number, e: MouseEvent<HTMLButtonElement>) => {
+    if (menu?.day === day) {
+      setMenu(null)
+      return
+    }
+    const r = e.currentTarget.getBoundingClientRect()
+    const width = 240
+    setMenu({ day, left: Math.max(8, r.right - width), top: r.bottom + 6 })
+  }
+  const edit = (day: number, fn: (d: DayEdit) => DayEdit) => setDayEdits((m) => ({ ...m, [day]: fn(m[day] ?? {}) }))
+  const addPost = (day: number, post: Post) => {
+    edit(day, (d) => ({ ...d, quiet: false, added: [...(d.added ?? []), post] }))
+    setMenu(null)
+  }
+  const markQuiet = (day: number) => {
+    edit(day, (d) => ({ ...d, quiet: !d.quiet }))
+    setMenu(null)
+  }
 
   const isCampaignMonth = cursor.year === CAMPAIGN.year && cursor.month === CAMPAIGN.month
   const cells = monthMatrix(cursor.year, cursor.month)
@@ -389,7 +449,11 @@ export default function Timeline() {
             </div>
             <div className="grid grid-cols-7">
               {gridCells.map((cell, i) => {
-                const plan = cell.cur && isCampaignMonth ? PLAN[cell.day] : undefined
+                const base = cell.cur && isCampaignMonth ? PLAN[cell.day] : undefined
+                const edits = cell.cur ? dayEdits[cell.day] : undefined
+                const posts: Post[] = []
+                if (base) posts.push({ title: base.title, platforms: base.platforms, release: base.release })
+                if (edits?.added) posts.push(...edits.added)
                 const isToday = cell.cur && isCampaignMonth && cell.day === TODAY_DAY
                 const isPast = cell.cur && isCampaignMonth && cell.day < TODAY_DAY
                 return (
@@ -399,10 +463,13 @@ export default function Timeline() {
                     cur={cell.cur}
                     isToday={isToday}
                     isPast={isPast}
-                    isRelease={plan?.release}
-                    plan={plan}
+                    isRelease={base?.release}
+                    posts={posts}
+                    quiet={!!edits?.quiet}
                     tall={view === 'week'}
                     lastCol={(i + 1) % 7 === 0}
+                    menuOpen={menu?.day === cell.day}
+                    onAdd={openMenu}
                   />
                 )
               })}
@@ -423,6 +490,24 @@ export default function Timeline() {
 
         <AskOndiePanel open={askOpen} onClose={() => setAskOpen(false)} />
       </div>
+
+      {/* Day add-menu popover */}
+      {menu ? (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setMenu(null)} />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.14, ease: [0.23, 1, 0.32, 1] }}
+            className="fixed z-50 w-[240px] rounded-xl border bg-white p-1.5"
+            style={{ left: menu.left, top: menu.top, borderColor: GRID, boxShadow: '0 12px 32px -12px rgba(0,0,0,0.24)', transformOrigin: 'top right' }}
+          >
+            <MenuItem icon="newPost" label="New post" strong onClick={() => addPost(menu.day, { title: 'New post', platforms: ['instagram'] })} />
+            <MenuItem icon="fillPlan" label="Fill from plan" onClick={() => addPost(menu.day, { title: 'Ondie suggestion', platforms: ['instagram', 'tiktok'] })} />
+            <MenuItem icon="quiet" label={dayEdits[menu.day]?.quiet ? 'Unmark quiet day' : 'Mark as quiet day'} onClick={() => markQuiet(menu.day)} />
+          </motion.div>
+        </>
+      ) : null}
     </div>
   )
 }

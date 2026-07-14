@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Icon, type IconName } from './ui/icon'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
@@ -9,6 +10,16 @@ const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: '/timeline', label: 'Calendar', icon: 'timeline' },
   { to: '/signals', label: 'Signals', icon: 'signals' },
   { to: '/campaigns', label: 'Campaigns', icon: 'campaigns' },
+]
+
+// Creator apps the artist can post to — app-icon tiles (brand colour + white mark).
+const PLATFORMS: { key: string; label: string; icon: IconName; color: string }[] = [
+  { key: 'instagram', label: 'Instagram', icon: 'pInstagram', color: '#E1306C' },
+  { key: 'tiktok', label: 'TikTok', icon: 'pTiktok', color: '#111111' },
+  { key: 'youtube', label: 'YouTube', icon: 'pYoutube', color: '#FF0000' },
+  { key: 'threads', label: 'Threads', icon: 'pThreads', color: '#111111' },
+  { key: 'x', label: 'X (Twitter)', icon: 'pX', color: '#111111' },
+  { key: 'spotify', label: 'Spotify', icon: 'pSpotify', color: '#1DB954' },
 ]
 
 const OndelLogo = ({ className }: { className?: string }) => (
@@ -33,6 +44,14 @@ export default function WorkspaceLayout() {
   const navigate = useNavigate()
   // The calendar renders its own flush top nav, so suppress the shell's.
   const hideTopBar = useLocation().pathname.startsWith('/timeline')
+  const [platformsOpen, setPlatformsOpen] = useState(true)
+  const [activePlatforms, setActivePlatforms] = useState<Set<string>>(new Set(['instagram', 'tiktok', 'x']))
+  const togglePlatform = (key: string) =>
+    setActivePlatforms((s) => {
+      const next = new Set(s)
+      next.has(key) ? next.delete(key) : next.add(key)
+      return next
+    })
 
   return (
     <div className="flex min-h-dvh" style={{ background: '#f5f5f5', color: INK }}>
@@ -70,6 +89,48 @@ export default function WorkspaceLayout() {
               </NavLink>
             ))}
           </nav>
+
+          {/* Platforms — creator apps the artist can post to */}
+          <div className="mt-7">
+            <button
+              type="button"
+              onClick={() => setPlatformsOpen((v) => !v)}
+              className="flex w-full items-center gap-1 px-3 pb-1.5 text-[12px] font-medium"
+              style={{ color: '#b5b5b5' }}
+            >
+              Platforms
+              <Icon name="chevronDown" size={13} className={`transition-transform ${platformsOpen ? '' : '-rotate-90'}`} />
+            </button>
+            {platformsOpen ? (
+              <div className="flex flex-col gap-0.5">
+                {PLATFORMS.map((p) => {
+                  const on = activePlatforms.has(p.key)
+                  return (
+                    <button
+                      key={p.key}
+                      type="button"
+                      onClick={() => togglePlatform(p.key)}
+                      aria-pressed={on}
+                      className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-[14px] transition-colors"
+                      style={
+                        on
+                          ? { background: 'rgba(255,255,255,0.9)', color: INK, boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
+                          : { color: SUBTLE }
+                      }
+                    >
+                      <span
+                        className="flex h-[22px] w-[22px] items-center justify-center rounded-md"
+                        style={{ background: p.color, opacity: on ? 1 : 0.55 }}
+                      >
+                        <Icon name={p.icon} size={13} className="text-white" />
+                      </span>
+                      {p.label}
+                    </button>
+                  )
+                })}
+              </div>
+            ) : null}
+          </div>
         </div>
         <div className="relative">
           <button
