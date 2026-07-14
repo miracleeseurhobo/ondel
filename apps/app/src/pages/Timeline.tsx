@@ -9,7 +9,8 @@ import { INK, SUBTLE, FAINT } from '../components/workspace-ui'
 
 const SCHEDULED = '#ffb362'
 const ROUNDED_FONT = "ui-rounded, 'SF Pro Rounded', 'Inter Tight', -apple-system, sans-serif"
-const HAIR = '#f0f0f0'
+const HAIR = '#f0f0f0' // faint hairline — nav, objectives, panel
+const GRID = '#e2e2e2' // bolder calendar grid lines for a crisp, high-resolution grid
 
 // Platform brand colours — the one place chromatic colour is allowed.
 const PLATFORM: Record<string, { label: string; color: string }> = {
@@ -151,19 +152,6 @@ function CalendarTopNav({
         </span>
       </div>
 
-      {/* Center prompt pill → opens Ask Ondie */}
-      <button
-        type="button"
-        onClick={onAsk}
-        className="mx-1 hidden h-9 min-w-0 flex-1 items-center gap-2 rounded-lg px-3 text-left transition-colors hover:brightness-[0.98] md:flex"
-        style={{ background: '#f3f3f3' }}
-      >
-        <Sparkle size={14} color="#b5b5b5" />
-        <span className="truncate text-[13px]" style={{ color: '#9a9a9a' }}>
-          Ask Ondie about this release…
-        </span>
-      </button>
-
       {/* Right controls */}
       <div className="ml-auto flex items-center gap-2">
         {/* Month / Week toggle */}
@@ -269,20 +257,20 @@ function DayCell({ cell, cur, isToday, isPast, isRelease, plan, tall, lastCol }:
 }) {
   return (
     <div
-      className={`border-b p-1.5 ${tall ? 'min-h-[360px]' : 'min-h-[92px]'} ${lastCol ? '' : 'border-r'}`}
-      style={{ borderColor: HAIR, background: isRelease ? 'rgba(255,179,98,0.08)' : undefined }}
+      className={`border-b p-2 ${tall ? 'min-h-[360px]' : 'min-h-[112px]'} ${lastCol ? '' : 'border-r'}`}
+      style={{ borderColor: GRID, background: isRelease ? 'rgba(255,179,98,0.08)' : undefined }}
     >
       <div className="flex items-center justify-between px-0.5">
         {isToday ? (
-          <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full text-[12px] font-medium text-white" style={{ background: '#252525' }}>
+          <span className="flex h-[24px] w-[24px] items-center justify-center rounded-full text-[13px] font-medium text-white" style={{ background: '#252525' }}>
             {cell.day}
           </span>
         ) : isRelease ? (
-          <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full text-[12px] font-medium text-white" style={{ background: SCHEDULED }}>
+          <span className="flex h-[24px] w-[24px] items-center justify-center rounded-full text-[13px] font-medium text-white" style={{ background: SCHEDULED }}>
             {cell.day}
           </span>
         ) : (
-          <span className="text-[12px] font-medium" style={{ color: cur ? (isPast ? FAINT : SUBTLE) : '#d4d4d4' }}>
+          <span className="text-[13px] font-medium" style={{ color: cur ? (isPast ? FAINT : INK) : '#cfcfcf' }}>
             {cell.day}
           </span>
         )}
@@ -335,15 +323,18 @@ export default function Timeline() {
   }
 
   return (
-    <div className="-mt-4 flex h-full min-h-[640px] flex-col" style={{ fontFamily: ROUNDED_FONT }}>
-      {/* Flush top nav (breaks out of the card's main padding) */}
-      <div className="-mx-6 border-b px-6 sm:-mx-8 sm:px-8" style={{ borderColor: HAIR }}>
+    <div
+      className="-mx-6 -mb-8 -mt-4 flex flex-col sm:-mx-8 md:h-[calc(100dvh-1.25rem)]"
+      style={{ fontFamily: ROUNDED_FONT, minHeight: 560 }}
+    >
+      {/* Flush top nav */}
+      <div className="border-b px-6 sm:px-8" style={{ borderColor: HAIR }}>
         <CalendarTopNav monthLabel={monthLabel} view={view} setView={setView} askOpen={askOpen} onAsk={() => setAskOpen((v) => !v)} />
       </div>
 
-      {/* Body: calendar (pushed left) + Ask Ondie panel */}
-      <div className="-mx-6 flex min-h-0 flex-1 sm:-mx-8">
-        <div className="min-w-0 flex-1 overflow-x-hidden px-6 pb-8 pt-5 sm:px-8">
+      {/* Body: calendar (pushed left, scrolls) + Ask Ondie panel (fills height) */}
+      <div className="flex min-h-0 flex-1">
+        <div className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden px-6 pb-8 pt-5 sm:px-8">
           {/* Release header */}
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -388,10 +379,10 @@ export default function Timeline() {
           </div>
 
           {/* Calendar grid */}
-          <div className="mt-4 overflow-hidden rounded-xl border bg-white" style={{ borderColor: HAIR }}>
-            <div className="grid grid-cols-7 border-b" style={{ borderColor: HAIR }}>
+          <div className="mt-4 overflow-hidden rounded-xl border bg-white" style={{ borderColor: GRID }}>
+            <div className="grid grid-cols-7 border-b" style={{ borderColor: GRID }}>
               {WEEKDAYS.map((d) => (
-                <div key={d} className="px-2 py-2 text-center text-[11px] font-medium" style={{ color: '#b5b5b5' }}>
+                <div key={d} className="py-2.5 text-center text-[12px] font-medium" style={{ color: '#7a7a7a' }}>
                   {d}
                 </div>
               ))}
