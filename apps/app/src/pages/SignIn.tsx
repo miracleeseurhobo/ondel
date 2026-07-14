@@ -6,6 +6,7 @@ import StudioFolder from '../components/StudioFolder'
 import SiriOrb from '../components/SiriOrb'
 import DisplayCards, { type DisplayCardProps } from '../components/DisplayCards'
 import { mockSignIn, mockSignOut } from '../lib/auth'
+import { applyTheme, getStoredTheme } from '../lib/theme'
 
 // Shadow tokens (Lemni Light) — depth is shadow-driven, no borders.
 const CTA_SHADOW = 'rgba(0,0,0,0.4) 0px 2px 5px 0px'
@@ -229,6 +230,13 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   // sign-in + welcome simulation plays before the dashboard every time.
   useEffect(() => {
     mockSignOut()
+  }, [])
+
+  // Auth + manifesto + workspace onboarding are always light; dark mode is
+  // scoped to the dashboard. Force light here, restore the stored theme on exit.
+  useEffect(() => {
+    document.documentElement.classList.remove('dark')
+    return () => applyTheme(getStoredTheme())
   }, [])
 
   const provider = (strategy: string) => {

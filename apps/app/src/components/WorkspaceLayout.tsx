@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Icon, type IconName } from './ui/icon'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
 import ThemeToggle from './ThemeToggle'
 import { mockSignOut } from '../lib/auth'
+import { applyTheme, getStoredTheme } from '../lib/theme'
 
 const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: '/', label: 'Home', icon: 'home', end: true },
@@ -45,6 +46,11 @@ export default function WorkspaceLayout() {
   const navigate = useNavigate()
   // The calendar renders its own flush top nav, so suppress the shell's.
   const hideTopBar = useLocation().pathname.startsWith('/timeline')
+  // Dark mode is scoped to the dashboard — re-apply the stored theme on entry
+  // (the auth/onboarding flow forces light).
+  useEffect(() => {
+    applyTheme(getStoredTheme())
+  }, [])
   const [platformsOpen, setPlatformsOpen] = useState(true)
   const [activePlatforms, setActivePlatforms] = useState<Set<string>>(new Set(['instagram', 'tiktok', 'x']))
   const togglePlatform = (key: string) =>

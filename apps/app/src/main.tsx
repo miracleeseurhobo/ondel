@@ -18,8 +18,13 @@ import BlankPage from './components/BlankPage'
 import { isSignedIn } from './lib/auth'
 import { applyTheme, getStoredTheme } from './lib/theme'
 
-// Apply the persisted/OS theme before first paint to avoid a flash.
-applyTheme(getStoredTheme())
+// Theme is scoped to the dashboard — the auth + onboarding flow (sign-in,
+// manifesto, workspace) is always light. Apply before first paint to avoid flash.
+{
+  const p = window.location.pathname
+  const authRoute = p.startsWith('/signin') || p.startsWith('/sso')
+  applyTheme(authRoute ? 'light' : getStoredTheme())
+}
 
 // Auth is opt-in: with VITE_CLERK_PUBLISHABLE_KEY set, the OAuth buttons run the
 // real Clerk redirect flow; without it, a persisted mock gate stands in.
