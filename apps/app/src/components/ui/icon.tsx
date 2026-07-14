@@ -68,9 +68,9 @@ export type IconName = keyof typeof icons
 
 type IconProps = Omit<HugeiconsIconProps, 'icon'> & { name: IconName }
 
-// Defaults encode the system: 18px, 1.5px stroke, currentColor. Colour is set
+// Defaults encode the system: 18px, 1.2px stroke, currentColor. Colour is set
 // by the parent's text colour (Tailwind `text-*`); size/stroke can be overridden
 // per instance.
-export function Icon({ name, size = 18, strokeWidth = 1.5, ...rest }: IconProps) {
+export function Icon({ name, size = 18, strokeWidth = 1.2, ...rest }: IconProps) {
   return <HugeiconsIcon icon={icons[name]} size={size} strokeWidth={strokeWidth} {...rest} />
 }
