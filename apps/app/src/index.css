@@ -23,20 +23,52 @@
     --radius: 12px;
 
     /* ---- Ondel design system tokens (design-system/*.md) ---- */
-    /* Neutral foundation (TailwindCSS `neutral` scale) */
-    --ds-bg: #f5f5f5; /* neutral-100 — app background */
+    /* Light theme — neutral foundation (TailwindCSS `neutral` scale) */
+    --ds-bg: #f5f5f5; /* app / shell background */
     --ds-surface: #ffffff; /* cards, inputs, sheets */
-    --ds-border: #e5e5e5; /* neutral-200 — hairlines */
-    --ds-text: #171717; /* neutral-900 — primary text */
-    --ds-text-secondary: #737373; /* neutral-500 */
-    --ds-text-muted: #a3a3a3; /* neutral-400 */
-    /* Single accent — parked on greyscale (black) for now */
-    --ds-brand: #000000;
-    --ds-brand-fg: #ffffff;
-    /* Functional */
-    --ds-danger: #dc2626; /* red-600 */
-    --ds-success: #16a34a; /* green-600 */
-    --ds-scheduled: #ffb362; /* warm amber — "scheduled" status (Serena's lone accent) */
+    --ds-surface-2: #f3f3f3; /* chips, toggles, secondary fills */
+    --ds-surface-3: #fafafa; /* panels */
+    --ds-border: #e5e5e5; /* hairline */
+    --ds-grid: #e2e2e2; /* calendar grid lines */
+    --ds-hair: #f0f0f0; /* faint hairline — nav, objectives */
+    --ds-text: #171717; /* primary text */
+    --ds-text-secondary: #737373; /* secondary */
+    --ds-text-muted: #a3a3a3; /* muted */
+    --ds-text-faint: #b5b5b5; /* section labels */
+    /* Single accent — greyscale (black in light, inverts to near-white in dark) */
+    --ds-accent: #000000;
+    --ds-accent-fg: #ffffff;
+    --ds-brand: var(--ds-accent);
+    --ds-brand-fg: var(--ds-accent-fg);
+    /* Functional (theme-agnostic) */
+    --ds-danger: #dc2626;
+    --ds-success: #16a34a;
+    --ds-scheduled: #ffb362; /* warm amber — "scheduled" status */
+    --ds-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px -8px rgba(0, 0, 0, 0.1);
+    /* Overlay channel (RGB triplet) for translucent hovers/rings/hairlines —
+       black in light, white in dark. Enables `bg-overlay/5`, `ring-overlay/30`. */
+    --ds-overlay: 0 0 0;
+  }
+
+  /* Dark theme — Linear-style ladder: near-black canvas, four surfaces,
+     hairline borders over shadows, light-gray ink, inverted (white) accent. */
+  .dark {
+    --ds-bg: #010102; /* canvas */
+    --ds-surface: #0f1011; /* surface-1 */
+    --ds-surface-2: #141516; /* surface-2 */
+    --ds-surface-3: #18191a; /* surface-3 */
+    --ds-border: #23252a; /* hairline */
+    --ds-grid: #26282d;
+    --ds-hair: #1b1c1e;
+    --ds-text: #f7f8f8; /* ink */
+    --ds-text-secondary: #8a8f98; /* ink-subtle */
+    --ds-text-muted: #62666d; /* ink-tertiary */
+    --ds-text-faint: #52565c;
+    --ds-accent: #f7f8f8; /* inverted — near-white */
+    --ds-accent-fg: #0f1011; /* dark text on the light accent */
+    --ds-card-shadow: none; /* dark carries lift with hairlines, not shadow */
+    --ds-overlay: 255 255 255; /* white overlays on dark */
+    color-scheme: dark;
   }
 
   * {
@@ -49,6 +81,19 @@ body,
 #root {
   font-family: 'Inter Tight', sans-serif;
   font-weight: 400; /* body is regular; medium (500) is reserved for headings & emphasis */
+  background: var(--ds-bg);
+  color: var(--ds-text);
+}
+
+/* Decorative sixsense pixel-grid — calm monochrome in light; inverted + dimmed
+   in dark so light tiles don't glow on the near-black canvas. */
+.ondel-pixels {
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+.dark .ondel-pixels {
+  filter: grayscale(1) invert(0.92) brightness(0.85);
+  opacity: 0.5;
 }
 
 /* Graceful mobile layout — the reference page is desktop-fixed, so these

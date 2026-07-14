@@ -25,6 +25,9 @@ import {
   ThreadsIcon,
   NewTwitterIcon,
   SpotifyIcon,
+  Sun03Icon,
+  Moon02Icon,
+  ArrowUp02Icon,
 } from '@hugeicons/core-free-icons'
 
 // Ondel's icon vocabulary — Hugeicons, one entry per semantic role.
@@ -62,6 +65,9 @@ export const icons = {
   pThreads: ThreadsIcon,
   pX: NewTwitterIcon,
   pSpotify: SpotifyIcon,
+  sun: Sun03Icon,
+  moon: Moon02Icon,
+  arrowUp: ArrowUp02Icon,
 } as const
 
 export type IconName = keyof typeof icons

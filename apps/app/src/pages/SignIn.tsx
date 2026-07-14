@@ -26,7 +26,7 @@ function DashedBorder({ active }: { active: boolean }) {
         rx="12"
         ry="12"
         fill="none"
-        stroke={active ? '#000000' : '#d4d4d4'}
+        stroke={active ? 'var(--ds-accent)' : 'var(--ds-border)'}
         strokeWidth="2"
         strokeDasharray="7 9"
         strokeLinecap="round"
@@ -47,9 +47,9 @@ const STEPS = ['Welcome', 'Workspace', 'Plan', 'Tutorial']
 // and colourise on a calm loop; the fade colour matches the panel.
 const CARD_EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]'
 const CARD_FADE =
-  "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[#f0f0f3] after:to-transparent after:content-['']"
+  "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[color:var(--ds-surface-2)] after:to-transparent after:content-['']"
 const CARD_REVEAL =
-  "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:outline-1 before:outline-neutral-200 before:bg-[#f0f0f3]/60 before:bg-blend-overlay before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
+  "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:outline-1 before:outline-[color:var(--ds-border)] before:bg-overlay/[0.04] before:bg-blend-overlay before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
 
 // The animated preview deck keeps its colours — a lively, colourful counterpoint
 // to the otherwise neutral onboarding (an intentional exception to the neutral
@@ -116,7 +116,7 @@ function OAuthButton({ glyph, label, onClick }: { glyph: ReactNode; label: strin
     <button
       type="button"
       onClick={onClick}
-      className="flex h-11 w-full items-center justify-center gap-2.5 rounded-xl bg-white text-[15px] font-medium text-neutral-900 transition-transform duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+      className="flex h-11 w-full items-center justify-center gap-2.5 rounded-xl bg-surface text-[15px] font-medium text-ink transition-transform duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-overlay/25"
       style={{ boxShadow: OAUTH_SHADOW }}
     >
       {glyph}
@@ -159,10 +159,10 @@ function StepFooter({ active }: { active: number }) {
             ) : (
               <span
                 className="h-1.5 w-1.5 rounded-full"
-                style={{ background: i === active ? '#171717' : '#d4d4d4' }}
+                style={{ background: i === active ? 'var(--ds-text)' : 'var(--ds-border)' }}
               />
             )}
-            <span style={{ color: i <= active ? '#171717' : '#a3a3a3', fontWeight: i === active ? 500 : 400 }}>
+            <span style={{ color: i <= active ? 'var(--ds-text)' : 'var(--ds-text-muted)', fontWeight: i === active ? 500 : 400 }}>
               {s}
             </span>
           </div>
@@ -244,12 +244,12 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   // with the animated preview deck on the right.
   if (status === 'welcome') {
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-neutral-100 px-5 text-neutral-900">
+      <main className="flex min-h-dvh items-center justify-center bg-app px-5 text-ink">
         <button
           type="button"
           onClick={() => setStatus('idle')}
           aria-label="Back to sign in"
-          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-subtle transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-overlay/25"
           style={{ top: 'max(24px, env(safe-area-inset-top))', left: 24 }}
         >
           <Icon name="arrowLeft" size={20} aria-hidden />
@@ -261,7 +261,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
           <div className="sync-view-enter flex w-full max-w-[440px] flex-col items-center text-center">
             <SiriOrb size="132px" />
             <p
-              className="mt-9 leading-[1.15] tracking-tight text-neutral-900"
+              className="mt-9 leading-[1.15] tracking-tight text-ink"
               style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 'clamp(1.75rem,6.5vw,2.5rem)', '--reveal': reveal } as CSSProperties}
             >
               {WELCOME_WORDS.map((w, i) => (
@@ -299,12 +299,12 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
 
   if (status === 'workspace') {
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-neutral-100 px-5 text-neutral-900">
+      <main className="flex min-h-dvh items-center justify-center bg-app px-5 text-ink">
         <button
           type="button"
           onClick={() => setStatus('welcome')}
           aria-label="Back to welcome"
-          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+          className="fixed z-20 flex h-11 w-11 items-center justify-center rounded-full text-subtle transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-overlay/25"
           style={{ top: 'max(24px, env(safe-area-inset-top))', left: 24 }}
         >
           <Icon name="arrowLeft" size={20} aria-hidden />
@@ -360,14 +360,14 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 </div>
               )}
 
-              <p className="mt-3 text-[14px] leading-[20px] text-neutral-500">
+              <p className="mt-3 text-[14px] leading-[20px] text-subtle">
                 Drag and drop or{' '}
-                <span className="font-medium text-neutral-900 underline underline-offset-2">
+                <span className="font-medium text-ink underline underline-offset-2">
                   {logo ? 'choose another' : 'choose file'}
                 </span>{' '}
                 to upload.
               </p>
-              <p className="mt-1 text-[13px] leading-[18px] text-neutral-400">
+              <p className="mt-1 text-[13px] leading-[18px] text-faint">
                 Image format : JPG, PNG &amp; SVG. Max 5.0MB
               </p>
 
@@ -385,15 +385,15 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
               </p>
             ) : null}
 
-            <h1 className="mt-7 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-neutral-900">
+            <h1 className="mt-7 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-ink">
               Create your studio
             </h1>
-            <p className="mt-2 text-center text-[15px] leading-[21px] text-neutral-500">
+            <p className="mt-2 text-center text-[15px] leading-[21px] text-subtle">
               Where every release, playlist pitch, and signal lives — set the tempo for your team.
             </p>
 
             <div className="mt-6 w-full text-left">
-              <label htmlFor="workspace-name" className="text-[13px] font-medium text-neutral-900">
+              <label htmlFor="workspace-name" className="text-[13px] font-medium text-ink">
                 Studio name
               </label>
               <input
@@ -404,7 +404,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 autoFocus
                 maxLength={40}
                 placeholder="Midnight Records"
-                className="mt-2 h-11 w-full rounded-xl border-0 bg-white px-3.5 text-[15px] text-neutral-900 outline-none transition-shadow placeholder:text-neutral-400 focus:ring-2 focus:ring-black/15"
+                className="mt-2 h-11 w-full rounded-xl border-0 bg-surface px-3.5 text-[15px] text-ink outline-none transition-shadow placeholder:text-faint focus:ring-2 focus:ring-overlay/15"
                 style={{ boxShadow: INPUT_SHADOW }}
               />
             </div>
@@ -426,7 +426,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   }
 
   return (
-    <main className="grid min-h-dvh grid-cols-1 bg-neutral-100 text-neutral-900 lg:grid-cols-2">
+    <main className="grid min-h-dvh grid-cols-1 bg-app text-ink lg:grid-cols-2">
       {/* Auth column */}
       <div
         className="flex items-center justify-center px-5"
@@ -435,12 +435,12 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
         <div className="w-full max-w-[370px]">
             <div className="flex flex-col items-center">
               <Link to="/" aria-label="Ondel home" className="rounded-md transition-opacity hover:opacity-80">
-                <OndelLogo className="h-9 w-9 text-neutral-900" />
+                <OndelLogo className="h-9 w-9 text-ink" />
               </Link>
-              <h1 className="mt-6 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-neutral-900">
+              <h1 className="mt-6 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-ink">
                 Welcome to Ondel
               </h1>
-              <p className="mt-2 text-center text-[15px] leading-[21px] text-neutral-500">
+              <p className="mt-2 text-center text-[15px] leading-[21px] text-subtle">
                 Your AI operating system for music releases.
               </p>
             </div>
@@ -459,7 +459,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 type="button"
                 onClick={() => setShowMore((v) => !v)}
                 aria-expanded={showMore}
-                className="mx-auto flex min-h-[44px] items-center gap-1 rounded-md px-2 text-[14px] text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+                className="mx-auto flex min-h-[44px] items-center gap-1 rounded-md px-2 text-[14px] text-subtle transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-overlay/25"
               >
                 {showMore ? 'Fewer options' : 'More sign-in options'}
                 <Icon name="chevronDown" className={`h-4 w-4 transition-transform duration-200 ease-out motion-reduce:transition-none ${showMore ? 'rotate-180' : ''}`} aria-hidden />
@@ -468,7 +468,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
 
             <div className="my-5 flex items-center gap-3">
               <span className="h-px flex-1 bg-brand/10" />
-              <span className="text-[14px] text-neutral-400">or</span>
+              <span className="text-[14px] text-faint">or</span>
               <span className="h-px flex-1 bg-brand/10" />
             </div>
 
@@ -482,7 +482,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="h-11 w-full rounded-xl bg-white/50 pl-5 pr-2.5 text-[16px] text-neutral-900 placeholder-neutral-400 outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+                className="h-11 w-full rounded-xl bg-surface pl-5 pr-2.5 text-[16px] text-ink placeholder-faint outline-none focus-visible:ring-2 focus-visible:ring-overlay/25"
                 style={{ boxShadow: INPUT_SHADOW }}
               />
               <button
@@ -494,16 +494,16 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
               </button>
             </form>
 
-            <p className="mt-6 text-center text-[13px] leading-[18px] text-neutral-400">
+            <p className="mt-6 text-center text-[13px] leading-[18px] text-faint">
               By continuing you agree to our{' '}
-              <a href="#" className="underline-offset-2 hover:text-neutral-900 hover:underline">Terms</a> &amp;{' '}
-              <a href="#" className="underline-offset-2 hover:text-neutral-900 hover:underline">Privacy</a>.
+              <a href="#" className="underline-offset-2 hover:text-ink hover:underline">Terms</a> &amp;{' '}
+              <a href="#" className="underline-offset-2 hover:text-ink hover:underline">Privacy</a>.
             </p>
           </div>
         </div>
 
         {/* Right panel — animated preview deck (desktop only) */}
-        <div className="relative hidden items-center justify-center overflow-hidden border-l border-black/[0.06] bg-[#f0f0f3] p-10 lg:flex">
+        <div className="relative hidden items-center justify-center overflow-hidden border-l border-overlay/[0.06] bg-surface2 p-10 lg:flex">
           <div className="-translate-x-12 -translate-y-2">
             <DisplayCards loop cards={PLAYLIST_CARDS} />
           </div>

@@ -55,6 +55,23 @@ decoratively). Borrowed from the Serena scheduler system.
   fuchsia / emerald) as a deliberate lively counterpoint to the neutral
   onboarding.
 
+## Dark theme
+
+The app is theme-aware via a `dark` class on `<html>` (Tailwind `darkMode: 'class'`).
+Every colour is a CSS variable in `index.css` that flips under `.dark`, so
+components reference tokens (`bg-surface`, `text-ink`, `border-hair`, `bg-brand`,
+the `INK/SUBTLE/FAINT` constants, `--ds-*`) rather than hardcoded hex.
+
+Dark follows a **Linear-style ladder**: near-black canvas `#010102`, four
+surfaces (`#0f1011`→`#18191a`), hairline borders (no shadows), light-gray ink
+`#f7f8f8`. The **accent inverts** — black in light becomes near-white
+(`#f7f8f8`) in dark, so primary CTAs/active states stay high-contrast. Amber
+`scheduled` and platform brand colours are theme-agnostic. Translucent
+hovers/rings use the `overlay` token (RGB channels: black in light, white in
+dark) so `/opacity` modifiers work. Theme is persisted in `localStorage`
+(`ondel_theme`), defaulting to the OS preference; toggle lives in the sidebar
+(`ThemeToggle`).
+
 ## Retired colors
 
 The previous blue identity (`#0D1B4B`, `#11315D`, `#3D82DE` used broadly) and ad

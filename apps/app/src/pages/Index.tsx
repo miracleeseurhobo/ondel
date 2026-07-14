@@ -230,6 +230,7 @@ function PixelGrid({ side }: { side: 'left' | 'right' }) {
     <canvas
       ref={canvasRef}
       aria-hidden
+      className="ondel-pixels"
       style={{
         position: 'absolute',
         left: side === 'left' ? 0 : undefined,
@@ -240,9 +241,6 @@ function PixelGrid({ side }: { side: 'left' | 'right' }) {
         height: GRID_H,
         zIndex: 0,
         pointerEvents: 'none',
-        // Calm monochrome (Serena direction) — desaturate the decorative grid.
-        filter: 'grayscale(1)',
-        opacity: 0.7,
         WebkitMaskImage: mask,
         maskImage: mask,
       }}
@@ -437,7 +435,7 @@ function Typewriter() {
   }, [])
 
   return (
-    <div style={{ height: 32, fontSize: 15, lineHeight: '22px', fontWeight: 400, color: '#171717', paddingBottom: 10 }}>
+    <div style={{ height: 32, fontSize: 15, lineHeight: '22px', fontWeight: 400, color: 'var(--ds-text)', paddingBottom: 10 }}>
       {text}
       <span
         style={{
@@ -445,7 +443,7 @@ function Typewriter() {
           width: 2,
           height: 18,
           marginLeft: 2,
-          background: '#171717',
+          background: 'var(--ds-text)',
           verticalAlign: 'text-bottom',
           animation: 'promptCaretBlink 1s steps(1) infinite',
         }}
@@ -519,7 +517,7 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
           width: 36,
           height: 36,
           borderRadius: 12,
-          background: 'linear-gradient(180deg, #333333 0%, #1c1c1c 100%)',
+          background: 'linear-gradient(180deg, var(--ds-accent) 0%, var(--ds-accent) 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -570,28 +568,28 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
             }}
           />
         )}
-        {/* arrow swap */}
-        <div style={{ position: 'relative', width: 16, height: 16, overflow: 'hidden', zIndex: 5 }}>
+        {/* arrow swap (accent-fg so it flips with the theme) */}
+        <div style={{ position: 'relative', width: 16, height: 16, overflow: 'hidden', zIndex: 5, color: 'var(--ds-accent-fg)' }}>
           {arrowToggle > 0 && (
-            <motion.img
+            <motion.div
               key={`out-${arrowToggle}`}
-              src={`${A}/arrow-up.svg`}
-              alt=""
               initial={{ y: 0, opacity: 1 }}
               animate={{ y: -16, opacity: 0 }}
               transition={{ duration: 0.32, ease: [0.65, 0, 0.35, 1] }}
-              style={{ position: 'absolute', inset: 0, width: 16, height: 16, filter: 'brightness(0) invert(1)' }}
-            />
+              style={{ position: 'absolute', inset: 0 }}
+            >
+              <Icon name="arrowUp" size={16} />
+            </motion.div>
           )}
-          <motion.img
+          <motion.div
             key={`in-${arrowToggle}`}
-            src={`${A}/arrow-up.svg`}
-            alt=""
             initial={arrowToggle > 0 ? { y: 16, opacity: 0 } : { y: 0, opacity: 1 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.32, ease: [0.65, 0, 0.35, 1] }}
-            style={{ position: 'absolute', inset: 0, width: 16, height: 16, filter: 'brightness(0) invert(1)' }}
-          />
+            style={{ position: 'absolute', inset: 0 }}
+          >
+            <Icon name="arrowUp" size={16} />
+          </motion.div>
         </div>
       </div>
     </motion.div>
@@ -672,7 +670,7 @@ export default function Index() {
             fontWeight: 400,
             lineHeight: 1.05,
             letterSpacing: '-0.01em',
-            color: '#171717',
+            color: 'var(--ds-text)',
             maxWidth: 520,
             margin: '32px auto 8px',
             textAlign: 'center',
@@ -688,7 +686,7 @@ export default function Index() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.45, ease: 'easeOut' }}
-          style={{ fontSize: 14, fontWeight: 400, color: '#737373', textAlign: 'center', marginBottom: 20 }}
+          style={{ fontSize: 14, fontWeight: 400, color: 'var(--ds-text-secondary)', textAlign: 'center', marginBottom: 20 }}
         >
           What do you want to plan today?
         </motion.p>
@@ -703,17 +701,17 @@ export default function Index() {
             maxWidth: '100%',
             padding: 4,
             borderRadius: 12,
-            border: '1px solid #f0f0f0',
-            background: '#f6f6f6',
+            border: '1px solid var(--ds-hair)',
+            background: 'var(--ds-surface-2)',
           }}
         >
           <div
             style={{
               width: '100%',
               height: 116,
-              background: '#fff',
+              background: 'var(--ds-surface)',
               borderRadius: 8,
-              border: '1px solid #f0f0f0',
+              border: '1px solid var(--ds-hair)',
               padding: '16px 14px 14px 16px',
               display: 'flex',
               flexDirection: 'column',
@@ -732,7 +730,7 @@ export default function Index() {
                   style={{
                     width: 110,
                     height: 28,
-                    background: '#f3f3f3',
+                    background: 'var(--ds-surface-2)',
                     borderRadius: 8,
                     padding: '0 8px',
                     display: 'flex',
@@ -745,14 +743,17 @@ export default function Index() {
                       width: 14,
                       height: 14,
                       borderRadius: 4,
-                      background: '#252525',
+                      background: 'var(--ds-accent)',
+                      color: 'var(--ds-accent-fg)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexShrink: 0,
                     }}
                   >
-                    <img src={`${A}/ai-select.svg`} alt="" style={{ width: 8, height: 8, filter: 'brightness(0) invert(1)' }} />
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M12 2l1.7 6.1a2 2 0 0 0 1.4 1.4L21 11l-5.9 1.5a2 2 0 0 0-1.4 1.4L12 20l-1.7-6.1a2 2 0 0 0-1.4-1.4L3 11l5.9-1.5a2 2 0 0 0 1.4-1.4z" />
+                    </svg>
                   </span>
                   <span style={{ fontSize: 12, lineHeight: '16px', color: '#5e5e5e', whiteSpace: 'nowrap' }}>Ondie</span>
                   <Icon name="chevronDown" size={12} color="#5e5e5e" style={{ marginLeft: 'auto', flexShrink: 0 }} />
@@ -791,7 +792,7 @@ export default function Index() {
                     gap: 4,
                   }}
                 >
-                  <span style={{ fontSize: 12, color: '#525252' }}>Single</span>
+                  <span style={{ fontSize: 12, color: 'var(--ds-text-secondary)' }}>Single</span>
                   <Icon name="close" size={12} color="rgba(0,0,0,0.35)" style={{ marginLeft: 2 }} />
                 </div>
               </div>

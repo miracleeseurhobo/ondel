@@ -16,6 +16,10 @@ import SignIn from './pages/SignIn'
 import WorkspaceLayout from './components/WorkspaceLayout'
 import BlankPage from './components/BlankPage'
 import { isSignedIn } from './lib/auth'
+import { applyTheme, getStoredTheme } from './lib/theme'
+
+// Apply the persisted/OS theme before first paint to avoid a flash.
+applyTheme(getStoredTheme())
 
 // Auth is opt-in: with VITE_CLERK_PUBLISHABLE_KEY set, the OAuth buttons run the
 // real Clerk redirect flow; without it, a persisted mock gate stands in.

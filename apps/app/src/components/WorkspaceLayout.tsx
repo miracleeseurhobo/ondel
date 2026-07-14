@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Icon, type IconName } from './ui/icon'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
+import ThemeToggle from './ThemeToggle'
 import { mockSignOut } from '../lib/auth'
 
 const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
@@ -54,17 +55,17 @@ export default function WorkspaceLayout() {
     })
 
   return (
-    <div className="flex min-h-dvh" style={{ background: '#f5f5f5', color: INK }}>
+    <div className="flex min-h-dvh" style={{ background: 'var(--ds-bg)', color: INK }}>
       {/* Sidebar (desktop) — gray-100 fill with a soft sky-blue bloom that blends in */}
       <aside
         className="sticky top-0 hidden h-dvh w-[236px] flex-col justify-between overflow-hidden px-4 py-6 md:flex"
-        style={{ background: '#f5f5f5' }}
+        style={{ background: 'var(--ds-bg)' }}
       >
         <div className="relative">
           <div className="flex items-center gap-2.5 px-1">
             <span
               className="flex h-8 w-8 items-center justify-center rounded-ds-md"
-              style={{ background: '#e5e5e5', color: '#171717' }}
+              style={{ background: 'var(--ds-surface-2)', color: 'var(--ds-text)' }}
             >
               <OndelLogo className="h-[15px] w-[15px]" />
             </span>
@@ -80,7 +81,7 @@ export default function WorkspaceLayout() {
                 className="flex h-10 items-center gap-3 rounded-xl px-3 text-[14px] transition-colors"
                 style={({ isActive }) =>
                   isActive
-                    ? { background: 'rgba(255,255,255,0.9)', color: '#000000', boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
+                    ? { background: 'var(--ds-surface)', color: 'var(--ds-accent)', boxShadow: 'var(--ds-card-shadow)' }
                     : { color: SUBTLE }
                 }
               >
@@ -96,7 +97,7 @@ export default function WorkspaceLayout() {
               type="button"
               onClick={() => setPlatformsOpen((v) => !v)}
               className="flex w-full items-center gap-1 px-3 pb-1.5 text-[12px] font-medium"
-              style={{ color: '#b5b5b5' }}
+              style={{ color: 'var(--ds-text-faint)' }}
             >
               Platforms
               <Icon name="chevronDown" size={13} className={`transition-transform ${platformsOpen ? '' : '-rotate-90'}`} />
@@ -114,7 +115,7 @@ export default function WorkspaceLayout() {
                       className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-[14px] transition-colors"
                       style={
                         on
-                          ? { background: 'rgba(255,255,255,0.9)', color: INK, boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
+                          ? { background: 'var(--ds-surface)', color: INK, boxShadow: 'var(--ds-card-shadow)' }
                           : { color: SUBTLE }
                       }
                     >
@@ -133,15 +134,18 @@ export default function WorkspaceLayout() {
           </div>
         </div>
         <div className="relative">
+          <div className="mb-2 px-1">
+            <ThemeToggle />
+          </div>
           <button
             type="button"
             onClick={() => {
               mockSignOut()
               navigate('/signin')
             }}
-            className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-white/60"
+            className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-overlay/[0.06]"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-medium text-white" style={{ background: '#000000' }}>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-medium" style={{ background: 'var(--ds-accent)', color: 'var(--ds-accent-fg)' }}>
               O
             </span>
             <div className="flex-1 leading-tight">
@@ -158,8 +162,8 @@ export default function WorkspaceLayout() {
       {/* Main — floating elevated card (subtle shadow, tight whitespace) */}
       <div className="flex-1 p-2 pb-24 md:p-2.5 md:pb-2.5 md:pl-1">
         <div
-          className="flex min-h-[calc(100dvh-6rem)] flex-col overflow-hidden rounded-xl bg-white md:min-h-[calc(100dvh-1.25rem)]"
-          style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 4px 16px -8px rgba(0,0,0,0.1)' }}
+          className="flex min-h-[calc(100dvh-6rem)] flex-col overflow-hidden rounded-xl border border-hair bg-surface md:min-h-[calc(100dvh-1.25rem)]"
+          style={{ boxShadow: 'var(--ds-card-shadow)' }}
         >
         {/* Top bar (suppressed on the calendar, which renders its own) */}
         {!hideTopBar && (
@@ -167,7 +171,7 @@ export default function WorkspaceLayout() {
           <div className="flex items-center gap-2 md:hidden">
             <span
               className="flex h-8 w-8 items-center justify-center rounded-ds-md"
-              style={{ background: '#e5e5e5', color: '#171717' }}
+              style={{ background: 'var(--ds-surface-2)', color: 'var(--ds-text)' }}
             >
               <OndelLogo className="h-[15px] w-[15px]" />
             </span>
@@ -176,7 +180,7 @@ export default function WorkspaceLayout() {
           <div className="ml-auto flex items-center gap-2">
             <button
               type="button"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-white"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-surface"
               style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.08)' }}
               aria-label="Notifications"
             >
@@ -185,19 +189,19 @@ export default function WorkspaceLayout() {
             {/* Connect — stacked Spotify + Apple service logos, black primary */}
             <button
               type="button"
-              className="flex h-9 items-center gap-2.5 rounded-full py-1 pl-1 pr-3.5 text-[13px] font-medium text-white"
-              style={{ background: '#000000' }}
+              className="flex h-9 items-center gap-2.5 rounded-full py-1 pl-1 pr-3.5 text-[13px] font-medium"
+              style={{ background: 'var(--ds-accent)', color: 'var(--ds-accent-fg)' }}
             >
               <span className="flex -space-x-2">
                 <span
                   className="flex h-[26px] w-[26px] items-center justify-center overflow-hidden rounded-full"
-                  style={{ boxShadow: '0 0 0 2px #000000' }}
+                  style={{ boxShadow: '0 0 0 2px var(--ds-accent)' }}
                 >
                   <SpotifyGlyph className="h-[26px] w-[26px]" />
                 </span>
                 <span
                   className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white"
-                  style={{ boxShadow: '0 0 0 2px #000000' }}
+                  style={{ boxShadow: '0 0 0 2px var(--ds-accent)' }}
                 >
                   <AppleGlyph className="h-[15px] w-[15px]" />
                 </span>
@@ -216,7 +220,7 @@ export default function WorkspaceLayout() {
 
       {/* Mobile bottom nav */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t border-black/5 bg-white/90 px-2 py-2 backdrop-blur-md md:hidden"
+        className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t border-overlay/5 bg-surface/95 px-2 py-2 backdrop-blur-md md:hidden"
         style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
       >
         {NAV.map(({ to, label, icon, end }) => (
@@ -225,7 +229,7 @@ export default function WorkspaceLayout() {
             to={to}
             end={end}
             className="flex min-h-[44px] flex-1 flex-col items-center justify-center gap-0.5 rounded-lg text-[10px]"
-            style={({ isActive }) => ({ color: isActive ? '#000000' : FAINT })}
+            style={({ isActive }) => ({ color: isActive ? 'var(--ds-accent)' : FAINT })}
           >
             <Icon name={icon} className="h-[18px] w-[18px]" />
             {label}

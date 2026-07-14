@@ -13,8 +13,8 @@ type DayEdit = { quiet?: boolean; added?: Post[] }
 
 const SCHEDULED = '#ffb362'
 const ROUNDED_FONT = "ui-rounded, 'SF Pro Rounded', 'Inter Tight', -apple-system, sans-serif"
-const HAIR = '#f0f0f0' // faint hairline — nav, objectives, panel
-const GRID = '#e2e2e2' // bolder calendar grid lines for a crisp, high-resolution grid
+const HAIR = 'var(--ds-hair)' // faint hairline — nav, objectives, panel
+const GRID = 'var(--ds-grid)' // bolder calendar grid lines for a crisp, high-resolution grid
 
 // Platform brand colours — the one place chromatic colour is allowed.
 const PLATFORM: Record<string, { label: string; color: string }> = {
@@ -24,7 +24,7 @@ const PLATFORM: Record<string, { label: string; color: string }> = {
   threads: { label: 'Threads', color: '#111111' },
   spotify: { label: 'Spotify', color: '#1DB954' },
   x: { label: 'X', color: '#111111' },
-  all: { label: 'All platforms', color: '#737373' },
+  all: { label: 'All platforms', color: 'var(--ds-text-secondary)' },
 }
 
 type Plan = { title: string; platforms: string[]; release?: boolean }
@@ -104,10 +104,10 @@ function Sparkle({ size = 14, color = 'currentColor' }: { size?: number; color?:
 function OndieFace({ size = 28 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden>
-      <rect width="32" height="32" rx="9" fill="#1c1c1c" />
-      <circle cx="12" cy="14" r="2" fill="#fff" />
-      <circle cx="20" cy="14" r="2" fill="#fff" />
-      <path d="M11.5 20c1.3 1.4 4 2 6.2 1 .6-.3 1.2-.6 1.8-1.1" stroke="#fff" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <rect width="32" height="32" rx="9" fill="var(--ds-accent)" />
+      <circle cx="12" cy="14" r="2" fill="var(--ds-accent-fg)" />
+      <circle cx="20" cy="14" r="2" fill="var(--ds-accent-fg)" />
+      <path d="M11.5 20c1.3 1.4 4 2 6.2 1 .6-.3 1.2-.6 1.8-1.1" stroke="var(--ds-accent-fg)" strokeWidth="1.6" fill="none" strokeLinecap="round" />
     </svg>
   )
 }
@@ -120,7 +120,7 @@ function PlatformDots({ platforms }: { platforms: string[] }) {
           key={p}
           title={PLATFORM[p]?.label}
           className="h-[7px] w-[7px] rounded-full ring-1 ring-white"
-          style={{ background: PLATFORM[p]?.color ?? '#737373' }}
+          style={{ background: PLATFORM[p]?.color ?? 'var(--ds-text-secondary)' }}
         />
       ))}
     </span>
@@ -150,7 +150,7 @@ function CalendarTopNav({
         <span className="text-[14px]" style={{ color: SUBTLE }}>
           Calendar
         </span>
-        <Icon name="chevronRight" size={14} style={{ color: '#c4c4c4' }} />
+        <Icon name="chevronRight" size={14} style={{ color: 'var(--ds-text-muted)' }} />
         <span className="text-[14px] font-medium" style={{ color: INK }}>
           {monthLabel}
         </span>
@@ -159,7 +159,7 @@ function CalendarTopNav({
       {/* Right controls */}
       <div className="ml-auto flex items-center gap-2">
         {/* Month / Week toggle */}
-        <div className="flex items-center rounded-lg p-0.5" style={{ background: '#f3f3f3' }}>
+        <div className="flex items-center rounded-lg p-0.5" style={{ background: 'var(--ds-surface-2)' }}>
           {(['month', 'week'] as const).map((v) => (
             <button
               key={v}
@@ -168,7 +168,7 @@ function CalendarTopNav({
               className="h-7 rounded-md px-3 text-[13px] font-medium capitalize transition-colors"
               style={
                 view === v
-                  ? { background: '#ffffff', color: INK, boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
+                  ? { background: 'var(--ds-surface)', color: INK, boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
                   : { color: SUBTLE }
               }
             >
@@ -182,10 +182,10 @@ function CalendarTopNav({
           type="button"
           onClick={onAsk}
           aria-pressed={askOpen}
-          className="flex h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium text-white transition-transform active:scale-[0.98]"
-          style={{ background: askOpen ? '#000000' : '#252525' }}
+          className="flex h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium text-[color:var(--ds-accent-fg)] transition-transform active:scale-[0.98]"
+          style={{ background: askOpen ? 'var(--ds-accent)' : 'var(--ds-accent)' }}
         >
-          <Sparkle size={13} color="#ffffff" />
+          <Sparkle size={13} color="var(--ds-accent-fg)" />
           Ask Ondie
         </button>
       </div>
@@ -202,7 +202,7 @@ function AskOndiePanel({ open, onClose }: { open: boolean; onClose: () => void }
       style={{ borderColor: HAIR }}
       aria-hidden={!open}
     >
-      <div className="flex h-full w-full flex-col md:w-[380px]" style={{ background: '#fafafa' }}>
+      <div className="flex h-full w-full flex-col md:w-[380px]" style={{ background: 'var(--ds-surface-3)' }}>
         {/* Header */}
         <div className="flex items-center gap-2 border-b px-5 py-3.5" style={{ borderColor: HAIR }}>
           <OndieFace size={22} />
@@ -213,7 +213,7 @@ function AskOndiePanel({ open, onClose }: { open: boolean; onClose: () => void }
             type="button"
             onClick={onClose}
             aria-label="Close Ask Ondie"
-            className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-black/5"
+            className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-overlay/5"
           >
             <Icon name="close" size={16} style={{ color: SUBTLE }} />
           </button>
@@ -232,12 +232,12 @@ function AskOndiePanel({ open, onClose }: { open: boolean; onClose: () => void }
 
         {/* Input */}
         <div className="p-4">
-          <div className="flex h-11 items-center gap-2 rounded-lg px-3" style={{ background: '#f3f3f3' }}>
-            <Sparkle size={15} color="#b5b5b5" />
+          <div className="flex h-11 items-center gap-2 rounded-lg px-3" style={{ background: 'var(--ds-surface-2)' }}>
+            <Sparkle size={15} color="var(--ds-text-faint)" />
             <input
               type="text"
               placeholder="Ask about your release week"
-              className="min-w-0 flex-1 bg-transparent text-[14px] outline-none placeholder:text-[#9a9a9a]"
+              className="min-w-0 flex-1 bg-transparent text-[14px] outline-none placeholder:text-[var(--ds-text-muted)]"
               style={{ color: INK }}
             />
           </div>
@@ -269,15 +269,15 @@ function DayCell({ cell, cur, isToday, isPast, isRelease, posts, quiet, tall, la
     >
       <div className="flex items-center justify-between px-0.5">
         {isToday ? (
-          <span className="flex h-[24px] w-[24px] items-center justify-center rounded-full text-[13px] font-medium text-white" style={{ background: '#252525' }}>
+          <span className="flex h-[24px] w-[24px] items-center justify-center rounded-full text-[13px] font-medium text-[color:var(--ds-accent-fg)]" style={{ background: 'var(--ds-accent)' }}>
             {cell.day}
           </span>
         ) : isRelease ? (
-          <span className="flex h-[24px] w-[24px] items-center justify-center rounded-full text-[13px] font-medium text-white" style={{ background: SCHEDULED }}>
+          <span className="flex h-[24px] w-[24px] items-center justify-center rounded-full text-[13px] font-medium text-[color:var(--ds-accent-fg)]" style={{ background: SCHEDULED }}>
             {cell.day}
           </span>
         ) : (
-          <span className="text-[13px] font-medium" style={{ color: cur ? (isPast ? FAINT : INK) : '#cfcfcf' }}>
+          <span className="text-[13px] font-medium" style={{ color: cur ? (isPast ? FAINT : INK) : 'var(--ds-text-muted)' }}>
             {cell.day}
           </span>
         )}
@@ -295,7 +295,7 @@ function DayCell({ cell, cur, isToday, isPast, isRelease, posts, quiet, tall, la
             type="button"
             aria-label={menuOpen ? 'Close add menu' : 'Add to this day'}
             onClick={(e) => onAdd(cell.day, e)}
-            className={`flex h-[22px] w-[22px] items-center justify-center rounded-md transition-opacity ${menuOpen ? 'bg-black/[0.06] opacity-100' : 'opacity-0 hover:bg-black/[0.06] group-hover:opacity-100'}`}
+            className={`flex h-[22px] w-[22px] items-center justify-center rounded-md transition-opacity ${menuOpen ? 'bg-overlay/[0.06] opacity-100' : 'opacity-0 hover:bg-overlay/[0.06] group-hover:opacity-100'}`}
           >
             <Icon name={menuOpen ? 'close' : 'plus'} size={14} style={{ color: SUBTLE }} />
           </button>
@@ -307,7 +307,7 @@ function DayCell({ cell, cur, isToday, isPast, isRelease, posts, quiet, tall, la
           <div
             key={idx}
             className={`flex items-center gap-1.5 rounded-md px-1.5 py-1 ${isPast && !p.release ? 'opacity-55' : ''}`}
-            style={{ background: p.release ? SCHEDULED : '#f3f3f3' }}
+            style={{ background: p.release ? SCHEDULED : 'var(--ds-surface-2)' }}
           >
             <PlatformDots platforms={p.platforms} />
             <span className="min-w-0 flex-1 truncate text-[11px] font-medium" style={{ color: p.release ? '#3b2405' : INK }}>
@@ -319,9 +319,9 @@ function DayCell({ cell, cur, isToday, isPast, isRelease, posts, quiet, tall, la
           </div>
         ))}
         {quiet ? (
-          <div className="flex items-center gap-1.5 rounded-md px-1.5 py-1" style={{ background: '#f6f6f6' }}>
-            <Icon name="quiet" size={12} style={{ color: '#a3a3a3' }} />
-            <span className="text-[11px] font-medium" style={{ color: '#9a9a9a' }}>Quiet day</span>
+          <div className="flex items-center gap-1.5 rounded-md px-1.5 py-1" style={{ background: 'var(--ds-surface-2)' }}>
+            <Icon name="quiet" size={12} style={{ color: 'var(--ds-text-muted)' }} />
+            <span className="text-[11px] font-medium" style={{ color: 'var(--ds-text-muted)' }}>Quiet day</span>
           </div>
         ) : null}
       </div>
@@ -331,7 +331,7 @@ function DayCell({ cell, cur, isToday, isPast, isRelease, posts, quiet, tall, la
 
 function MenuItem({ icon, label, strong, onClick }: { icon: 'newPost' | 'fillPlan' | 'quiet'; label: string; strong?: boolean; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors hover:bg-[#f3f3f3]">
+    <button type="button" onClick={onClick} className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors hover:bg-[var(--ds-surface-2)]">
       <Icon name={icon} size={17} style={{ color: strong ? INK : SUBTLE }} />
       <span className="text-[14px]" style={{ color: INK, fontWeight: strong ? 500 : 400 }}>{label}</span>
     </button>
@@ -398,7 +398,7 @@ export default function Timeline() {
           {/* Release header */}
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <div className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: '#b5b5b5' }}>
+              <div className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: 'var(--ds-text-faint)' }}>
                 Release campaign
               </div>
               <h1 className="mt-1 text-[22px] font-medium tracking-[-0.4px]" style={{ color: INK }}>
@@ -409,13 +409,13 @@ export default function Timeline() {
               </p>
             </div>
             <div className="flex items-center gap-1.5">
-              <button type="button" onClick={() => shift(-1)} aria-label="Previous month" className="flex h-8 w-8 items-center justify-center rounded-lg border bg-white transition-colors hover:bg-neutral-50" style={{ borderColor: HAIR }}>
+              <button type="button" onClick={() => shift(-1)} aria-label="Previous month" className="flex h-8 w-8 items-center justify-center rounded-lg border bg-surface transition-colors hover:bg-surface2" style={{ borderColor: HAIR }}>
                 <Icon name="chevronLeft" size={16} style={{ color: SUBTLE }} />
               </button>
-              <button type="button" onClick={() => shift(1)} aria-label="Next month" className="flex h-8 w-8 items-center justify-center rounded-lg border bg-white transition-colors hover:bg-neutral-50" style={{ borderColor: HAIR }}>
+              <button type="button" onClick={() => shift(1)} aria-label="Next month" className="flex h-8 w-8 items-center justify-center rounded-lg border bg-surface transition-colors hover:bg-surface2" style={{ borderColor: HAIR }}>
                 <Icon name="chevronRight" size={16} style={{ color: SUBTLE }} />
               </button>
-              <button type="button" onClick={() => setCursor({ year: CAMPAIGN.year, month: CAMPAIGN.month })} className="ml-1 h-8 rounded-lg px-3 text-[13px] font-medium text-white transition-transform active:scale-[0.98]" style={{ background: '#252525' }}>
+              <button type="button" onClick={() => setCursor({ year: CAMPAIGN.year, month: CAMPAIGN.month })} className="ml-1 h-8 rounded-lg px-3 text-[13px] font-medium text-[color:var(--ds-accent-fg)] transition-transform active:scale-[0.98]" style={{ background: 'var(--ds-accent)' }}>
                 Today
               </button>
             </div>
@@ -424,9 +424,9 @@ export default function Timeline() {
           {/* Weekly objectives */}
           <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {OBJECTIVES.map((o, i) => (
-              <div key={o.week} className="rounded-md border bg-white px-3 py-2" style={{ borderColor: HAIR }}>
+              <div key={o.week} className="rounded-md border bg-surface px-3 py-2" style={{ borderColor: HAIR }}>
                 <div className="flex items-center gap-1.5 text-[11px] font-medium" style={{ color: FAINT }}>
-                  <span className="flex h-4 w-4 items-center justify-center rounded-full text-[9px] text-white" style={{ background: '#252525' }}>
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full text-[9px] text-[color:var(--ds-accent-fg)]" style={{ background: 'var(--ds-accent)' }}>
                     {i + 1}
                   </span>
                   {o.week}
@@ -439,10 +439,10 @@ export default function Timeline() {
           </div>
 
           {/* Calendar grid */}
-          <div className="mt-4 overflow-hidden rounded-xl border bg-white" style={{ borderColor: GRID }}>
+          <div className="mt-4 overflow-hidden rounded-xl border bg-surface" style={{ borderColor: GRID }}>
             <div className="grid grid-cols-7 border-b" style={{ borderColor: GRID }}>
               {WEEKDAYS.map((d) => (
-                <div key={d} className="py-2.5 text-center text-[12px] font-medium" style={{ color: '#7a7a7a' }}>
+                <div key={d} className="py-2.5 text-center text-[12px] font-medium" style={{ color: 'var(--ds-text-secondary)' }}>
                   {d}
                 </div>
               ))}
@@ -479,9 +479,9 @@ export default function Timeline() {
           {/* Legend */}
           <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px]" style={{ color: SUBTLE }}>
             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: SCHEDULED }} /> Scheduled</span>
-            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: '#252525' }} /> Today</span>
-            <span className="flex items-center gap-1.5 opacity-70"><span className="h-2 w-2 rounded-full" style={{ background: '#d4d4d4' }} /> Posted</span>
-            <span className="mx-1 h-3 w-px" style={{ background: '#eaeaea' }} />
+            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: 'var(--ds-accent)' }} /> Today</span>
+            <span className="flex items-center gap-1.5 opacity-70"><span className="h-2 w-2 rounded-full" style={{ background: 'var(--ds-border)' }} /> Posted</span>
+            <span className="mx-1 h-3 w-px" style={{ background: 'var(--ds-border)' }} />
             {Object.entries(PLATFORM).filter(([k]) => k !== 'all').map(([k, v]) => (
               <span key={k} className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: v.color }} /> {v.label}</span>
             ))}
@@ -499,7 +499,7 @@ export default function Timeline() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.14, ease: [0.23, 1, 0.32, 1] }}
-            className="fixed z-50 w-[240px] rounded-xl border bg-white p-1.5"
+            className="fixed z-50 w-[240px] rounded-xl border bg-surface p-1.5"
             style={{ left: menu.left, top: menu.top, borderColor: GRID, boxShadow: '0 12px 32px -12px rgba(0,0,0,0.24)', transformOrigin: 'top right' }}
           >
             <MenuItem icon="newPost" label="New post" strong onClick={() => addPost(menu.day, { title: 'New post', platforms: ['instagram'] })} />

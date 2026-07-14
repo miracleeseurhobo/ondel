@@ -28,7 +28,7 @@ function DisplayCard({
   return (
     <div
       className={cn(
-        'relative flex min-h-[8rem] w-[15rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-neutral-200 bg-white/70 px-4 py-3 backdrop-blur-sm transition-all duration-700 hover:border-neutral-300 hover:bg-white sm:h-36 sm:w-[22rem] [&>*]:flex [&>*]:items-center [&>*]:gap-2',
+        'relative flex min-h-[8rem] w-[15rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-hair bg-white/70 px-4 py-3 backdrop-blur-sm transition-all duration-700 hover:border-hair hover:bg-surface sm:h-36 sm:w-[22rem] [&>*]:flex [&>*]:items-center [&>*]:gap-2',
         className,
       )}
     >
@@ -36,8 +36,8 @@ function DisplayCard({
         <span className={cn('relative inline-block rounded-full p-1.5', badgeClassName)}>{icon}</span>
         <p className={cn('text-[15px] font-medium', titleClassName)}>{title}</p>
       </div>
-      <p className="text-[15px] text-neutral-700 sm:whitespace-nowrap">{description}</p>
-      <p className="text-[12px] text-neutral-400">{date}</p>
+      <p className="text-[15px] text-subtle sm:whitespace-nowrap">{description}</p>
+      <p className="text-[12px] text-faint">{date}</p>
     </div>
   )
 }

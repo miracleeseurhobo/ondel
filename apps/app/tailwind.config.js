@@ -17,16 +17,26 @@ export default {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
-        // Single accent — primary CTAs, active nav, focus, links. Parked on
-        // greyscale (black) for now; #3D82DE is retired until we revisit.
-        // Everything else draws from Tailwind's built-in `neutral` scale.
-        // See design-system/color.md.
+        // Single accent — primary CTAs, active nav, focus. Theme-aware:
+        // black in light, inverts to near-white in dark. See design-system/color.md.
         brand: {
-          DEFAULT: '#000000',
-          fg: '#ffffff',
+          DEFAULT: 'var(--ds-accent)',
+          fg: 'var(--ds-accent-fg)',
         },
         // Warm amber — functional "scheduled" status only (Serena's lone accent).
         scheduled: '#ffb362',
+        // Theme-aware semantic surfaces & text (flip via .dark in index.css).
+        app: 'var(--ds-bg)',
+        surface: 'var(--ds-surface)',
+        surface2: 'var(--ds-surface-2)',
+        surface3: 'var(--ds-surface-3)',
+        hair: 'var(--ds-hair)',
+        grid: 'var(--ds-grid)',
+        ink: 'var(--ds-text)',
+        subtle: 'var(--ds-text-secondary)',
+        faint: 'var(--ds-text-muted)',
+        // Translucent overlay (black in light, white in dark) — supports /opacity.
+        overlay: 'rgb(var(--ds-overlay) / <alpha-value>)',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

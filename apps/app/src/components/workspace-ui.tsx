@@ -1,11 +1,12 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { motion } from 'framer-motion'
 
-// Neutral design-system tokens (see design-system/color.md).
-export const INK = '#171717' // neutral-900 — primary text
-export const SUBTLE = '#737373' // neutral-500 — secondary text
-export const FAINT = '#a3a3a3' // neutral-400 — muted text
-export const CARD_SHADOW = '0 1px 2px rgba(0,0,0,0.04), 0 8px 24px -12px rgba(0,0,0,0.12)'
+// Theme-aware design-system tokens — flip between light/dark via CSS vars
+// (see index.css + design-system/color.md).
+export const INK = 'var(--ds-text)' // primary text
+export const SUBTLE = 'var(--ds-text-secondary)' // secondary text
+export const FAINT = 'var(--ds-text-muted)' // muted text
+export const CARD_SHADOW = 'var(--ds-card-shadow)'
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
@@ -35,7 +36,7 @@ export function Rise({
 
 export function Card({ children, className = '', style }: { children: ReactNode; className?: string; style?: CSSProperties }) {
   return (
-    <div className={`rounded-xl bg-white ${className}`} style={{ boxShadow: CARD_SHADOW, ...style }}>
+    <div className={`rounded-xl bg-surface ${className}`} style={{ boxShadow: CARD_SHADOW, ...style }}>
       {children}
     </div>
   )
