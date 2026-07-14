@@ -8,7 +8,7 @@ Pages never import an icon directly — they reference a semantic name.
 ```tsx
 import { Icon } from '@/components/ui/icon' // (relative import in this app)
 
-<Icon name="home" />                       {/* 18px, 1.2px stroke, currentColor */}
+<Icon name="home" />                       {/* 18px, size-aware stroke, currentColor */}
 <Icon name="bell" size={20} className="text-neutral-500" />
 ```
 
@@ -17,7 +17,7 @@ import { Icon } from '@/components/ui/icon' // (relative import in this app)
 The spec calls for Hugeicons **solid**. Solid variants are part of Hugeicons
 **Pro** (`@hugeicons-pro/*`), which needs a paid license + npm token. Until that
 token exists, the app uses the closest freely-available Hugeicons set:
-`@hugeicons/core-free-icons` (stroke, rounded, 1.2px).
+`@hugeicons/core-free-icons` (stroke, rounded; weight scales with size — see Defaults).
 
 **Moving to solid is a one-line change** — in `icon.tsx`, swap:
 
@@ -53,5 +53,7 @@ Defined once in `icon.tsx`. Add a role here rather than importing ad hoc.
 
 ## Defaults
 
-Size `18`, `strokeWidth` `1.2`, color inherited (`currentColor`). Override per
-instance via props; set color with the parent's Tailwind `text-*` class.
+Size `18`, color inherited (`currentColor`), and an **optically-scaled stroke**:
+`≤17px → 1.5`, `18–21px → 1.4`, `≥22px → 1.2`. Small/muted icons stay legible;
+large icons read lighter. Override `strokeWidth` per instance when needed; set
+color with the parent's Tailwind `text-*` class.

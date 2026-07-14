@@ -68,9 +68,20 @@ export type IconName = keyof typeof icons
 
 type IconProps = Omit<HugeiconsIconProps, 'icon'> & { name: IconName }
 
-// Defaults encode the system: 18px, 1.2px stroke, currentColor. Colour is set
-// by the parent's text colour (Tailwind `text-*`); size/stroke can be overridden
-// per instance.
-export function Icon({ name, size = 18, strokeWidth = 1.2, ...rest }: IconProps) {
-  return <HugeiconsIcon icon={icons[name]} size={size} strokeWidth={strokeWidth} {...rest} />
+// Optical stroke scaling: small icons keep a legible weight, large icons go
+// lighter/airier, so strokes read consistently across sizes rather than one
+// value that's either faint when small or heavy when large.
+//   ≤17px → 1.5   ·   18–21px → 1.4   ·   ≥22px → 1.2
+function strokeFor(size: number) {
+  const n = typeof size === 'number' ? size : parseFloat(String(size)) || 18
+  if (n >= 22) return 1.2
+  if (n >= 18) return 1.4
+  return 1.5
+}
+
+// Defaults encode the system: 18px, size-aware stroke, currentColor. Colour is
+// set by the parent's text colour (Tailwind `text-*`); size/stroke can be
+// overridden per instance.
+export function Icon({ name, size = 18, strokeWidth, ...rest }: IconProps) {
+  return <HugeiconsIcon icon={icons[name]} size={size} strokeWidth={strokeWidth ?? strokeFor(size as number)} {...rest} />
 }
