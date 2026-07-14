@@ -7,6 +7,7 @@ import SiriOrb from '../components/SiriOrb'
 import DisplayCards, { type DisplayCardProps } from '../components/DisplayCards'
 import { mockSignIn, mockSignOut } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
+import { clearPlan } from '../lib/plan'
 
 // Shadow tokens (Lemni Light) — depth is shadow-driven, no borders.
 const CTA_SHADOW = 'rgba(0,0,0,0.4) 0px 2px 5px 0px'
@@ -230,6 +231,7 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   // sign-in + welcome simulation plays before the dashboard every time.
   useEffect(() => {
     mockSignOut()
+    clearPlan() // fresh session starts without a plan, so the Ask Ondie loop replays
   }, [])
 
   // Auth + manifesto + workspace onboarding are always light; dark mode is

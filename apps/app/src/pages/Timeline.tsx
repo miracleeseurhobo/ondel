@@ -1,7 +1,10 @@
 import { useState, type MouseEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Icon } from '../components/ui/icon'
 import { INK, SUBTLE, FAINT } from '../components/workspace-ui'
+import OndieMark from '../components/OndieMark'
+import { hasPlan } from '../lib/plan'
 
 type Post = { title: string; platforms: string[]; release?: boolean }
 type DayEdit = { quiet?: boolean; added?: Post[] }
@@ -100,23 +103,6 @@ function Sparkle({ size = 14, color = 'currentColor' }: { size?: number; color?:
   )
 }
 
-// Ondie AI mark — an upside-down headphone that reads as a smiley: the thick
-// headband arc is the smile, the two rounded earcup bars are the eyes.
-// Monochrome + theme-aware (accent tile, accent-fg mark).
-function OndieFace({ size = 28 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden>
-      <rect width="32" height="32" rx="9" fill="var(--ds-accent)" />
-      {/* earcups = eyes */}
-      <g fill="var(--ds-accent-fg)">
-        <rect x="11.2" y="8" width="2.6" height="6.1" rx="1.3" />
-        <rect x="18.2" y="8" width="2.6" height="6.1" rx="1.3" />
-      </g>
-      {/* headband = smile */}
-      <path d="M9.6 15.6 A 6.4 6.4 0 0 0 22.4 15.6" fill="none" stroke="var(--ds-accent-fg)" strokeWidth="2.8" strokeLinecap="round" />
-    </svg>
-  )
-}
 
 function PlatformDots({ platforms }: { platforms: string[] }) {
   return (
@@ -211,7 +197,7 @@ function AskOndiePanel({ open, onClose }: { open: boolean; onClose: () => void }
       <div className="flex h-full w-full flex-col md:w-[380px]" style={{ background: 'var(--ds-surface-3)' }}>
         {/* Header */}
         <div className="flex items-center gap-2 border-b px-5 py-3.5" style={{ borderColor: HAIR }}>
-          <OndieFace size={22} />
+          <OndieMark size={22} />
           <span className="text-[14px] font-medium" style={{ color: INK }}>
             Ask Ondie
           </span>
@@ -227,7 +213,7 @@ function AskOndiePanel({ open, onClose }: { open: boolean; onClose: () => void }
 
         {/* Empty state */}
         <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
-          <OndieFace size={44} />
+          <OndieMark size={44} />
           <div className="mt-4 text-[16px] font-medium" style={{ color: INK }}>
             Ask about your week
           </div>
@@ -345,11 +331,13 @@ function MenuItem({ icon, label, strong, onClick }: { icon: 'newPost' | 'fillPla
 }
 
 export default function Timeline() {
+  const navigate = useNavigate()
   const [cursor, setCursor] = useState({ year: CAMPAIGN.year, month: CAMPAIGN.month })
   const [view, setView] = useState<'month' | 'week'>('month')
   const [askOpen, setAskOpen] = useState(false)
   const [menu, setMenu] = useState<{ day: number; left: number; top: number } | null>(null)
   const [dayEdits, setDayEdits] = useState<Record<number, DayEdit>>({})
+  const planned = hasPlan()
 
   const openMenu = (day: number, e: MouseEvent<HTMLButtonElement>) => {
     if (menu?.day === day) {
@@ -386,6 +374,33 @@ export default function Timeline() {
       const m = c.month + delta
       return { year: c.year + Math.floor(m / 12), month: ((m % 12) + 12) % 12 }
     })
+  }
+
+  // No plan yet → invite the artist to build one from Home (the Ask Ondie loop).
+  if (!planned) {
+    return (
+      <div
+        className="-mx-6 -mb-8 -mt-4 flex flex-col items-center justify-center px-6 text-center sm:-mx-8 md:h-[calc(100dvh-1.25rem)]"
+        style={{ fontFamily: ROUNDED_FONT, minHeight: 560 }}
+      >
+        <OndieMark size={56} />
+        <h1 className="mt-5 text-[22px] font-medium tracking-[-0.4px]" style={{ color: INK }}>
+          No release plan yet
+        </h1>
+        <p className="mt-1.5 max-w-[320px] text-[14px] leading-[20px]" style={{ color: SUBTLE }}>
+          Ask Ondie on the home screen to build your 30-day release calendar.
+        </p>
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="mt-5 flex h-10 items-center gap-1.5 rounded-lg px-4 text-[14px] font-medium text-[color:var(--ds-accent-fg)] transition-transform active:scale-[0.98]"
+          style={{ background: 'var(--ds-accent)' }}
+        >
+          <Sparkle size={14} color="var(--ds-accent-fg)" />
+          Plan with Ondie
+        </button>
+      </div>
+    )
   }
 
   return (

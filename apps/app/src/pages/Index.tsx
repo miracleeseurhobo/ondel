@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Icon } from '../components/ui/icon'
+import OndieMark from '../components/OndieMark'
+import { setPlanGenerated } from '../lib/plan'
 
 // Remote assets (folder / lights / cards / icons) — the visual centrepiece.
 const A = 'https://qclay.design/lovable/sixsense'
@@ -625,7 +628,44 @@ function IconButton({ icon }: { icon: string }) {
 /* Ask Ondie — the dashboard home                                      */
 /* ------------------------------------------------------------------ */
 
+const GEN_STEPS = ['Reading your goal', 'Mapping the 30 days', 'Matching platforms', 'Scheduling posts']
+
 export default function Index() {
+  const navigate = useNavigate()
+  const reduced = useReducedMotion()
+  const [prompt, setPrompt] = useState('')
+  const [focused, setFocused] = useState(false)
+  const [generating, setGenerating] = useState(false)
+  const [step, setStep] = useState(0)
+
+  const submit = () => setGenerating((g) => g || true)
+
+  // Mock generation: tick through steps, then persist the plan + open the Calendar.
+  useEffect(() => {
+    if (!generating) return
+    const finish = () => {
+      setPlanGenerated(prompt.trim() || PHRASES[0])
+      navigate('/timeline')
+    }
+    if (reduced) {
+      setStep(GEN_STEPS.length)
+      const t = window.setTimeout(finish, 500)
+      return () => clearTimeout(t)
+    }
+    setStep(0)
+    let i = 0
+    const id = window.setInterval(() => {
+      i += 1
+      setStep(i)
+      if (i >= GEN_STEPS.length) {
+        window.clearInterval(id)
+        window.setTimeout(finish, 700)
+      }
+    }, 760)
+    return () => clearInterval(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [generating])
+
   return (
     <div
       style={{
@@ -719,7 +759,41 @@ export default function Index() {
               overflow: 'hidden',
             }}
           >
-            <Typewriter />
+            {/* prompt input (typewriter shows as an animated placeholder when idle) */}
+            <div style={{ position: 'relative', flex: 1 }}>
+              <textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    submit()
+                  }
+                }}
+                rows={2}
+                aria-label="Ask Ondie"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  resize: 'none',
+                  border: 'none',
+                  outline: 'none',
+                  background: 'transparent',
+                  color: 'var(--ds-text)',
+                  fontSize: 15,
+                  lineHeight: '22px',
+                  fontFamily: 'inherit',
+                  padding: 0,
+                }}
+              />
+              {!prompt && !focused ? (
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, pointerEvents: 'none' }}>
+                  <Typewriter />
+                </div>
+              ) : null}
+            </div>
 
             {/* toolbar */}
             <div style={{ marginTop: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -797,11 +871,57 @@ export default function Index() {
                 </div>
               </div>
 
-              <SendButton />
+              <SendButton onSubmit={submit} />
             </div>
           </div>
         </motion.div>
       </div>
+
+      {/* Generating overlay — Ondie planning the release, then opens the Calendar */}
+      {generating ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25 }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 20,
+            background: 'var(--ds-surface)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 24,
+          }}
+        >
+          <motion.div animate={reduced ? {} : { scale: [1, 1.06, 1] }} transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}>
+            <OndieMark size={60} />
+          </motion.div>
+          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 30, fontWeight: 400, color: 'var(--ds-text)', margin: '20px 0 6px' }}>
+            Planning your release
+          </h2>
+          <p style={{ fontSize: 14, color: 'var(--ds-text-secondary)', maxWidth: 380, textAlign: 'center', margin: 0 }}>
+            {prompt.trim() ? `“${prompt.trim()}”` : 'Building your 30-day plan…'}
+          </p>
+          <ul style={{ marginTop: 26, display: 'flex', flexDirection: 'column', gap: 13, width: 236, listStyle: 'none', padding: 0 }}>
+            {GEN_STEPS.map((s, i) => (
+              <li key={s} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                {i < step ? (
+                  <Icon name="check" size={16} style={{ color: 'var(--ds-accent)' }} />
+                ) : i === step ? (
+                  <span className="h-4 w-4 animate-spin rounded-full border-2" style={{ borderColor: 'var(--ds-border)', borderTopColor: 'var(--ds-accent)' }} />
+                ) : (
+                  <span className="flex h-4 w-4 items-center justify-center">
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--ds-text-muted)' }} />
+                  </span>
+                )}
+                <span style={{ fontSize: 14, color: i <= step ? 'var(--ds-text)' : 'var(--ds-text-muted)' }}>{s}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      ) : null}
     </div>
   )
 }
