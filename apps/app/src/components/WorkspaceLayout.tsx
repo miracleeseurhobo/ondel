@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Icon, type IconName } from './ui/icon'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
 import { mockSignOut } from '../lib/auth'
@@ -31,6 +31,8 @@ const AppleGlyph = ({ className }: { className?: string }) => (
 
 export default function WorkspaceLayout() {
   const navigate = useNavigate()
+  // The calendar renders its own flush top nav, so suppress the shell's.
+  const hideTopBar = useLocation().pathname.startsWith('/timeline')
 
   return (
     <div className="flex min-h-dvh" style={{ background: '#f5f5f5', color: INK }}>
@@ -98,7 +100,8 @@ export default function WorkspaceLayout() {
           className="flex min-h-[calc(100dvh-6rem)] flex-col overflow-hidden rounded-xl bg-white md:min-h-[calc(100dvh-1.25rem)]"
           style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 4px 16px -8px rgba(0,0,0,0.1)' }}
         >
-        {/* Top bar */}
+        {/* Top bar (suppressed on the calendar, which renders its own) */}
+        {!hideTopBar && (
         <div className="flex items-center justify-between px-6 pt-6 sm:px-8">
           <div className="flex items-center gap-2 md:hidden">
             <span
@@ -142,6 +145,7 @@ export default function WorkspaceLayout() {
             </button>
           </div>
         </div>
+        )}
 
         <main className="flex-1 px-6 pb-8 pt-4 sm:px-8">
           <Outlet />
