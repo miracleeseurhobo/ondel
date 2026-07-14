@@ -33,9 +33,10 @@
     /* Single accent — parked on greyscale (black) for now */
     --ds-brand: #000000;
     --ds-brand-fg: #ffffff;
-    /* Functional (forms only) */
+    /* Functional */
     --ds-danger: #dc2626; /* red-600 */
     --ds-success: #16a34a; /* green-600 */
+    --ds-scheduled: #ffb362; /* warm amber — "scheduled" status (Serena's lone accent) */
   }
 
   * {

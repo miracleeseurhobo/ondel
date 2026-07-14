@@ -25,6 +25,8 @@ export default {
           DEFAULT: '#000000',
           fg: '#ffffff',
         },
+        // Warm amber — functional "scheduled" status only (Serena's lone accent).
+        scheduled: '#ffb362',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

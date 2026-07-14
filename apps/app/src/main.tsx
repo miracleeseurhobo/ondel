@@ -11,6 +11,7 @@ import {
 } from '@clerk/clerk-react'
 import './index.css'
 import Index from './pages/Index'
+import Timeline from './pages/Timeline'
 import SignIn from './pages/SignIn'
 import WorkspaceLayout from './components/WorkspaceLayout'
 import BlankPage from './components/BlankPage'
@@ -58,7 +59,7 @@ function AppRouter() {
         <Route element={<GuardedLayout />}>
           <Route path="/" element={<Index />} />
           <Route path="/releases" element={<BlankPage title="Releases" />} />
-          <Route path="/timeline" element={<BlankPage title="Timeline" />} />
+          <Route path="/timeline" element={<Timeline />} />
           <Route path="/signals" element={<BlankPage title="Signals" />} />
           <Route path="/campaigns" element={<BlankPage title="Campaigns" />} />
         </Route>

@@ -41,6 +41,11 @@ icon/text, never color alone.
 | --- | --- | --- |
 | Danger / error | `--ds-danger` | `text-red-600` |
 | Success | `--ds-success` | `text-green-600` |
+| Scheduled | `--ds-scheduled` | `text-scheduled` / `bg-scheduled` |
+
+**Scheduled** (`#ffb362`, warm amber) is the one chromatic status colour — used
+only to mark scheduled/upcoming content on the release calendar (never
+decoratively). Borrowed from the Serena scheduler system.
 
 ## Exceptions
 

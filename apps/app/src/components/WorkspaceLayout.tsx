@@ -6,7 +6,7 @@ import { mockSignOut } from '../lib/auth'
 const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: '/', label: 'Home', icon: 'home', end: true },
   { to: '/releases', label: 'Releases', icon: 'releases' },
-  { to: '/timeline', label: 'Timeline', icon: 'timeline' },
+  { to: '/timeline', label: 'Calendar', icon: 'timeline' },
   { to: '/signals', label: 'Signals', icon: 'signals' },
   { to: '/campaigns', label: 'Campaigns', icon: 'campaigns' },
 ]
