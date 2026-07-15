@@ -6,23 +6,33 @@ import ThemeToggle from './ThemeToggle'
 import { mockSignOut } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
 
-const NAV: { to: string; label: string; icon: IconName; end?: boolean; count?: number }[] = [
+// Inbox gets a unique spot at the top of the sidebar (separated from the
+// workflow nav), like a mail app.
+const INBOX = { to: '/inbox', label: 'Inbox', icon: 'inbox' as IconName, count: 3 }
+
+const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: '/', label: 'Home', icon: 'home', end: true },
   { to: '/releases', label: 'Releases', icon: 'releases' },
   { to: '/timeline', label: 'Calendar', icon: 'timeline' },
-  { to: '/inbox', label: 'Inbox', icon: 'inbox', count: 3 },
+  { to: '/vault', label: 'Vault', icon: 'vault' },
   { to: '/signals', label: 'Signals', icon: 'signals' },
   { to: '/campaigns', label: 'Campaigns', icon: 'campaigns' },
 ]
 
-// Creator apps the artist can post to — app-icon tiles (brand colour + white mark).
+// Social apps the artist posts to — app-icon tiles (brand colour + white mark).
 const PLATFORMS: { key: string; label: string; icon: IconName; color: string }[] = [
   { key: 'instagram', label: 'Instagram', icon: 'pInstagram', color: '#E1306C' },
   { key: 'tiktok', label: 'TikTok', icon: 'pTiktok', color: '#111111' },
   { key: 'youtube', label: 'YouTube', icon: 'pYoutube', color: '#FF0000' },
   { key: 'threads', label: 'Threads', icon: 'pThreads', color: '#111111' },
   { key: 'x', label: 'X (Twitter)', icon: 'pX', color: '#111111' },
-  { key: 'spotify', label: 'Spotify', icon: 'pSpotify', color: '#1DB954' },
+]
+
+// Streaming sources for trending-charts data — connected via the Connect button.
+const CHARTS: { key: string; label: string; icon: IconName; color: string; connected: boolean }[] = [
+  { key: 'spotify', label: 'Spotify', icon: 'pSpotify', color: '#1DB954', connected: true },
+  { key: 'apple', label: 'Apple Music', icon: 'music', color: '#FA243C', connected: false },
+  { key: 'audiomack', label: 'Audiomack', icon: 'radio', color: '#FF7A00', connected: false },
 ]
 
 const OndelLogo = ({ className }: { className?: string }) => (
@@ -53,6 +63,7 @@ export default function WorkspaceLayout() {
     applyTheme(getStoredTheme())
   }, [])
   const [platformsOpen, setPlatformsOpen] = useState(true)
+  const [chartsOpen, setChartsOpen] = useState(true)
   const [activePlatforms, setActivePlatforms] = useState<Set<string>>(new Set(['instagram', 'tiktok', 'x']))
   const togglePlatform = (key: string) =>
     setActivePlatforms((s) => {
@@ -80,7 +91,28 @@ export default function WorkspaceLayout() {
           </div>
 
           <nav className="mt-8 flex flex-col gap-1">
-            {NAV.map(({ to, label, icon, end, count }) => (
+            {/* Inbox — its own spot up top */}
+            <NavLink
+              to={INBOX.to}
+              className="flex h-10 items-center gap-3 rounded-xl px-3 text-[14px] transition-colors"
+              style={({ isActive }) =>
+                isActive
+                  ? { background: 'var(--ds-surface)', color: 'var(--ds-accent)', boxShadow: 'var(--ds-card-shadow)' }
+                  : { color: SUBTLE }
+              }
+            >
+              <Icon name={INBOX.icon} className="h-[18px] w-[18px]" />
+              {INBOX.label}
+              {INBOX.count ? (
+                <span className="ml-auto flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[11px] font-medium tabular-nums text-[color:var(--ds-accent-fg)]" style={{ background: 'var(--ds-accent)' }}>
+                  {INBOX.count}
+                </span>
+              ) : null}
+            </NavLink>
+
+            <div className="my-1.5 h-px" style={{ background: 'var(--ds-hair)' }} />
+
+            {NAV.map(({ to, label, icon, end }) => (
               <NavLink
                 key={to}
                 to={to}
@@ -94,11 +126,6 @@ export default function WorkspaceLayout() {
               >
                 <Icon name={icon} className="h-[18px] w-[18px]" />
                 {label}
-                {count ? (
-                  <span className="ml-auto rounded-full px-1.5 text-[11px] font-medium tabular-nums" style={{ background: 'var(--ds-surface-2)', color: SUBTLE }}>
-                    {count}
-                  </span>
-                ) : null}
               </NavLink>
             ))}
           </nav>
@@ -141,6 +168,38 @@ export default function WorkspaceLayout() {
                     </button>
                   )
                 })}
+              </div>
+            ) : null}
+          </div>
+
+          {/* Trending charts — streaming sources, populated once connected */}
+          <div className="mt-6">
+            <button
+              type="button"
+              onClick={() => setChartsOpen((v) => !v)}
+              className="flex w-full items-center gap-1 px-3 pb-1.5 text-[12px] font-medium"
+              style={{ color: 'var(--ds-text-faint)' }}
+            >
+              Trending charts
+              <Icon name="chevronDown" size={13} className={`transition-transform ${chartsOpen ? '' : '-rotate-90'}`} />
+            </button>
+            {chartsOpen ? (
+              <div className="flex flex-col gap-0.5">
+                {CHARTS.map((s) => (
+                  <div
+                    key={s.key}
+                    className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-[14px]"
+                    style={s.connected ? { color: INK } : { color: SUBTLE }}
+                  >
+                    <span className="flex h-[22px] w-[22px] items-center justify-center rounded-md" style={{ background: s.color, opacity: s.connected ? 1 : 0.5 }}>
+                      <Icon name={s.icon} size={13} className="text-white" />
+                    </span>
+                    {s.label}
+                    <span className="ml-auto text-[11px] font-medium" style={{ color: s.connected ? '#16a34a' : 'var(--ds-text-faint)' }}>
+                      {s.connected ? 'Connected' : 'Connect'}
+                    </span>
+                  </div>
+                ))}
               </div>
             ) : null}
           </div>
@@ -235,11 +294,11 @@ export default function WorkspaceLayout() {
         className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-around border-t border-overlay/5 bg-surface/95 px-2 py-2 backdrop-blur-md md:hidden"
         style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
       >
-        {NAV.map(({ to, label, icon, end }) => (
+        {[NAV[0], INBOX, NAV[1], NAV[2], NAV[3]].map(({ to, label, icon }) => (
           <NavLink
             key={to}
             to={to}
-            end={end}
+            end={to === '/'}
             className="flex min-h-[44px] flex-1 flex-col items-center justify-center gap-0.5 rounded-lg text-[10px]"
             style={({ isActive }) => ({ color: isActive ? 'var(--ds-accent)' : FAINT })}
           >

@@ -32,6 +32,8 @@ import {
   Attachment02Icon,
   Mic01Icon,
   InboxIcon,
+  Shield01Icon,
+  CloudUploadIcon,
 } from '@hugeicons/core-free-icons'
 
 // Ondel's icon vocabulary — Hugeicons, one entry per semantic role.
@@ -76,6 +78,8 @@ export const icons = {
   attachment: Attachment02Icon,
   mic: Mic01Icon,
   inbox: InboxIcon,
+  vault: Shield01Icon,
+  upload: CloudUploadIcon,
 } as const
 
 export type IconName = keyof typeof icons
