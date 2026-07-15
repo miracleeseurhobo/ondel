@@ -25,7 +25,9 @@ const STEPS = ['Welcome', 'Workspace', 'Plan', 'Tutorial']
 
 // Streaming-service logos (logo.dev) for the preview deck badges.
 const LOGO_SPOTIFY = 'https://img.logo.dev/name/spotify%2C%20apple%20music?token=pk_eqiOF_lmTK-EBWJEZyoB8w&format=webp&retina=true'
-const LOGO_APPLE = 'https://img.logo.dev/name/apple?token=pk_eqiOF_lmTK-EBWJEZyoB8w&format=webp&theme=light&retina=true'
+// logo.dev only serves the corporate Apple mark for music.apple.com; Simple
+// Icons has the actual Apple Music glyph (brand red).
+const LOGO_APPLE = 'https://cdn.simpleicons.org/applemusic'
 const LOGO_AUDIOMACK = 'https://img.logo.dev/name/spotify%2C%20apple%2C%20audiomack?token=pk_eqiOF_lmTK-EBWJEZyoB8w&format=webp&retina=true'
 
 const ServiceLogo = ({ src, alt }: { src: string; alt: string }) => (
