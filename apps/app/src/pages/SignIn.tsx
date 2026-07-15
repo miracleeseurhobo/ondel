@@ -8,6 +8,7 @@ import DisplayCards, { type DisplayCardProps } from '../components/DisplayCards'
 import { mockSignIn, mockSignOut } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
 import { clearPlan } from '../lib/plan'
+import { logoUrl } from '../lib/logo'
 
 // Shadow tokens (Lemni Light) — depth is shadow-driven, no borders.
 const CTA_SHADOW = 'rgba(0,0,0,0.4) 0px 2px 5px 0px'
@@ -23,12 +24,12 @@ const WELCOME_WORDS = WELCOME.split(' ')
 // Onboarding step indicator (Lemni-style footer) — Welcome is the active step.
 const STEPS = ['Welcome', 'Workspace', 'Plan', 'Tutorial']
 
-// Streaming-service logos (logo.dev) for the preview deck badges.
-const LOGO_SPOTIFY = 'https://img.logo.dev/name/spotify%2C%20apple%20music?token=pk_eqiOF_lmTK-EBWJEZyoB8w&format=webp&retina=true'
-// logo.dev only serves the corporate Apple mark for music.apple.com; Simple
-// Icons has the actual Apple Music glyph (brand red).
+// Streaming-service logos for the preview deck badges. Spotify + Audiomack come
+// from logo.dev (proper app-icon tiles); logo.dev only serves the corporate
+// Apple mark for music.apple.com, so Apple Music uses the Simple Icons glyph.
+const LOGO_SPOTIFY = logoUrl({ domain: 'spotify.com' }, { format: 'webp', retina: true })
 const LOGO_APPLE = 'https://cdn.simpleicons.org/applemusic'
-const LOGO_AUDIOMACK = 'https://img.logo.dev/name/spotify%2C%20apple%2C%20audiomack?token=pk_eqiOF_lmTK-EBWJEZyoB8w&format=webp&retina=true'
+const LOGO_AUDIOMACK = logoUrl({ domain: 'audiomack.com' }, { format: 'webp', retina: true })
 
 const ServiceLogo = ({ src, alt }: { src: string; alt: string }) => (
   <img src={src} alt={alt} className="h-full w-full object-contain" loading="eager" />

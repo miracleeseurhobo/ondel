@@ -5,6 +5,7 @@ import { INK, SUBTLE, FAINT } from './workspace-ui'
 import ThemeToggle from './ThemeToggle'
 import { mockSignOut } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
+import { logoUrl } from '../lib/logo'
 
 // Inbox gets a unique spot at the top of the sidebar (separated from the
 // workflow nav), like a mail app.
@@ -29,10 +30,18 @@ const PLATFORMS: { key: string; label: string; icon: IconName; color: string }[]
 ]
 
 // Streaming sources for trending-charts data — connected via the Connect button.
-const CHARTS: { key: string; label: string; icon: IconName; color: string; connected: boolean }[] = [
-  { key: 'spotify', label: 'Spotify', icon: 'pSpotify', color: '#1DB954', connected: true },
-  { key: 'apple', label: 'Apple Music', icon: 'music', color: '#FA243C', connected: false },
-  { key: 'audiomack', label: 'Audiomack', icon: 'radio', color: '#FF7A00', connected: false },
+// Each renders as a small app-icon tile: Spotify keeps its vector glyph; Apple
+// Music uses the Simple Icons mark (logo.dev only serves the corporate Apple
+// logo for music.apple.com); Audiomack pulls its real app icon from logo.dev.
+type ChartTile =
+  | { kind: 'icon'; icon: IconName; bg: string } // white glyph on brand tile
+  | { kind: 'simpleicon'; slug: string; bg: string } // white Simple Icons glyph on brand tile
+  | { kind: 'logo'; src: string } // full logo.dev app-icon square
+
+const CHARTS: { key: string; label: string; connected: boolean; tile: ChartTile }[] = [
+  { key: 'spotify', label: 'Spotify', connected: true, tile: { kind: 'icon', icon: 'pSpotify', bg: '#1DB954' } },
+  { key: 'apple', label: 'Apple Music', connected: false, tile: { kind: 'simpleicon', slug: 'applemusic', bg: '#FA243C' } },
+  { key: 'audiomack', label: 'Audiomack', connected: false, tile: { kind: 'logo', src: logoUrl({ domain: 'audiomack.com' }, { format: 'png', size: 64, retina: true }) } },
 ]
 
 // Breadcrumb source per route — mirrors the calendar's flush "Section › context"
@@ -212,8 +221,17 @@ export default function WorkspaceLayout() {
                     className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-[14px]"
                     style={s.connected ? { color: INK } : { color: SUBTLE }}
                   >
-                    <span className="flex h-[22px] w-[22px] items-center justify-center rounded-md" style={{ background: s.color, opacity: s.connected ? 1 : 0.5 }}>
-                      <Icon name={s.icon} size={13} className="text-white" />
+                    <span
+                      className={`flex h-[22px] w-[22px] items-center justify-center overflow-hidden rounded-md transition-[filter,opacity] ${s.connected ? '' : 'opacity-60 grayscale'}`}
+                      style={s.tile.kind === 'logo' ? undefined : { background: s.tile.bg }}
+                    >
+                      {s.tile.kind === 'icon' ? (
+                        <Icon name={s.tile.icon} size={13} className="text-white" />
+                      ) : s.tile.kind === 'simpleicon' ? (
+                        <img src={`https://cdn.simpleicons.org/${s.tile.slug}/white`} alt="" className="h-[13px] w-[13px]" />
+                      ) : (
+                        <img src={s.tile.src} alt="" className="h-full w-full object-cover" />
+                      )}
                     </span>
                     {s.label}
                     <span className="ml-auto text-[11px] font-medium" style={{ color: s.connected ? '#16a34a' : 'var(--ds-text-faint)' }}>
