@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useState, type CSSProperties, type FormEvent, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useReducedMotion } from 'framer-motion'
 import { Icon } from '../components/ui/icon'
-import StudioFolder from '../components/StudioFolder'
+import OndieMark from '../components/OndieMark'
 import SiriOrb from '../components/SiriOrb'
 import DisplayCards, { type DisplayCardProps } from '../components/DisplayCards'
 import { mockSignIn, mockSignOut } from '../lib/auth'
@@ -15,28 +15,6 @@ const OAUTH_SHADOW =
   'rgba(95,122,143,0.25) 0px 1px 2px 0px, rgb(255,255,255) 1px 1px 1px 0px inset'
 const INPUT_SHADOW =
   'rgba(95,122,143,0.23) 0px 2px 3px 0px, rgba(0,0,0,0.03) -1px -1px 1px 0px inset, rgb(255,255,255) 1px 1px 1px 0px inset'
-
-// Spaced dashed rounded border as an inline SVG overlay — CSS `border-dashed`
-// packs the dashes too tightly for this look, and an SVG background has no
-// intrinsic size to stretch to. `active` swaps neutral → brand on drag/hover.
-function DashedBorder({ active }: { active: boolean }) {
-  return (
-    <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden>
-      <rect
-        width="100%"
-        height="100%"
-        rx="12"
-        ry="12"
-        fill="none"
-        stroke={active ? 'var(--ds-accent)' : 'var(--ds-border)'}
-        strokeWidth="2"
-        strokeDasharray="7 9"
-        strokeLinecap="round"
-        className="transition-[stroke] duration-200 ease-out"
-      />
-    </svg>
-  )
-}
 
 const WELCOME =
   "Welcome to Ondel. Your release already has a story unfolding. The people who'll love it. The places it belongs. Let's bring it into focus."
@@ -170,28 +148,6 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   const [status, setStatus] = useState<'idle' | 'welcome' | 'workspace'>('idle')
   const [reveal, setReveal] = useState(0)
   const [workspaceName, setWorkspaceName] = useState('Midnight Studio')
-  const [logo, setLogo] = useState<string | null>(null) // data URL of the uploaded studio image
-  const [dragging, setDragging] = useState(false)
-  const [uploadError, setUploadError] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  // Accept a picked/dropped image → validate type + size, read to a data URL.
-  const acceptFile = (file: File | undefined) => {
-    if (!file) return
-    const okType = ['image/jpeg', 'image/png', 'image/svg+xml'].includes(file.type)
-    if (!okType) {
-      setUploadError('Use a JPG, PNG or SVG image.')
-      return
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      setUploadError('That image is over 5.0MB.')
-      return
-    }
-    setUploadError(null)
-    const reader = new FileReader()
-    reader.onload = () => setLogo(reader.result as string)
-    reader.readAsDataURL(file)
-  }
 
   useEffect(() => {
     if (status !== 'welcome') {
@@ -319,69 +275,8 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
               navigate('/')
             }}
           >
-            {/* Studio image — folder dropzone (drag-drop or click to pick a local file) */}
-            <div
-              role="button"
-              tabIndex={0}
-              aria-label="Upload a studio image"
-              onClick={() => fileInputRef.current?.click()}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  fileInputRef.current?.click()
-                }
-              }}
-              onDragOver={(e) => {
-                e.preventDefault()
-                setDragging(true)
-              }}
-              onDragLeave={() => setDragging(false)}
-              onDrop={(e) => {
-                e.preventDefault()
-                setDragging(false)
-                acceptFile(e.dataTransfer.files?.[0])
-              }}
-              className="group relative flex w-full cursor-pointer flex-col items-center justify-center rounded-xl px-6 py-7 text-center outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-brand/40"
-              style={{ backgroundColor: dragging ? 'rgba(0,0,0,0.04)' : 'transparent' }}
-            >
-              <DashedBorder active={dragging} />
-              {logo ? (
-                <img
-                  src={logo}
-                  alt="Studio"
-                  className="h-[76px] w-[76px] rounded-lg object-cover"
-                  style={{ boxShadow: '0 6px 18px -8px rgba(0,0,0,0.35)' }}
-                />
-              ) : (
-                <div className="transition-transform duration-300 ease-out group-hover:scale-[1.03]">
-                  <StudioFolder scale={0.72} />
-                </div>
-              )}
-
-              <p className="mt-3 text-[14px] leading-[20px] text-subtle">
-                Drag and drop or{' '}
-                <span className="font-medium text-ink underline underline-offset-2">
-                  {logo ? 'choose another' : 'choose file'}
-                </span>{' '}
-                to upload.
-              </p>
-              <p className="mt-1 text-[13px] leading-[18px] text-faint">
-                Image format : JPG, PNG &amp; SVG. Max 5.0MB
-              </p>
-
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/svg+xml"
-                className="hidden"
-                onChange={(e) => acceptFile(e.target.files?.[0])}
-              />
-            </div>
-            {uploadError ? (
-              <p className="mt-2 w-full text-left text-[13px] text-red-600" role="alert">
-                {uploadError}
-              </p>
-            ) : null}
+            {/* Ondie logomark */}
+            <OndieMark size={64} />
 
             <h1 className="mt-7 text-center text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-ink">
               Create your studio
