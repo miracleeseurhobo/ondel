@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "ai-elements": {
+      "source": "vercel/ai-elements",
+      "sourceType": "github",
+      "skillPath": "skills/ai-elements/SKILL.md",
+      "computedHash": "6d7ccc65b98adb04d6c47632746dbfea55528903de9b027f6b39b80983d5aa55"
+    },
     "animation-vocabulary": {
       "source": "emilkowalski/skill",
       "sourceType": "github",
@@ -19,11 +25,23 @@
       "skillPath": "skills/fixing-motion-performance/SKILL.md",
       "computedHash": "426dcf33f23419643f2aab71e2253e1a5b5684a808fabb8a4ad135e489ed7a0f"
     },
+    "make-interfaces-feel-better": {
+      "source": "jakubkrehel/make-interfaces-feel-better",
+      "sourceType": "github",
+      "skillPath": "skills/make-interfaces-feel-better/SKILL.md",
+      "computedHash": "8e3423e467eae12f3748ca1a365a668105ac59dbb0fdd50e66b45a40bb581950"
+    },
     "review-animations": {
       "source": "emilkowalski/skill",
       "sourceType": "github",
       "skillPath": "skills/review-animations/SKILL.md",
       "computedHash": "ca04aaa0a815f05e0910ded8fedbfbdfe0acdec8f52dfbb88277890070d134d4"
+    },
+    "userinterface-wiki": {
+      "source": "raphaelsalaja/userinterface-wiki",
+      "sourceType": "github",
+      "skillPath": "skills/SKILL.md",
+      "computedHash": "7bd58aa2aaf874dd421b18700ee688b02ce72276612d7115ad6849d4878e115e"
     }
   }
 }
