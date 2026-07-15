@@ -628,6 +628,55 @@ const FINISH_MS = 900
 
 const clip = (s: string, n = 22) => (s.length > n ? `${s.slice(0, n - 1)}…` : s)
 
+// Refero-style suggested prompts — tabbed, click to drop into the input.
+const SUGGEST_TABS = ['Popular', 'Content', 'Growth'] as const
+const SUGGESTIONS: Record<string, string[]> = {
+  Popular: ['Build my release plan', 'Turn this song into 30 days of content', 'Find playlists', 'Create a launch calendar'],
+  Content: ['Generate TikTok ideas', 'Create IG Reels', 'Schedule next week', 'Write captions'],
+  Growth: ['Find creators', 'Analyze my audience', 'Best release date', 'Find opportunities'],
+}
+
+function CornerArrow() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--ds-text-muted)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="flex-shrink-0">
+      <path d="M5 3v5.5a1.5 1.5 0 0 0 1.5 1.5H13" />
+      <path d="M10 7l3 3-3 3" />
+    </svg>
+  )
+}
+
+function SuggestedPrompts({ onPick }: { onPick: (text: string) => void }) {
+  const [tab, setTab] = useState<(typeof SUGGEST_TABS)[number]>('Popular')
+  return (
+    <div style={{ width: 702, maxWidth: '100%', marginTop: 26 }}>
+      <div className="flex items-center gap-1">
+        {SUGGEST_TABS.map((t) => (
+          <button
+            key={t}
+            type="button"
+            onClick={() => setTab(t)}
+            className={
+              tab === t
+                ? 'rounded-lg bg-surface2 px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text)]'
+                : 'rounded-lg px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text-secondary)] transition-colors hover:text-[color:var(--ds-text)]'
+            }
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+      <div className="mt-3 grid grid-cols-1 gap-x-10 gap-y-0.5 sm:grid-cols-2">
+        {SUGGESTIONS[tab].map((p) => (
+          <button key={p} type="button" onClick={() => onPick(p)} className="group flex items-center gap-2.5 rounded-md py-1.5 text-left">
+            <CornerArrow />
+            <span className="text-[14px] text-[color:var(--ds-text-secondary)] transition-colors group-hover:text-[color:var(--ds-text)]">{p}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function Index() {
   const navigate = useNavigate()
   const reduced = useReducedMotion()
@@ -637,6 +686,12 @@ export default function Index() {
   const [generating, setGenerating] = useState(false)
   const [step, setStep] = useState(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const promptRef = useRef<HTMLTextAreaElement>(null)
+
+  const pickPrompt = (text: string) => {
+    setPrompt(text)
+    requestAnimationFrame(() => promptRef.current?.focus())
+  }
 
   // Steps mirror what Ondie is actually doing — analysing an uploaded track vs
   // reading a typed goal — and are paced to feel like real work (~5–8s).
@@ -686,10 +741,12 @@ export default function Index() {
       style={{
         position: 'relative',
         minHeight: 'calc(100dvh - 240px)',
-        overflow: 'hidden',
+        overflowX: 'hidden',
+        overflowY: 'auto',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'safe center',
       }}
     >
       <PixelGrid side="left" />
@@ -704,7 +761,8 @@ export default function Index() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          paddingTop: 60,
+          paddingTop: 40,
+          paddingBottom: 32,
           maxWidth: 760,
           width: '100%',
         }}
@@ -785,6 +843,7 @@ export default function Index() {
             {/* prompt input (typewriter shows as an animated placeholder when idle) */}
             <div style={{ position: 'relative', flex: 1 }}>
               <textarea
+                ref={promptRef}
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 onFocus={() => setFocused(true)}
@@ -900,6 +959,15 @@ export default function Index() {
               <SendButton onSubmit={submit} />
             </div>
           </div>
+        </motion.div>
+
+        {/* Refero-style suggested prompts */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7, ease: 'easeOut' }}
+        >
+          <SuggestedPrompts onPick={pickPrompt} />
         </motion.div>
       </div>
 
