@@ -194,10 +194,17 @@ export default function Vault() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.06, duration: 0.4, ease: EASE }}
-        className="mt-4 grid grid-cols-1 justify-items-center gap-2 sm:grid-cols-2 xl:grid-cols-3"
+        className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
       >
         {folders.map((f) => (
-          <Folder key={f.id} label={f.label} count={f.assets.length} empty={f.assets.length === 0} onClick={() => setOpenId(f.id)} />
+          <Folder
+            key={f.id}
+            label={f.label}
+            count={f.assets.length}
+            empty={f.assets.length === 0}
+            badges={f.assets.slice(0, 3).map((a) => ({ icon: a.icon, hue: a.hue }))}
+            onClick={() => setOpenId(f.id)}
+          />
         ))}
       </motion.div>
     </div>
