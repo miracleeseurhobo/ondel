@@ -304,10 +304,10 @@ export default function ReleaseOverview() {
         <div className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: FAINT }}>
           Release
         </div>
-        <h1 className="mt-1 text-[26px] font-medium tracking-[-0.5px] [text-wrap:balance]" style={{ color: INK }}>
+        <h1 className="mt-1 text-[22px] font-medium tracking-[-0.4px] [text-wrap:balance]" style={{ color: INK }}>
           Midnight Drive
         </h1>
-        <p className="mt-1 text-[14px]" style={{ color: SUBTLE }}>
+        <p className="mt-1 text-[13px]" style={{ color: SUBTLE }}>
           Your plan is ready — out Friday, May 24.
         </p>
       </motion.div>

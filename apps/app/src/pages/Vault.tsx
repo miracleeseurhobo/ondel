@@ -1,7 +1,9 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Icon, type IconName } from '../components/ui/icon'
 import Folder from '../components/Folder'
+import type { WorkspaceOutletContext } from '../components/WorkspaceLayout'
 import { INK, SUBTLE, FAINT } from '../components/workspace-ui'
 
 const HAIR = 'var(--ds-hair)'
@@ -53,6 +55,12 @@ export default function Vault() {
 
   const open = folders.find((f) => f.id === openId) ?? null
 
+  // Reflect the open folder as the trailing breadcrumb crumb (Vault › Masters).
+  const { setSubcrumb } = useOutletContext<WorkspaceOutletContext>()
+  useEffect(() => {
+    setSubcrumb(open?.label ?? null)
+  }, [open?.label, setSubcrumb])
+
   const addToOpen = (files: FileList | null) => {
     if (!files?.length || !openId) return
     const next: Asset[] = Array.from(files).map((f, i) => ({
@@ -84,10 +92,10 @@ export default function Vault() {
         </motion.button>
 
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }} className="mt-3">
-          <h1 className="text-[26px] font-medium tracking-[-0.5px]" style={{ color: INK }}>
+          <h1 className="text-[22px] font-medium tracking-[-0.4px]" style={{ color: INK }}>
             {open.label}
           </h1>
-          <p className="mt-1 text-[14px]" style={{ color: SUBTLE }}>
+          <p className="mt-1 text-[13px]" style={{ color: SUBTLE }}>
             {open.hint} · secured under your ownership record.
           </p>
         </motion.div>
@@ -186,10 +194,10 @@ export default function Vault() {
         <div className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: FAINT }}>
           Assets
         </div>
-        <h1 className="mt-1 text-[26px] font-medium tracking-[-0.5px]" style={{ color: INK }}>
+        <h1 className="mt-1 text-[22px] font-medium tracking-[-0.4px]" style={{ color: INK }}>
           Vault
         </h1>
-        <p className="mt-1 text-[14px]" style={{ color: SUBTLE }}>
+        <p className="mt-1 text-[13px]" style={{ color: SUBTLE }}>
           Your creative work, organised and secured — {totalFiles} file{totalFiles === 1 ? '' : 's'} across {folders.length} folders.
         </p>
       </motion.div>

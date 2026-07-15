@@ -174,10 +174,10 @@ export default function Inbox() {
         <div className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: FAINT }}>
           Collaborations
         </div>
-        <h1 className="mt-1 text-[26px] font-medium tracking-[-0.5px]" style={{ color: INK }}>
+        <h1 className="mt-1 text-[22px] font-medium tracking-[-0.4px]" style={{ color: INK }}>
           Inbox
         </h1>
-        <p className="mt-1 text-[14px]" style={{ color: SUBTLE }}>
+        <p className="mt-1 text-[13px]" style={{ color: SUBTLE }}>
           {pending} pending request{pending === 1 ? '' : 's'} from creators.
         </p>
       </motion.div>

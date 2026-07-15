@@ -9,7 +9,7 @@ export default function BlankPage({ title, eyebrow = 'Workspace' }: { title: str
       <div className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: FAINT }}>
         {eyebrow}
       </div>
-      <h1 className="mt-1 text-[26px] font-medium tracking-[-0.5px]" style={{ color: INK }}>
+      <h1 className="mt-1 text-[22px] font-medium tracking-[-0.4px]" style={{ color: INK }}>
         {title}
       </h1>
       <div className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed py-20 text-center" style={{ borderColor: 'var(--ds-border)' }}>

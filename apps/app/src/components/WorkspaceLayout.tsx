@@ -35,6 +35,20 @@ const CHARTS: { key: string; label: string; icon: IconName; color: string; conne
   { key: 'audiomack', label: 'Audiomack', icon: 'radio', color: '#FF7A00', connected: false },
 ]
 
+// Breadcrumb source per route — mirrors the calendar's flush "Section › context"
+// nav so every page reads the same way. Pages can add a trailing crumb (like the
+// calendar's month) via the Outlet context below.
+const CRUMBS: Record<string, { icon: IconName; label: string }> = {
+  '/': { icon: 'home', label: 'Home' },
+  '/inbox': { icon: 'inbox', label: 'Inbox' },
+  '/releases': { icon: 'releases', label: 'Releases' },
+  '/vault': { icon: 'vault', label: 'Vault' },
+  '/signals': { icon: 'signals', label: 'Signals' },
+  '/campaigns': { icon: 'campaigns', label: 'Campaigns' },
+}
+
+export type WorkspaceOutletContext = { setSubcrumb: (s: string | null) => void }
+
 const OndelLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 256 256" className={className} fill="currentColor" aria-hidden>
     <path d="M 228 0 C 172.772 0 128 44.772 128 100 L 128 0 L 0 0 L 0 28 C 0 83.228 44.772 128 100 128 L 0 128 L 0 256 L 28 256 C 83.228 256 128 211.228 128 156 L 128 256 L 256 256 L 256 228 C 256 172.772 211.228 128 156 128 L 256 128 L 256 0 Z" />
@@ -55,8 +69,15 @@ const AppleGlyph = ({ className }: { className?: string }) => (
 
 export default function WorkspaceLayout() {
   const navigate = useNavigate()
+  const location = useLocation()
   // The calendar renders its own flush top nav, so suppress the shell's.
-  const hideTopBar = useLocation().pathname.startsWith('/timeline')
+  const hideTopBar = location.pathname.startsWith('/timeline')
+  const crumb = CRUMBS[location.pathname] ?? CRUMBS['/']
+  // Trailing breadcrumb crumb a page can set (e.g. Vault → open folder name).
+  const [subcrumb, setSubcrumb] = useState<string | null>(null)
+  useEffect(() => {
+    setSubcrumb(null)
+  }, [location.pathname])
   // Dark mode is scoped to the dashboard — re-apply the stored theme on entry
   // (the auth/onboarding flow forces light).
   useEffect(() => {
@@ -239,14 +260,28 @@ export default function WorkspaceLayout() {
         {/* Top bar (suppressed on the calendar, which renders its own) */}
         {!hideTopBar && (
         <div className="flex items-center justify-between px-6 pt-6 sm:px-8">
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex min-w-0 items-center gap-2.5">
             <span
-              className="flex h-8 w-8 items-center justify-center rounded-ds-md"
+              className="flex h-8 w-8 items-center justify-center rounded-ds-md md:hidden"
               style={{ background: 'var(--ds-surface-2)', color: 'var(--ds-text)' }}
             >
               <OndelLogo className="h-[15px] w-[15px]" />
             </span>
-            <span className="text-[16px] font-medium">Ondel</span>
+            {/* Breadcrumb — same treatment as the calendar's flush nav */}
+            <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
+              <Icon name={crumb.icon} size={17} style={{ color: SUBTLE }} />
+              <span className="text-[14px]" style={{ color: subcrumb ? SUBTLE : INK, fontWeight: subcrumb ? 400 : 500 }}>
+                {crumb.label}
+              </span>
+              {subcrumb ? (
+                <>
+                  <Icon name="chevronRight" size={14} style={{ color: 'var(--ds-text-muted)' }} />
+                  <span className="truncate text-[14px] font-medium" style={{ color: INK }}>
+                    {subcrumb}
+                  </span>
+                </>
+              ) : null}
+            </div>
           </div>
           <div className="ml-auto flex items-center gap-2">
             <button
@@ -284,7 +319,7 @@ export default function WorkspaceLayout() {
         )}
 
         <main className="flex-1 px-6 pb-8 pt-4 sm:px-8">
-          <Outlet />
+          <Outlet context={{ setSubcrumb } satisfies WorkspaceOutletContext} />
         </main>
         </div>
       </div>
