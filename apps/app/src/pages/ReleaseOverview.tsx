@@ -1,7 +1,8 @@
-import { useState, type ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState, type ReactNode } from 'react'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Icon, type IconName } from '../components/ui/icon'
+import type { WorkspaceOutletContext } from '../components/WorkspaceLayout'
 import OndieMark from '../components/OndieMark'
 import { INK, SUBTLE, FAINT } from '../components/workspace-ui'
 import { hasPlan } from '../lib/plan'
@@ -274,8 +275,16 @@ function TasksBody() {
 
 export default function ReleaseOverview() {
   const navigate = useNavigate()
+  const planned = hasPlan()
 
-  if (!hasPlan()) {
+  // Show the active release as the trailing crumb (Releases › Midnight Drive),
+  // mirroring the calendar's "Calendar › May 2024".
+  const { setSubcrumb } = useOutletContext<WorkspaceOutletContext>()
+  useEffect(() => {
+    setSubcrumb(planned ? 'Midnight Drive' : null)
+  }, [planned, setSubcrumb])
+
+  if (!planned) {
     return (
       <div className="flex min-h-[calc(100dvh-14rem)] flex-col items-center justify-center px-6 text-center">
         <OndieMark size={56} />

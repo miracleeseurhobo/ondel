@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Icon, type IconName } from './ui/icon'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
+import Breadcrumb from './Breadcrumb'
 import ThemeToggle from './ThemeToggle'
 import { mockSignOut } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
@@ -83,10 +84,14 @@ export default function WorkspaceLayout() {
   const hideTopBar = location.pathname.startsWith('/timeline')
   const crumb = CRUMBS[location.pathname] ?? CRUMBS['/']
   // Trailing breadcrumb crumb a page can set (e.g. Vault → open folder name).
-  const [subcrumb, setSubcrumb] = useState<string | null>(null)
-  useEffect(() => {
-    setSubcrumb(null)
-  }, [location.pathname])
+  // Stored with the path it belongs to so it resets synchronously on navigation
+  // — avoids an effect-order race where a parent reset would wipe a child's set.
+  const [sub, setSub] = useState<{ path: string; label: string } | null>(null)
+  const setSubcrumb = useCallback(
+    (label: string | null) => setSub(label ? { path: location.pathname, label } : null),
+    [location.pathname],
+  )
+  const subcrumb = sub && sub.path === location.pathname ? sub.label : null
   // Dark mode is scoped to the dashboard — re-apply the stored theme on entry
   // (the auth/onboarding flow forces light).
   useEffect(() => {
@@ -285,21 +290,8 @@ export default function WorkspaceLayout() {
             >
               <OndelLogo className="h-[15px] w-[15px]" />
             </span>
-            {/* Breadcrumb — same treatment as the calendar's flush nav */}
-            <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
-              <Icon name={crumb.icon} size={17} style={{ color: SUBTLE }} />
-              <span className="text-[14px]" style={{ color: subcrumb ? SUBTLE : INK, fontWeight: subcrumb ? 400 : 500 }}>
-                {crumb.label}
-              </span>
-              {subcrumb ? (
-                <>
-                  <Icon name="chevronRight" size={14} style={{ color: 'var(--ds-text-muted)' }} />
-                  <span className="truncate text-[14px] font-medium" style={{ color: INK }}>
-                    {subcrumb}
-                  </span>
-                </>
-              ) : null}
-            </div>
+            {/* Breadcrumb — shared with the calendar's flush nav */}
+            <Breadcrumb crumbs={subcrumb ? [{ icon: crumb.icon, label: crumb.label }, { label: subcrumb }] : [{ icon: crumb.icon, label: crumb.label }]} />
           </div>
           <div className="ml-auto flex items-center gap-2">
             <button

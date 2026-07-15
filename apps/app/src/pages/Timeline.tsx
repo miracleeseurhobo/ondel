@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Icon } from '../components/ui/icon'
 import { INK, SUBTLE, FAINT } from '../components/workspace-ui'
+import Breadcrumb from '../components/Breadcrumb'
 import OndieMark from '../components/OndieMark'
 import { hasPlan } from '../lib/plan'
 
@@ -137,16 +138,8 @@ function CalendarTopNav({
   return (
     <div className="flex h-[60px] items-center gap-3">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 whitespace-nowrap">
-        <Icon name="timeline" size={17} style={{ color: SUBTLE }} />
-        <span className="text-[14px]" style={{ color: SUBTLE }}>
-          Calendar
-        </span>
-        <Icon name="chevronRight" size={14} style={{ color: 'var(--ds-text-muted)' }} />
-        <span className="text-[14px] font-medium" style={{ color: INK }}>
-          {monthLabel}
-        </span>
-      </div>
+      <Breadcrumb crumbs={[{ icon: 'timeline', label: 'Calendar' }, { label: monthLabel }]} />
+
 
       {/* Right controls */}
       <div className="ml-auto flex items-center gap-2">
