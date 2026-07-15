@@ -499,21 +499,18 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
       }}
       onHoverEnd={() => setHovered(false)}
       onClick={onSubmit}
-      animate={{ scale: hovered ? 1.05 : 1 }}
+      animate={{ scale: hovered ? 1.06 : 1 }}
       transition={{ duration: 0.2 }}
       style={{
         position: 'relative',
-        width: 44,
-        height: 44,
+        width: 36,
+        height: 36,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
       }}
     >
-      {/* halo */}
-      <div style={{ position: 'absolute', inset: 0, borderRadius: 12, background: 'rgba(0,0,0,0.04)', zIndex: 1 }} />
-
       {/* primary square (calm monochrome — Serena primary) */}
       <div
         style={{
@@ -757,8 +754,10 @@ export default function Index() {
           style={{
             width: 702,
             maxWidth: '100%',
-            padding: 4,
-            borderRadius: 12,
+            padding: 6,
+            // Extra-curvy for a friendly app feel (a deliberate exception to the
+            // 8–12px radius rule, scoped to the hero chatbox).
+            borderRadius: 26,
             border: '1px solid var(--ds-hair)',
             background: 'var(--ds-surface-2)',
           }}
@@ -771,14 +770,15 @@ export default function Index() {
             }}
             style={{
               width: '100%',
-              height: 116,
+              minHeight: 116,
               background: 'var(--ds-surface)',
-              borderRadius: 8,
+              borderRadius: 20,
               border: '1px solid var(--ds-hair)',
-              padding: '16px 14px 14px 16px',
+              padding: 14,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
+              gap: 10,
               overflow: 'hidden',
             }}
           >
@@ -819,7 +819,7 @@ export default function Index() {
             </div>
 
             {/* toolbar */}
-            <div style={{ marginTop: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 {/* Ondie expert pill */}
                 <div
