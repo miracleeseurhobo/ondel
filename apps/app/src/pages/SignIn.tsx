@@ -23,28 +23,34 @@ const WELCOME_WORDS = WELCOME.split(' ')
 // Onboarding step indicator (Lemni-style footer) — Welcome is the active step.
 const STEPS = ['Welcome', 'Workspace', 'Plan', 'Tutorial']
 
-// Animated preview deck for the sign-in right panel — a stacked trio (original
-// skewed, glassy style with static per-card colours) that floats in a wave.
+// Streaming-service logos (logo.dev) for the preview deck badges.
+const LOGO_SPOTIFY = 'https://img.logo.dev/name/spotify%2C%20apple%20music?token=pk_eqiOF_lmTK-EBWJEZyoB8w&format=webp&retina=true'
+const LOGO_APPLE = 'https://img.logo.dev/name/apple?token=pk_eqiOF_lmTK-EBWJEZyoB8w&format=webp&theme=light&retina=true'
+const LOGO_AUDIOMACK = 'https://img.logo.dev/name/spotify%2C%20apple%2C%20audiomack?token=pk_eqiOF_lmTK-EBWJEZyoB8w&format=webp&retina=true'
+
+const ServiceLogo = ({ src, alt }: { src: string; alt: string }) => (
+  <img src={src} alt={alt} className="h-full w-full object-contain" loading="eager" />
+)
+
+// Animated preview deck for the sign-in right panel — a stacked trio (skewed,
+// glassy, right-edge fade) that floats in a wave; badges show service logos.
 const PLAYLIST_CARDS: DisplayCardProps[] = [
   {
-    icon: <Icon name="music" size={16} className="text-white" />,
-    badgeClassName: 'bg-blue-500',
+    icon: <ServiceLogo src={LOGO_SPOTIFY} alt="Spotify" />,
     titleClassName: 'text-blue-600',
     title: 'New Music Friday',
     description: 'Editorial · 4.1M followers',
     date: 'Pitched · 2h ago',
   },
   {
-    icon: <Icon name="releases" size={16} className="text-white" />,
-    badgeClassName: 'bg-fuchsia-500',
+    icon: <ServiceLogo src={LOGO_APPLE} alt="Apple Music" />,
     titleClassName: 'text-fuchsia-600',
     title: 'Indie Pop Rising',
     description: '94% match · 82k followers',
     date: 'Added yesterday',
   },
   {
-    icon: <Icon name="radio" size={16} className="text-white" />,
-    badgeClassName: 'bg-emerald-500',
+    icon: <ServiceLogo src={LOGO_AUDIOMACK} alt="Audiomack" />,
     titleClassName: 'text-emerald-600',
     title: 'Afrobeats',
     description: 'Curator pick · 31k followers',
@@ -399,28 +405,6 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
         <div className="relative hidden items-center justify-center overflow-hidden border-l border-overlay/[0.06] bg-surface2 p-10 lg:flex">
           <div className="-translate-x-12 -translate-y-2">
             <DisplayCards loop cards={PLAYLIST_CARDS} />
-          </div>
-          {/* Progressive blur — cards dissolve toward the right edge (blur ramps up
-              + fades into the panel). */}
-          <div className="pointer-events-none absolute inset-0 z-10" aria-hidden>
-            {[
-              { blur: 2, from: '38%', to: '54%' },
-              { blur: 6, from: '54%', to: '70%' },
-              { blur: 14, from: '70%', to: '86%' },
-              { blur: 28, from: '86%', to: '100%' },
-            ].map((l, i) => (
-              <div
-                key={i}
-                className="absolute inset-0"
-                style={{
-                  backdropFilter: `blur(${l.blur}px)`,
-                  WebkitBackdropFilter: `blur(${l.blur}px)`,
-                  WebkitMaskImage: `linear-gradient(to right, transparent ${l.from}, black ${l.to})`,
-                  maskImage: `linear-gradient(to right, transparent ${l.from}, black ${l.to})`,
-                }}
-              />
-            ))}
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, transparent 55%, var(--ds-surface-2) 94%)' }} />
           </div>
         </div>
     </main>

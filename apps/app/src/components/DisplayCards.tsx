@@ -21,9 +21,8 @@ const OFFSETS = [
   { x: 128, y: 88 },
 ]
 
-// The original skewed, glassy card look with static per-card colours — now
-// floating in a continuous wave (staggered per-card phase). Reduced motion
-// holds it still.
+// Reference DisplayCard look & feel (border-2, frosted bg, right-edge fade into
+// the panel) — with our wavy float animation and content kept intact.
 function DisplayCards({ cards, loop = false }: { cards: DisplayCardProps[]; loop?: boolean }) {
   const reduced = useReducedMotion()
   const wavy = loop && !reduced
@@ -41,13 +40,15 @@ function DisplayCards({ cards, loop = false }: { cards: DisplayCardProps[]; loop
             animate={wavy ? { x: off.x, y: [off.y - 6, off.y + 6, off.y - 6] } : { x: off.x, y: off.y }}
             transition={{ x: { duration: 0 }, y: { duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: i * 0.55 } }}
           >
-            <div className="relative flex min-h-[8rem] w-[15rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-hair bg-white/70 px-4 py-3 backdrop-blur-sm sm:h-36 sm:w-[22rem] [&>*]:flex [&>*]:items-center [&>*]:gap-2">
+            <div className="relative flex h-36 w-[22rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-hair bg-white/70 px-4 py-3 backdrop-blur-sm transition-all duration-700 after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[color:var(--ds-surface-2)] after:to-transparent after:content-[''] hover:bg-white [&>*]:flex [&>*]:items-center [&>*]:gap-2">
               <div>
-                <span className={cn('relative inline-block rounded-full p-1.5', c.badgeClassName ?? 'bg-blue-500')}>{c.icon}</span>
-                <p className={cn('text-[15px] font-medium', c.titleClassName ?? 'text-blue-600')}>{c.title}</p>
+                <span className="relative inline-flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-black/[0.06]">
+                  {c.icon}
+                </span>
+                <p className={cn('text-lg font-medium', c.titleClassName ?? 'text-blue-600')}>{c.title}</p>
               </div>
-              <p className="text-[15px] text-subtle sm:whitespace-nowrap">{c.description}</p>
-              <p className="text-[12px] text-faint">{c.date}</p>
+              <p className="whitespace-nowrap text-[15px] text-subtle">{c.description}</p>
+              <p className="text-[13px] text-faint">{c.date}</p>
             </div>
           </motion.div>
         )
