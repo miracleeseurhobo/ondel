@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Icon } from '../components/ui/icon'
+import { Icon, type IconName } from '../components/ui/icon'
 import { TextShimmer } from '../components/ui/text-shimmer'
 import OndieMark from '../components/OndieMark'
-import { setPlanGenerated, hasPlan } from '../lib/plan'
+import { setPlanGenerated } from '../lib/plan'
 
 // Remote assets (folder / lights / cards / icons) — the visual centrepiece.
 const A = 'https://qclay.design/lovable/sixsense'
@@ -595,26 +595,18 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
 /* Toolbar bits                                                        */
 /* ------------------------------------------------------------------ */
 
-// Vector (Hugeicons) so it stays crisp at any zoom / DPR — the old remote
-// raster assets looked fuzzy until zoomed.
-function IconButton({ name, label }: { name: 'image' | 'attachment'; label: string }) {
+// A labelled tool chip for the input bar (Song / Assets / Voice / Release date).
+function ToolChip({ icon, label, active, onClick }: { icon: IconName; label: string; active?: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
-      aria-label={label}
-      style={{
-        width: 28,
-        height: 28,
-        borderRadius: 8,
-        border: '1px solid var(--ds-border)',
-        background: 'var(--ds-surface)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-      }}
+      onClick={onClick}
+      aria-pressed={active}
+      className="flex h-8 flex-shrink-0 items-center gap-1.5 rounded-lg px-2.5 text-[12px] font-medium transition-[transform,background-color,color] duration-150 active:scale-[0.96]"
+      style={active ? { background: 'var(--ds-accent)', color: 'var(--ds-accent-fg)' } : { background: 'var(--ds-surface-2)', color: 'var(--ds-text-secondary)' }}
     >
-      <Icon name={name} size={15} style={{ color: 'var(--ds-text-secondary)' }} />
+      <Icon name={icon} size={13} />
+      <span className="max-w-[120px] truncate">{label}</span>
     </button>
   )
 }
@@ -645,18 +637,6 @@ function CornerArrow() {
   )
 }
 
-// The chips evolve with context — the UI teaches itself what to do next.
-const PHASE_SETS: Record<'song' | 'released', { label: string; prompts: string[] }> = {
-  song: {
-    label: 'With your track',
-    prompts: ['Generate a 30-day campaign', 'Schedule this month', 'Find influencers', 'Predict performance'],
-  },
-  released: {
-    label: 'Now you’re live',
-    prompts: ['Why isn’t this growing?', 'Find new opportunities', 'Refresh the campaign', 'Analyze my audience'],
-  },
-}
-
 function PromptGrid({ prompts, onPick }: { prompts: string[]; onPick: (t: string) => void }) {
   return (
     <div className="grid grid-cols-1 gap-x-10 gap-y-0.5 sm:grid-cols-2">
@@ -670,40 +650,29 @@ function PromptGrid({ prompts, onPick }: { prompts: string[]; onPick: (t: string
   )
 }
 
-function SuggestedPrompts({ onPick, songName, planned }: { onPick: (text: string) => void; songName: string | null; planned: boolean }) {
+function SuggestedPrompts({ onPick }: { onPick: (text: string) => void }) {
   const [tab, setTab] = useState<(typeof SUGGEST_TABS)[number]>('Popular')
-  const phase = planned ? 'released' : songName ? 'song' : 'initial'
-
   return (
     <div style={{ width: 702, maxWidth: '100%', marginTop: 26 }}>
-      {phase === 'initial' ? (
-        <>
-          <div className="flex items-center gap-1">
-            {SUGGEST_TABS.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setTab(t)}
-                className={
-                  tab === t
-                    ? 'rounded-lg bg-surface2 px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text)]'
-                    : 'rounded-lg px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text-secondary)] transition-colors hover:text-[color:var(--ds-text)]'
-                }
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-          <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.28, ease: 'easeOut' }} className="mt-3">
-            <PromptGrid prompts={SUGGESTIONS[tab]} onPick={onPick} />
-          </motion.div>
-        </>
-      ) : (
-        <motion.div key={phase} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.32, ease: 'easeOut' }}>
-          <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-[color:var(--ds-text-muted)]">{PHASE_SETS[phase].label}</div>
-          <PromptGrid prompts={PHASE_SETS[phase].prompts} onPick={onPick} />
-        </motion.div>
-      )}
+      <div className="flex items-center gap-1">
+        {SUGGEST_TABS.map((t) => (
+          <button
+            key={t}
+            type="button"
+            onClick={() => setTab(t)}
+            className={
+              tab === t
+                ? 'rounded-lg bg-surface2 px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text)]'
+                : 'rounded-lg px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text-secondary)] transition-colors hover:text-[color:var(--ds-text)]'
+            }
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+      <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.28, ease: 'easeOut' }} className="mt-3">
+        <PromptGrid prompts={SUGGESTIONS[tab]} onPick={onPick} />
+      </motion.div>
     </div>
   )
 }
@@ -716,8 +685,18 @@ export default function Index() {
   const [focused, setFocused] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [step, setStep] = useState(0)
+  const [assetCount, setAssetCount] = useState(0)
+  const [voiceOn, setVoiceOn] = useState(false)
+  const [releaseDate, setReleaseDate] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const assetInputRef = useRef<HTMLInputElement>(null)
+  const dateInputRef = useRef<HTMLInputElement>(null)
   const promptRef = useRef<HTMLTextAreaElement>(null)
+
+  const fmtDate = (iso: string) => {
+    const [y, m, d] = iso.split('-').map(Number)
+    return new Date(y, m - 1, d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  }
 
   const pickPrompt = (text: string) => {
     setPrompt(text)
@@ -910,81 +889,45 @@ export default function Index() {
 
             {/* toolbar */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                {/* Ondie expert pill */}
-                <div
-                  className="ondel-pill"
-                  style={{
-                    width: 110,
-                    height: 28,
-                    background: 'var(--ds-surface-2)',
-                    borderRadius: 8,
-                    padding: '0 8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                  }}
+              <div className="flex min-w-0 items-center gap-2">
+                {/* Ondie Mode pill */}
+                <button
+                  type="button"
+                  className="flex h-8 flex-shrink-0 items-center gap-1.5 rounded-lg px-2 pr-2.5 text-[12px] font-medium transition-[transform] duration-150 active:scale-[0.96]"
+                  style={{ background: 'var(--ds-surface-2)', color: 'var(--ds-text-secondary)' }}
                 >
-                  <span
-                    style={{
-                      width: 14,
-                      height: 14,
-                      borderRadius: 4,
-                      background: 'var(--ds-accent)',
-                      color: 'var(--ds-accent-fg)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <span className="flex h-[18px] w-[18px] items-center justify-center rounded-md" style={{ background: 'var(--ds-accent)', color: 'var(--ds-accent-fg)' }}>
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                       <path d="M12 2l1.7 6.1a2 2 0 0 0 1.4 1.4L21 11l-5.9 1.5a2 2 0 0 0-1.4 1.4L12 20l-1.7-6.1a2 2 0 0 0-1.4-1.4L3 11l5.9-1.5a2 2 0 0 0 1.4-1.4z" />
                     </svg>
                   </span>
-                  <span style={{ fontSize: 12, lineHeight: '16px', color: '#5e5e5e', whiteSpace: 'nowrap' }}>Ondie</span>
-                  <Icon name="chevronDown" size={12} color="#5e5e5e" style={{ marginLeft: 'auto', flexShrink: 0 }} />
-                </div>
-
-                <IconButton name="image" label="Attach an image" />
-                <IconButton name="attachment" label="Attach a file" />
-
-                <div style={{ width: 1, height: 18, background: 'var(--ds-border)', margin: '0 2px' }} />
-
-                {/* Attach a song for Ondie to analyse */}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="audio/*"
-                  className="hidden"
-                  onChange={(e) => acceptSong(e.target.files?.[0])}
-                />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  aria-label="Attach a song"
-                  className="flex h-7 items-center gap-1.5 rounded-lg px-2.5 text-[12px] font-medium transition-colors"
-                  style={{ background: 'var(--ds-surface-2)', color: 'var(--ds-text-secondary)' }}
-                >
-                  <Icon name="music" size={13} />
-                  Add song
+                  Ondie Mode
+                  <Icon name="chevronDown" size={12} style={{ color: 'var(--ds-text-muted)' }} />
                 </button>
 
-                {songName ? (
-                  <div className="flex h-7 items-center gap-1.5 rounded-lg px-2.5" style={{ background: 'var(--ds-surface-2)' }}>
-                    <span className="max-w-[120px] truncate text-[12px]" style={{ color: 'var(--ds-text)' }} title={songName}>
-                      {songName}
-                    </span>
-                    <button type="button" aria-label="Remove song" onClick={() => setSongName(null)} className="flex items-center">
-                      <Icon name="close" size={12} style={{ color: 'var(--ds-text-muted)' }} />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex h-7 items-center gap-1 rounded-lg px-2.5" style={{ background: 'var(--ds-surface-2)' }}>
-                    <span className="text-[12px]" style={{ color: 'var(--ds-text-secondary)' }}>Single</span>
-                    <Icon name="chevronDown" size={12} style={{ color: 'var(--ds-text-muted)' }} />
-                  </div>
-                )}
+                <div className="h-4 w-px flex-shrink-0" style={{ background: 'var(--ds-border)' }} />
+
+                {/* Hidden file/date inputs */}
+                <input ref={fileInputRef} type="file" accept="audio/*" className="hidden" onChange={(e) => acceptSong(e.target.files?.[0])} />
+                <input ref={assetInputRef} type="file" multiple className="hidden" onChange={(e) => setAssetCount(e.target.files?.length ?? 0)} />
+                <input ref={dateInputRef} type="date" className="hidden" onChange={(e) => setReleaseDate(e.target.value || null)} />
+
+                <div className="flex min-w-0 items-center gap-2 overflow-x-auto">
+                  <ToolChip icon="music" label={songName ? clip(songName, 14) : 'Song'} active={!!songName} onClick={() => fileInputRef.current?.click()} />
+                  <ToolChip icon="attachment" label={assetCount ? `${assetCount} asset${assetCount > 1 ? 's' : ''}` : 'Assets'} active={assetCount > 0} onClick={() => assetInputRef.current?.click()} />
+                  <ToolChip icon="mic" label="Voice" active={voiceOn} onClick={() => setVoiceOn((v) => !v)} />
+                  <ToolChip
+                    icon="timeline"
+                    label={releaseDate ? fmtDate(releaseDate) : 'Release date'}
+                    active={!!releaseDate}
+                    onClick={() => {
+                      const el = dateInputRef.current
+                      if (!el) return
+                      if (el.showPicker) el.showPicker()
+                      else el.click()
+                    }}
+                  />
+                </div>
               </div>
 
               <SendButton onSubmit={submit} />
@@ -998,7 +941,7 @@ export default function Index() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7, ease: 'easeOut' }}
         >
-          <SuggestedPrompts onPick={pickPrompt} songName={songName} planned={hasPlan()} />
+          <SuggestedPrompts onPick={pickPrompt} />
         </motion.div>
       </div>
 
