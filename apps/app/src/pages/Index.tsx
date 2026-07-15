@@ -746,7 +746,7 @@ export default function Index() {
     if (!generating) return
     const finish = () => {
       setPlanGenerated(songName || prompt.trim() || PHRASES[0])
-      navigate('/timeline')
+      navigate('/releases') // Review — Ondie reveals the plan modules; calendar is one click away
     }
     if (reduced) {
       setStep(genSteps.length)

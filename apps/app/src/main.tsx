@@ -12,6 +12,7 @@ import {
 import './index.css'
 import Index from './pages/Index'
 import Timeline from './pages/Timeline'
+import ReleaseOverview from './pages/ReleaseOverview'
 import SignIn from './pages/SignIn'
 import WorkspaceLayout from './components/WorkspaceLayout'
 import BlankPage from './components/BlankPage'
@@ -67,7 +68,7 @@ function AppRouter() {
         {/* Signed-in workspace shell — Home is Ask Ondie; sections are blank for now */}
         <Route element={<GuardedLayout />}>
           <Route path="/" element={<Index />} />
-          <Route path="/releases" element={<BlankPage title="Releases" />} />
+          <Route path="/releases" element={<ReleaseOverview />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/signals" element={<BlankPage title="Signals" />} />
           <Route path="/campaigns" element={<BlankPage title="Campaigns" />} />

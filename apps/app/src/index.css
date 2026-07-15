@@ -83,6 +83,8 @@ body,
   font-weight: 400; /* body is regular; medium (500) is reserved for headings & emphasis */
   background: var(--ds-bg);
   color: var(--ds-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Decorative sixsense pixel-grid — calm monochrome in light; inverted + dimmed
