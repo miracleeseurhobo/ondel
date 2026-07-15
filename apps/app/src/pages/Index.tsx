@@ -686,7 +686,6 @@ export default function Index() {
   const [generating, setGenerating] = useState(false)
   const [step, setStep] = useState(0)
   const [assetCount, setAssetCount] = useState(0)
-  const [voiceOn, setVoiceOn] = useState(false)
   const [releaseDate, setReleaseDate] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const assetInputRef = useRef<HTMLInputElement>(null)
@@ -914,8 +913,16 @@ export default function Index() {
 
                 <div className="flex min-w-0 items-center gap-2 overflow-x-auto">
                   <ToolChip icon="music" label={songName ? clip(songName, 14) : 'Song'} active={!!songName} onClick={() => fileInputRef.current?.click()} />
-                  <ToolChip icon="attachment" label={assetCount ? `${assetCount} asset${assetCount > 1 ? 's' : ''}` : 'Assets'} active={assetCount > 0} onClick={() => assetInputRef.current?.click()} />
-                  <ToolChip icon="mic" label="Voice" active={voiceOn} onClick={() => setVoiceOn((v) => !v)} />
+                  <button
+                    type="button"
+                    onClick={() => assetInputRef.current?.click()}
+                    aria-label={assetCount ? `${assetCount} asset${assetCount > 1 ? 's' : ''} attached` : 'Attach assets'}
+                    title="Attach assets"
+                    className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-[transform,background-color] duration-150 active:scale-[0.96]"
+                    style={assetCount > 0 ? { background: 'var(--ds-accent)', color: 'var(--ds-accent-fg)' } : { background: 'var(--ds-surface-2)', color: 'var(--ds-text-secondary)' }}
+                  >
+                    <Icon name="attachment" size={15} />
+                  </button>
                   <ToolChip
                     icon="timeline"
                     label={releaseDate ? fmtDate(releaseDate) : 'Release date'}

@@ -13,6 +13,7 @@ import './index.css'
 import Index from './pages/Index'
 import Timeline from './pages/Timeline'
 import ReleaseOverview from './pages/ReleaseOverview'
+import Inbox from './pages/Inbox'
 import SignIn from './pages/SignIn'
 import WorkspaceLayout from './components/WorkspaceLayout'
 import BlankPage from './components/BlankPage'
@@ -69,6 +70,7 @@ function AppRouter() {
         <Route element={<GuardedLayout />}>
           <Route path="/" element={<Index />} />
           <Route path="/releases" element={<ReleaseOverview />} />
+          <Route path="/inbox" element={<Inbox />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/signals" element={<BlankPage title="Signals" />} />
           <Route path="/campaigns" element={<BlankPage title="Campaigns" />} />

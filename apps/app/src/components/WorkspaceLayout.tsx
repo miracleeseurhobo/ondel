@@ -6,10 +6,11 @@ import ThemeToggle from './ThemeToggle'
 import { mockSignOut } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
 
-const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
+const NAV: { to: string; label: string; icon: IconName; end?: boolean; count?: number }[] = [
   { to: '/', label: 'Home', icon: 'home', end: true },
   { to: '/releases', label: 'Releases', icon: 'releases' },
   { to: '/timeline', label: 'Calendar', icon: 'timeline' },
+  { to: '/inbox', label: 'Inbox', icon: 'inbox', count: 3 },
   { to: '/signals', label: 'Signals', icon: 'signals' },
   { to: '/campaigns', label: 'Campaigns', icon: 'campaigns' },
 ]
@@ -79,7 +80,7 @@ export default function WorkspaceLayout() {
           </div>
 
           <nav className="mt-8 flex flex-col gap-1">
-            {NAV.map(({ to, label, icon, end }) => (
+            {NAV.map(({ to, label, icon, end, count }) => (
               <NavLink
                 key={to}
                 to={to}
@@ -93,6 +94,11 @@ export default function WorkspaceLayout() {
               >
                 <Icon name={icon} className="h-[18px] w-[18px]" />
                 {label}
+                {count ? (
+                  <span className="ml-auto rounded-full px-1.5 text-[11px] font-medium tabular-nums" style={{ background: 'var(--ds-surface-2)', color: SUBTLE }}>
+                    {count}
+                  </span>
+                ) : null}
               </NavLink>
             ))}
           </nav>
