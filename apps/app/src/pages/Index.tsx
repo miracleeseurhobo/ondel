@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { Icon } from '../components/ui/icon'
 import { TextShimmer } from '../components/ui/text-shimmer'
 import OndieMark from '../components/OndieMark'
-import { setPlanGenerated } from '../lib/plan'
+import { setPlanGenerated, hasPlan } from '../lib/plan'
 
 // Remote assets (folder / lights / cards / icons) — the visual centrepiece.
 const A = 'https://qclay.design/lovable/sixsense'
@@ -645,34 +645,65 @@ function CornerArrow() {
   )
 }
 
-function SuggestedPrompts({ onPick }: { onPick: (text: string) => void }) {
+// The chips evolve with context — the UI teaches itself what to do next.
+const PHASE_SETS: Record<'song' | 'released', { label: string; prompts: string[] }> = {
+  song: {
+    label: 'With your track',
+    prompts: ['Generate a 30-day campaign', 'Schedule this month', 'Find influencers', 'Predict performance'],
+  },
+  released: {
+    label: 'Now you’re live',
+    prompts: ['Why isn’t this growing?', 'Find new opportunities', 'Refresh the campaign', 'Analyze my audience'],
+  },
+}
+
+function PromptGrid({ prompts, onPick }: { prompts: string[]; onPick: (t: string) => void }) {
+  return (
+    <div className="grid grid-cols-1 gap-x-10 gap-y-0.5 sm:grid-cols-2">
+      {prompts.map((p) => (
+        <button key={p} type="button" onClick={() => onPick(p)} className="group flex items-center gap-2.5 rounded-md py-1.5 text-left">
+          <CornerArrow />
+          <span className="text-[14px] text-[color:var(--ds-text-secondary)] transition-colors group-hover:text-[color:var(--ds-text)]">{p}</span>
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function SuggestedPrompts({ onPick, songName, planned }: { onPick: (text: string) => void; songName: string | null; planned: boolean }) {
   const [tab, setTab] = useState<(typeof SUGGEST_TABS)[number]>('Popular')
+  const phase = planned ? 'released' : songName ? 'song' : 'initial'
+
   return (
     <div style={{ width: 702, maxWidth: '100%', marginTop: 26 }}>
-      <div className="flex items-center gap-1">
-        {SUGGEST_TABS.map((t) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => setTab(t)}
-            className={
-              tab === t
-                ? 'rounded-lg bg-surface2 px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text)]'
-                : 'rounded-lg px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text-secondary)] transition-colors hover:text-[color:var(--ds-text)]'
-            }
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-      <div className="mt-3 grid grid-cols-1 gap-x-10 gap-y-0.5 sm:grid-cols-2">
-        {SUGGESTIONS[tab].map((p) => (
-          <button key={p} type="button" onClick={() => onPick(p)} className="group flex items-center gap-2.5 rounded-md py-1.5 text-left">
-            <CornerArrow />
-            <span className="text-[14px] text-[color:var(--ds-text-secondary)] transition-colors group-hover:text-[color:var(--ds-text)]">{p}</span>
-          </button>
-        ))}
-      </div>
+      {phase === 'initial' ? (
+        <>
+          <div className="flex items-center gap-1">
+            {SUGGEST_TABS.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTab(t)}
+                className={
+                  tab === t
+                    ? 'rounded-lg bg-surface2 px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text)]'
+                    : 'rounded-lg px-3 py-1.5 text-[13px] font-medium text-[color:var(--ds-text-secondary)] transition-colors hover:text-[color:var(--ds-text)]'
+                }
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.28, ease: 'easeOut' }} className="mt-3">
+            <PromptGrid prompts={SUGGESTIONS[tab]} onPick={onPick} />
+          </motion.div>
+        </>
+      ) : (
+        <motion.div key={phase} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.32, ease: 'easeOut' }}>
+          <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-[color:var(--ds-text-muted)]">{PHASE_SETS[phase].label}</div>
+          <PromptGrid prompts={PHASE_SETS[phase].prompts} onPick={onPick} />
+        </motion.div>
+      )}
     </div>
   )
 }
@@ -967,7 +998,7 @@ export default function Index() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7, ease: 'easeOut' }}
         >
-          <SuggestedPrompts onPick={pickPrompt} />
+          <SuggestedPrompts onPick={pickPrompt} songName={songName} planned={hasPlan()} />
         </motion.div>
       </div>
 
