@@ -7,30 +7,34 @@ import { INK, SUBTLE, FAINT } from '../components/workspace-ui'
 const HAIR = 'var(--ds-hair)'
 const EASE = [0.23, 1, 0.32, 1] as const
 
+type FolderColor = 'blue' | 'black' | 'grey' | 'yellow' | 'orange' | 'red'
 type Asset = { id: string; name: string; kind: string; size: string; when: string; icon: IconName; hue: string }
-type FolderData = { id: string; label: string; hint: string; assets: Asset[] }
+type FolderData = { id: string; label: string; hint: string; color: FolderColor; assets: Asset[] }
 
 const SEED: FolderData[] = [
   {
     id: 'masters',
     label: 'Masters',
     hint: 'Final mixes and masters',
+    color: 'blue',
     assets: [{ id: 'm1', name: 'Midnight Drive — Master.wav', kind: 'Master', size: '48.2 MB', when: 'Owned · May 2', icon: 'music', hue: '#3D82DE' }],
   },
   {
     id: 'artwork',
     label: 'Artwork',
     hint: 'Covers, promo images',
+    color: 'red',
     assets: [{ id: 'a1', name: 'Cover Art.png', kind: 'Artwork', size: '6.1 MB', when: 'Owned · May 2', icon: 'image', hue: '#E1306C' }],
   },
   {
     id: 'stems',
     label: 'Stems',
     hint: 'Session stems and bounces',
+    color: 'orange',
     assets: [{ id: 's1', name: 'Stems.zip', kind: 'Stems', size: '210 MB', when: 'Owned · Apr 28', icon: 'music', hue: '#8A63E8' }],
   },
-  { id: 'splits', label: 'Splits & Contracts', hint: 'Split sheets, agreements', assets: [] },
-  { id: 'promo', label: 'Promo', hint: 'Press kit, canvas, visualisers', assets: [] },
+  { id: 'splits', label: 'Splits & Contracts', hint: 'Split sheets, agreements', color: 'black', assets: [] },
+  { id: 'promo', label: 'Promo', hint: 'Press kit, canvas, visualisers', color: 'yellow', assets: [] },
 ]
 
 const prettySize = (bytes: number) => {
@@ -202,7 +206,7 @@ export default function Vault() {
             label={f.label}
             count={f.assets.length}
             empty={f.assets.length === 0}
-            badges={f.assets.slice(0, 3).map((a) => ({ icon: a.icon, hue: a.hue }))}
+            color={f.color}
             onClick={() => setOpenId(f.id)}
           />
         ))}
