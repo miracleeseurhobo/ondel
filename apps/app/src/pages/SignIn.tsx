@@ -45,44 +45,27 @@ const WELCOME_WORDS = WELCOME.split(' ')
 // Onboarding step indicator (Lemni-style footer) — Welcome is the active step.
 const STEPS = ['Welcome', 'Workspace', 'Plan', 'Tutorial']
 
-// Animated preview deck for the sign-in right panel (dual layout). Cards fan out
-// and colourise on a calm loop; the fade colour matches the panel.
-const CARD_EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]'
-const CARD_FADE =
-  "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[color:var(--ds-surface-2)] after:to-transparent after:content-['']"
-const CARD_REVEAL =
-  "grayscale-[100%] group-data-[open=true]:grayscale-0 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:rounded-xl before:outline-1 before:outline-[color:var(--ds-border)] before:bg-overlay/[0.04] before:bg-blend-overlay before:transition-opacity before:duration-700 before:content-[''] group-data-[open=true]:before:opacity-0"
-
-// The animated preview deck keeps its colours — a lively, colourful counterpoint
-// to the otherwise neutral onboarding (an intentional exception to the neutral
-// palette; see design-system/color.md).
+// Animated preview deck for the sign-in right panel — a stacked trio that floats
+// in a wave and cycles accent colours (see DisplayCards). A lively, colourful
+// counterpoint to the otherwise neutral onboarding.
 const PLAYLIST_CARDS: DisplayCardProps[] = [
   {
     icon: <Icon name="music" size={16} className="text-white" />,
-    badgeClassName: 'bg-blue-500',
-    titleClassName: 'text-blue-600',
     title: 'New Music Friday',
     description: 'Editorial · 4.1M followers',
     date: 'Pitched · 2h ago',
-    className: `[grid-area:stack] ${CARD_EASE} group-data-[open=true]:-translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
   },
   {
     icon: <Icon name="releases" size={16} className="text-white" />,
-    badgeClassName: 'bg-fuchsia-500',
-    titleClassName: 'text-fuchsia-600',
     title: 'Indie Pop Rising',
     description: '94% match · 82k followers',
     date: 'Added yesterday',
-    className: `[grid-area:stack] ${CARD_EASE} delay-[180ms] translate-x-8 translate-y-8 group-data-[open=true]:-translate-y-1 sm:translate-x-16 sm:translate-y-10 ${CARD_FADE} ${CARD_REVEAL}`,
   },
   {
     icon: <Icon name="radio" size={16} className="text-white" />,
-    badgeClassName: 'bg-emerald-500',
-    titleClassName: 'text-emerald-600',
     title: 'Bedroom Pop',
     description: 'Curator pick · 31k followers',
     date: 'Under review',
-    className: `[grid-area:stack] ${CARD_EASE} delay-[360ms] translate-x-16 translate-y-16 group-data-[open=true]:translate-y-8 sm:translate-x-32 sm:translate-y-20 ${CARD_FADE}`,
   },
 ]
 
