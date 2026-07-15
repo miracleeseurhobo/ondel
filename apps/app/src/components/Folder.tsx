@@ -5,8 +5,8 @@ type FolderColor = 'blue' | 'black' | 'grey' | 'yellow' | 'orange' | 'red'
 type FolderSize = 'sm' | 'md'
 
 const sizeMap: Record<FolderSize, { container: string; tabLeft: string; tabRight: string; tabBridge: string; flapBody: string; papers: string; paperOffset: string; paperH: string; paperContent: string; hoverY: number; hoverBackY: number }> = {
-  sm: { container: 'size-24 rounded-[24px]', tabLeft: 'w-9 h-3 rounded-tl-lg', tabRight: 'w-2 h-3 rounded-tr-[24px]', tabBridge: 'w-2 h-2', flapBody: 'h-9', papers: 'inset-x-5 top-2', paperOffset: 'top-1', paperH: 'h-16', paperContent: 'pt-2.5 px-2.5 space-y-1', hoverY: -3, hoverBackY: -4 },
-  md: { container: 'size-32 rounded-[32px]', tabLeft: 'w-12 h-4 rounded-tl-lg', tabRight: 'w-2.5 h-4 rounded-tr-[32px]', tabBridge: 'w-2.5 h-2.5', flapBody: 'h-12', papers: 'inset-x-6 top-3', paperOffset: 'top-1.5', paperH: 'h-24', paperContent: 'pt-3 px-3 space-y-1', hoverY: -3, hoverBackY: -5 },
+  sm: { container: 'size-24 rounded-[24px]', tabLeft: 'w-9 h-3 rounded-tl-lg', tabRight: 'w-2 h-3 rounded-tr-[24px]', tabBridge: 'w-2 h-2', flapBody: 'h-9 rounded-b-[24px]', papers: 'inset-x-5 top-2', paperOffset: 'top-1', paperH: 'h-16', paperContent: 'pt-2.5 px-2.5 space-y-1', hoverY: -3, hoverBackY: -4 },
+  md: { container: 'size-32 rounded-[32px]', tabLeft: 'w-12 h-4 rounded-tl-lg', tabRight: 'w-2.5 h-4 rounded-tr-[32px]', tabBridge: 'w-2.5 h-2.5', flapBody: 'h-12 rounded-b-[32px]', papers: 'inset-x-6 top-3', paperOffset: 'top-1.5', paperH: 'h-24', paperContent: 'pt-3 px-3 space-y-1', hoverY: -3, hoverBackY: -5 },
 }
 
 const colorMap: Record<FolderColor, { folder: string; flap: string; paperBack: string; paperFront: string; paperLine: string; paperBorder: string; folderBorder: string }> = {
