@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Icon } from '../components/ui/icon'
+import { TextShimmer } from '../components/ui/text-shimmer'
 import OndieMark from '../components/OndieMark'
 import { setPlanGenerated } from '../lib/plan'
 
@@ -916,7 +917,13 @@ export default function Index() {
                     <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--ds-text-muted)' }} />
                   </span>
                 )}
-                <span style={{ fontSize: 14, color: i <= step ? 'var(--ds-text)' : 'var(--ds-text-muted)' }}>{s}</span>
+                {i === step ? (
+                  <TextShimmer as="span" duration={1.4} spread={1.4} className="text-[14px]">
+                    {s}
+                  </TextShimmer>
+                ) : (
+                  <span style={{ fontSize: 14, color: i < step ? 'var(--ds-text)' : 'var(--ds-text-muted)' }}>{s}</span>
+                )}
               </li>
             ))}
           </ul>
