@@ -45,24 +45,29 @@ const WELCOME_WORDS = WELCOME.split(' ')
 // Onboarding step indicator (Lemni-style footer) — Welcome is the active step.
 const STEPS = ['Welcome', 'Workspace', 'Plan', 'Tutorial']
 
-// Animated preview deck for the sign-in right panel — a stacked trio that floats
-// in a wave and cycles accent colours (see DisplayCards). A lively, colourful
-// counterpoint to the otherwise neutral onboarding.
+// Animated preview deck for the sign-in right panel — a stacked trio (original
+// skewed, glassy style with static per-card colours) that floats in a wave.
 const PLAYLIST_CARDS: DisplayCardProps[] = [
   {
     icon: <Icon name="music" size={16} className="text-white" />,
+    badgeClassName: 'bg-blue-500',
+    titleClassName: 'text-blue-600',
     title: 'New Music Friday',
     description: 'Editorial · 4.1M followers',
     date: 'Pitched · 2h ago',
   },
   {
     icon: <Icon name="releases" size={16} className="text-white" />,
+    badgeClassName: 'bg-fuchsia-500',
+    titleClassName: 'text-fuchsia-600',
     title: 'Indie Pop Rising',
     description: '94% match · 82k followers',
     date: 'Added yesterday',
   },
   {
     icon: <Icon name="radio" size={16} className="text-white" />,
+    badgeClassName: 'bg-emerald-500',
+    titleClassName: 'text-emerald-600',
     title: 'Afrobeats',
     description: 'Curator pick · 31k followers',
     date: 'Under review',

@@ -629,27 +629,47 @@ function IconButton({ icon }: { icon: string }) {
 /* Ask Ondie — the dashboard home                                      */
 /* ------------------------------------------------------------------ */
 
-const GEN_STEPS = ['Reading your goal', 'Mapping the 30 days', 'Matching platforms', 'Scheduling posts']
+const STEP_MS = 1250 // per-step dwell → total lands in the 5–8s "analysis" window
+const FINISH_MS = 900
+
+const clip = (s: string, n = 22) => (s.length > n ? `${s.slice(0, n - 1)}…` : s)
 
 export default function Index() {
   const navigate = useNavigate()
   const reduced = useReducedMotion()
   const [prompt, setPrompt] = useState('')
+  const [songName, setSongName] = useState<string | null>(null)
   const [focused, setFocused] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [step, setStep] = useState(0)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const submit = () => setGenerating((g) => g || true)
+  // Steps mirror what Ondie is actually doing — analysing an uploaded track vs
+  // reading a typed goal — and are paced to feel like real work (~5–8s).
+  const genSteps = songName
+    ? [`Listening to “${clip(songName)}”`, 'Detecting genre & tempo', 'Mapping the 30 days', 'Matching platforms', 'Scheduling posts']
+    : ['Reading your goal', 'Mapping the 30 days', 'Matching platforms', 'Scheduling posts']
 
-  // Mock generation: tick through steps, then persist the plan + open the Calendar.
+  const acceptSong = (file: File | undefined) => {
+    if (!file) return
+    if (!file.type.startsWith('audio/')) return
+    setSongName(file.name)
+  }
+
+  const submit = () => {
+    if (!prompt.trim() && !songName) setPrompt(PHRASES[0]) // seed a default intent
+    setGenerating((g) => g || true)
+  }
+
+  // Mock generation: tick through the analysis steps, then persist + open Calendar.
   useEffect(() => {
     if (!generating) return
     const finish = () => {
-      setPlanGenerated(prompt.trim() || PHRASES[0])
+      setPlanGenerated(songName || prompt.trim() || PHRASES[0])
       navigate('/timeline')
     }
     if (reduced) {
-      setStep(GEN_STEPS.length)
+      setStep(genSteps.length)
       const t = window.setTimeout(finish, 500)
       return () => clearTimeout(t)
     }
@@ -658,11 +678,11 @@ export default function Index() {
     const id = window.setInterval(() => {
       i += 1
       setStep(i)
-      if (i >= GEN_STEPS.length) {
+      if (i >= genSteps.length) {
         window.clearInterval(id)
-        window.setTimeout(finish, 700)
+        window.setTimeout(finish, FINISH_MS)
       }
-    }, 760)
+    }, STEP_MS)
     return () => clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [generating])
@@ -747,6 +767,11 @@ export default function Index() {
           }}
         >
           <div
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault()
+              acceptSong(e.dataTransfer.files?.[0])
+            }}
             style={{
               width: '100%',
               height: 116,
@@ -837,39 +862,42 @@ export default function Index() {
                 <IconButton icon="image.svg" />
                 <IconButton icon="Capa_1.svg" />
 
-                <div style={{ width: 1, height: 18, background: 'rgba(0,0,0,0.12)', margin: '0 2px' }} />
+                <div style={{ width: 1, height: 18, background: 'var(--ds-border)', margin: '0 2px' }} />
 
+                {/* Attach a song for Ondie to analyse */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="audio/*"
+                  className="hidden"
+                  onChange={(e) => acceptSong(e.target.files?.[0])}
+                />
                 <button
                   type="button"
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 8,
-                    border: '1px solid rgba(0,0,0,0.10)',
-                    background: 'transparent',
-                    fontSize: 16,
-                    lineHeight: 1,
-                    color: 'rgba(0,0,0,0.40)',
-                    cursor: 'pointer',
-                  }}
+                  onClick={() => fileInputRef.current?.click()}
+                  aria-label="Attach a song"
+                  className="flex h-7 items-center gap-1.5 rounded-lg px-2.5 text-[12px] font-medium transition-colors"
+                  style={{ background: 'var(--ds-surface-2)', color: 'var(--ds-text-secondary)' }}
                 >
-                  +
+                  <Icon name="music" size={13} />
+                  Add song
                 </button>
 
-                <div
-                  style={{
-                    height: 28,
-                    background: 'rgba(0,0,0,0.05)',
-                    borderRadius: 8,
-                    padding: '0 8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 4,
-                  }}
-                >
-                  <span style={{ fontSize: 12, color: 'var(--ds-text-secondary)' }}>Single</span>
-                  <Icon name="close" size={12} color="rgba(0,0,0,0.35)" style={{ marginLeft: 2 }} />
-                </div>
+                {songName ? (
+                  <div className="flex h-7 items-center gap-1.5 rounded-lg px-2.5" style={{ background: 'var(--ds-surface-2)' }}>
+                    <span className="max-w-[120px] truncate text-[12px]" style={{ color: 'var(--ds-text)' }} title={songName}>
+                      {songName}
+                    </span>
+                    <button type="button" aria-label="Remove song" onClick={() => setSongName(null)} className="flex items-center">
+                      <Icon name="close" size={12} style={{ color: 'var(--ds-text-muted)' }} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex h-7 items-center gap-1 rounded-lg px-2.5" style={{ background: 'var(--ds-surface-2)' }}>
+                    <span className="text-[12px]" style={{ color: 'var(--ds-text-secondary)' }}>Single</span>
+                    <Icon name="chevronDown" size={12} style={{ color: 'var(--ds-text-muted)' }} />
+                  </div>
+                )}
               </div>
 
               <SendButton onSubmit={submit} />
@@ -900,13 +928,13 @@ export default function Index() {
             <OndieMark size={60} />
           </motion.div>
           <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 30, fontWeight: 400, color: 'var(--ds-text)', margin: '20px 0 6px' }}>
-            Planning your release
+            {songName ? 'Analysing your track' : 'Planning your release'}
           </h2>
           <p style={{ fontSize: 14, color: 'var(--ds-text-secondary)', maxWidth: 380, textAlign: 'center', margin: 0 }}>
-            {prompt.trim() ? `“${prompt.trim()}”` : 'Building your 30-day plan…'}
+            {songName ? `“${clip(songName, 40)}”` : prompt.trim() ? `“${prompt.trim()}”` : 'Building your 30-day plan…'}
           </p>
-          <ul style={{ marginTop: 26, display: 'flex', flexDirection: 'column', gap: 13, width: 236, listStyle: 'none', padding: 0 }}>
-            {GEN_STEPS.map((s, i) => (
+          <ul style={{ marginTop: 26, display: 'flex', flexDirection: 'column', gap: 13, width: 260, listStyle: 'none', padding: 0 }}>
+            {genSteps.map((s, i) => (
               <li key={s} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 {i < step ? (
                   <Icon name="check" size={16} style={{ color: 'var(--ds-accent)' }} />
