@@ -28,6 +28,8 @@ import {
   Sun03Icon,
   Moon02Icon,
   ArrowUp02Icon,
+  Image01Icon,
+  Attachment02Icon,
 } from '@hugeicons/core-free-icons'
 
 // Ondel's icon vocabulary — Hugeicons, one entry per semantic role.
@@ -68,6 +70,8 @@ export const icons = {
   sun: Sun03Icon,
   moon: Moon02Icon,
   arrowUp: ArrowUp02Icon,
+  image: Image01Icon,
+  attachment: Attachment02Icon,
 } as const
 
 export type IconName = keyof typeof icons

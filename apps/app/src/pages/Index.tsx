@@ -549,12 +549,6 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
         />
         {/* static fallback border */}
         <div style={{ position: 'absolute', inset: 0, borderRadius: 12, border: '1px solid rgba(255,255,255,0.12)', zIndex: 4 }} />
-        {/* dots overlay */}
-        <img
-          src={`${A}/dots.svg`}
-          alt=""
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7, zIndex: 2 }}
-        />
         {/* shine sweep (once per hover) */}
         {arrowToggle > 0 && (
           <motion.div
@@ -604,23 +598,26 @@ function SendButton({ onSubmit }: { onSubmit?: () => void }) {
 /* Toolbar bits                                                        */
 /* ------------------------------------------------------------------ */
 
-function IconButton({ icon }: { icon: string }) {
+// Vector (Hugeicons) so it stays crisp at any zoom / DPR — the old remote
+// raster assets looked fuzzy until zoomed.
+function IconButton({ name, label }: { name: 'image' | 'attachment'; label: string }) {
   return (
     <button
       type="button"
+      aria-label={label}
       style={{
         width: 28,
         height: 28,
         borderRadius: 8,
-        border: '1px solid rgba(0,0,0,0.10)',
-        background: 'rgba(255,255,255,0.80)',
+        border: '1px solid var(--ds-border)',
+        background: 'var(--ds-surface)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
       }}
     >
-      <img src={`${A}/${icon}`} alt="" style={{ width: 14, height: 14 }} />
+      <Icon name={name} size={15} style={{ color: 'var(--ds-text-secondary)' }} />
     </button>
   )
 }
@@ -859,8 +856,8 @@ export default function Index() {
                   <Icon name="chevronDown" size={12} color="#5e5e5e" style={{ marginLeft: 'auto', flexShrink: 0 }} />
                 </div>
 
-                <IconButton icon="image.svg" />
-                <IconButton icon="Capa_1.svg" />
+                <IconButton name="image" label="Attach an image" />
+                <IconButton name="attachment" label="Attach a file" />
 
                 <div style={{ width: 1, height: 18, background: 'var(--ds-border)', margin: '0 2px' }} />
 
