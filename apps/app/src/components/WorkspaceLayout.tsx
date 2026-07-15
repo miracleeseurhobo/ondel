@@ -301,10 +301,12 @@ export default function WorkspaceLayout() {
             >
               <Icon name="bell" className="h-[18px] w-[18px]" style={{ color: SUBTLE }} />
             </button>
-            {/* Connect — stacked Spotify + Apple service logos, black primary */}
+            {/* Connect — stacked Spotify + Apple service logos, black primary.
+               Nudges the artist to link existing profiles; tooltip carries the why. */}
             <button
               type="button"
-              className="flex h-9 items-center gap-2.5 rounded-full py-1 pl-1 pr-3.5 text-[13px] font-medium"
+              title="Connect your profiles to track streams, saves & audience data"
+              className="flex h-9 items-center gap-2.5 rounded-full py-1 pl-1 pr-3.5 text-[13px] font-medium transition-transform active:scale-[0.96]"
               style={{ background: 'var(--ds-accent)', color: 'var(--ds-accent-fg)' }}
             >
               <span className="flex -space-x-2">
@@ -321,7 +323,7 @@ export default function WorkspaceLayout() {
                   <AppleGlyph className="h-[15px] w-[15px]" />
                 </span>
               </span>
-              Connect
+              Connect profiles
             </button>
           </TopNav>
         )}
