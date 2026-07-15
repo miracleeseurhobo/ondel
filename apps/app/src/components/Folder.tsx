@@ -62,20 +62,19 @@ function FolderGraphic({ color, size = 'md' }: { color: FolderColor; size?: Fold
 // Grid folder: colourful graphic + label/count below (same grid API as before).
 export default function Folder({ label, count, empty, color = 'blue', onClick }: { label: string; count: number; empty?: boolean; color?: FolderColor; onClick: () => void }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="group flex w-full flex-col items-center rounded-xl p-2 outline-none transition-[transform,background-color] duration-150 hover:bg-[color:var(--ds-surface-2)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-brand/40"
-    >
-      <FolderGraphic color={empty ? 'grey' : color} size="md" />
-      <div className="mt-2 w-full text-center">
-        <div className="truncate text-[13px] font-medium" style={{ color: 'var(--ds-text)' }}>
-          {label}
+    <button type="button" onClick={onClick} className="group flex w-full items-center justify-center outline-none">
+      {/* Grey hover card hugs the folder + label with even padding on all sides */}
+      <span className="flex flex-col items-center rounded-[44px] p-3 transition-[background-color,transform] duration-150 group-hover:bg-[color:var(--ds-surface-2)] group-active:scale-[0.96] group-focus-visible:ring-2 group-focus-visible:ring-brand/40">
+        <FolderGraphic color={empty ? 'grey' : color} size="md" />
+        <div className="mt-2.5 w-32 text-center">
+          <div className="truncate text-[13px] font-medium" style={{ color: 'var(--ds-text)' }}>
+            {label}
+          </div>
+          <div className="text-[12px] tabular-nums" style={{ color: 'var(--ds-text-muted)' }}>
+            {count} file{count === 1 ? '' : 's'}
+          </div>
         </div>
-        <div className="text-[12px] tabular-nums" style={{ color: 'var(--ds-text-muted)' }}>
-          {count} file{count === 1 ? '' : 's'}
-        </div>
-      </div>
+      </span>
     </button>
   )
 }
