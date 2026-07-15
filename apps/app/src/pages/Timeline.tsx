@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Icon } from '../components/ui/icon'
 import { INK, SUBTLE, FAINT } from '../components/workspace-ui'
-import Breadcrumb from '../components/Breadcrumb'
+import TopNav from '../components/TopNav'
 import OndieMark from '../components/OndieMark'
 import { hasPlan } from '../lib/plan'
 
@@ -120,61 +120,52 @@ function PlatformDots({ platforms }: { platforms: string[] }) {
   )
 }
 
-/* ---------- top nav ---------- */
+/* ---------- top-nav right controls (Month/Week toggle + Ask Ondie) ---------- */
 
-function CalendarTopNav({
-  monthLabel,
+function CalendarControls({
   view,
   setView,
   askOpen,
   onAsk,
 }: {
-  monthLabel: string
   view: 'month' | 'week'
   setView: (v: 'month' | 'week') => void
   askOpen: boolean
   onAsk: () => void
 }) {
   return (
-    <div className="flex h-[60px] items-center gap-3">
-      {/* Breadcrumb */}
-      <Breadcrumb crumbs={[{ icon: 'timeline', label: 'Calendar' }, { label: monthLabel }]} />
-
-
-      {/* Right controls */}
-      <div className="ml-auto flex items-center gap-2">
-        {/* Month / Week toggle */}
-        <div className="flex items-center rounded-lg p-0.5" style={{ background: 'var(--ds-surface-2)' }}>
-          {(['month', 'week'] as const).map((v) => (
-            <button
-              key={v}
-              type="button"
-              onClick={() => setView(v)}
-              className="h-7 rounded-md px-3 text-[13px] font-medium capitalize transition-colors"
-              style={
-                view === v
-                  ? { background: 'var(--ds-surface)', color: INK, boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
-                  : { color: SUBTLE }
-              }
-            >
-              {v}
-            </button>
-          ))}
-        </div>
-
-        {/* Ask Ondie */}
-        <button
-          type="button"
-          onClick={onAsk}
-          aria-pressed={askOpen}
-          className="flex h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium text-[color:var(--ds-accent-fg)] transition-transform active:scale-[0.98]"
-          style={{ background: askOpen ? 'var(--ds-accent)' : 'var(--ds-accent)' }}
-        >
-          <Sparkle size={13} color="var(--ds-accent-fg)" />
-          Ask Ondie
-        </button>
+    <>
+      {/* Month / Week toggle */}
+      <div className="flex items-center rounded-lg p-0.5" style={{ background: 'var(--ds-surface-2)' }}>
+        {(['month', 'week'] as const).map((v) => (
+          <button
+            key={v}
+            type="button"
+            onClick={() => setView(v)}
+            className="h-7 rounded-md px-3 text-[13px] font-medium capitalize transition-colors"
+            style={
+              view === v
+                ? { background: 'var(--ds-surface)', color: INK, boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }
+                : { color: SUBTLE }
+            }
+          >
+            {v}
+          </button>
+        ))}
       </div>
-    </div>
+
+      {/* Ask Ondie */}
+      <button
+        type="button"
+        onClick={onAsk}
+        aria-pressed={askOpen}
+        className="flex h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium text-[color:var(--ds-accent-fg)] transition-transform active:scale-[0.98]"
+        style={{ background: 'var(--ds-accent)' }}
+      >
+        <Sparkle size={13} color="var(--ds-accent-fg)" />
+        Ask Ondie
+      </button>
+    </>
   )
 }
 
@@ -401,10 +392,10 @@ export default function Timeline() {
       className="-mx-6 -mb-8 -mt-4 flex flex-col sm:-mx-8 md:h-[calc(100dvh-1.25rem)]"
       style={{ fontFamily: ROUNDED_FONT, minHeight: 560 }}
     >
-      {/* Flush top nav */}
-      <div className="border-b px-6 sm:px-8" style={{ borderColor: HAIR }}>
-        <CalendarTopNav monthLabel={monthLabel} view={view} setView={setView} askOpen={askOpen} onAsk={() => setAskOpen((v) => !v)} />
-      </div>
+      {/* Flush top nav (shared with the shell) */}
+      <TopNav crumbs={[{ icon: 'timeline', label: 'Calendar' }, { label: monthLabel }]}>
+        <CalendarControls view={view} setView={setView} askOpen={askOpen} onAsk={() => setAskOpen((v) => !v)} />
+      </TopNav>
 
       {/* Body: calendar (pushed left, scrolls) + Ask Ondie panel (fills height) */}
       <div className="flex min-h-0 flex-1">

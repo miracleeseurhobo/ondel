@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Icon, type IconName } from './ui/icon'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
-import Breadcrumb from './Breadcrumb'
+import TopNav from './TopNav'
 import ThemeToggle from './ThemeToggle'
 import { mockSignOut } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
@@ -280,20 +280,19 @@ export default function WorkspaceLayout() {
           className="flex min-h-[calc(100dvh-6rem)] flex-col overflow-hidden rounded-xl border border-hair bg-surface md:min-h-[calc(100dvh-1.25rem)]"
           style={{ boxShadow: 'var(--ds-card-shadow)' }}
         >
-        {/* Top bar (suppressed on the calendar, which renders its own) */}
+        {/* Top nav (suppressed on the calendar, which renders its own TopNav) */}
         {!hideTopBar && (
-        <div className="flex items-center justify-between px-6 pt-6 sm:px-8">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <span
-              className="flex h-8 w-8 items-center justify-center rounded-ds-md md:hidden"
-              style={{ background: 'var(--ds-surface-2)', color: 'var(--ds-text)' }}
-            >
-              <OndelLogo className="h-[15px] w-[15px]" />
-            </span>
-            {/* Breadcrumb — shared with the calendar's flush nav */}
-            <Breadcrumb crumbs={subcrumb ? [{ icon: crumb.icon, label: crumb.label }, { label: subcrumb }] : [{ icon: crumb.icon, label: crumb.label }]} />
-          </div>
-          <div className="ml-auto flex items-center gap-2">
+          <TopNav
+            crumbs={subcrumb ? [{ icon: crumb.icon, label: crumb.label }, { label: subcrumb }] : [{ icon: crumb.icon, label: crumb.label }]}
+            leading={
+              <span
+                className="flex h-8 w-8 items-center justify-center rounded-ds-md md:hidden"
+                style={{ background: 'var(--ds-surface-2)', color: 'var(--ds-text)' }}
+              >
+                <OndelLogo className="h-[15px] w-[15px]" />
+              </span>
+            }
+          >
             <button
               type="button"
               className="flex h-9 w-9 items-center justify-center rounded-full bg-surface"
@@ -324,11 +323,10 @@ export default function WorkspaceLayout() {
               </span>
               Connect
             </button>
-          </div>
-        </div>
+          </TopNav>
         )}
 
-        <main className="flex-1 px-6 pb-8 pt-4 sm:px-8">
+        <main className="flex-1 px-6 pb-8 pt-5 sm:px-8">
           <Outlet context={{ setSubcrumb } satisfies WorkspaceOutletContext} />
         </main>
         </div>
