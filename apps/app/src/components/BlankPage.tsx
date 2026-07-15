@@ -2,11 +2,10 @@ import { Icon } from './ui/icon'
 import { INK, SUBTLE, FAINT } from './workspace-ui'
 
 // Placeholder for nav sections we'll build out step by step from Home.
-// Uses the shared page container (max-w-3xl + eyebrow/title) so whitespace
-// stays consistent with Releases / Inbox / Vault.
+// Full-width (fills the card like every page) with the shared eyebrow/title.
 export default function BlankPage({ title, eyebrow = 'Workspace' }: { title: string; eyebrow?: string }) {
   return (
-    <div className="mx-auto max-w-3xl pb-10">
+    <div className="w-full pb-10">
       <div className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: FAINT }}>
         {eyebrow}
       </div>

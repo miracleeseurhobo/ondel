@@ -169,7 +169,7 @@ export default function Inbox() {
   const setStatus = (id: string, status: Collab['status']) => setItems((list) => list.map((i) => (i.id === id ? { ...i, status } : i)))
 
   return (
-    <div className="mx-auto max-w-3xl pb-10">
+    <div className="w-full pb-10">
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }}>
         <div className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: FAINT }}>
           Collaborations
