@@ -4,6 +4,7 @@ import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { Icon } from '../components/ui/icon'
 import OndieMark from '../components/OndieMark'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../components/ui/input-otp'
+import { useClickRipple } from '../components/ui/click-ripple'
 import { mockSignIn } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
 import { CTA_SHADOW } from '../lib/authStyle'
@@ -72,8 +73,16 @@ export default function VerifyOtp() {
     // Mock no-op; Clerk later: prepareEmailAddressVerification({ strategy: 'email_code' })
   }
 
+  // Ripple radiates from the pointer on any click across the page (behind the card).
+  const { onPointerDown, rippleLayer } = useClickRipple()
+
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-app px-5 text-ink" style={{ paddingTop: 'max(4rem, env(safe-area-inset-top))', paddingBottom: 'max(4rem, env(safe-area-inset-bottom))' }}>
+    <main
+      onPointerDown={onPointerDown}
+      className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-app px-5 text-ink"
+      style={{ paddingTop: 'max(4rem, env(safe-area-inset-top))', paddingBottom: 'max(4rem, env(safe-area-inset-bottom))' }}
+    >
+      {rippleLayer}
       <Link
         to="/signin"
         aria-label="Back to sign in"
@@ -83,7 +92,7 @@ export default function VerifyOtp() {
         <Icon name="arrowLeft" size={20} aria-hidden />
       </Link>
 
-      <form onSubmit={onSubmit} className="flex w-full max-w-[370px] flex-col items-center text-center">
+      <form onSubmit={onSubmit} className="relative z-10 flex w-full max-w-[370px] flex-col items-center text-center">
         <OndieMark size={64} />
 
         <h1 className="mt-7 text-[32px] font-medium leading-[38.4px] tracking-[-0.32px] text-ink">
