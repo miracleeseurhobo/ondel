@@ -1,15 +1,14 @@
-import { useRef, useState, type PointerEvent, type ReactNode } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { Fragment, useRef, useState, type PointerEvent, type ReactNode } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 
-// Page-level click ripple: an expanding ring emanates from the pointer on any
-// click within the host element — a visible water-ripple. Rendered ON TOP as a
-// thin ring (pointer-events-none) so it reads clearly without obscuring content.
-// Attach `onPointerDown` to a `relative overflow-hidden` container and render
-// `rippleLayer` inside it.
+// Page-level click ripple: bold expanding double-ring water wake from the pointer
+// on any click within the host element. Rendered ON TOP (pointer-events-none) so
+// it reads clearly without blocking interaction. Attach `onPointerDown` to a
+// `relative overflow-hidden` container and render `rippleLayer` inside it.
 type Ripple = { id: number; x: number; y: number }
 const EASE = [0.23, 1, 0.32, 1] as const
 
-export function useClickRipple({ color = 'var(--ds-accent)', size = 340 }: { color?: string; size?: number } = {}) {
+export function useClickRipple({ color = 'var(--ds-accent)', size = 360 }: { color?: string; size?: number } = {}) {
   const reduced = useReducedMotion()
   const [ripples, setRipples] = useState<Ripple[]>([])
   const nextId = useRef(0)
@@ -21,21 +20,31 @@ export function useClickRipple({ color = 'var(--ds-accent)', size = 340 }: { col
     setRipples((r) => [...r, { id, x: e.clientX - rect.left, y: e.clientY - rect.top }])
   }
 
+  const remove = (id: number) => setRipples((x) => x.filter((y) => y.id !== id))
+
   const rippleLayer: ReactNode = (
     <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden">
-      <AnimatePresence>
-        {ripples.map((r) => (
+      {ripples.map((r) => (
+        <Fragment key={r.id}>
+          {/* leading ring — bold */}
           <motion.span
-            key={r.id}
-            initial={{ width: 0, height: 0, opacity: 0.5 }}
+            initial={{ width: 0, height: 0, opacity: 0.8 }}
             animate={{ width: size, height: size, opacity: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            onAnimationComplete={() => setRipples((x) => x.filter((y) => y.id !== r.id))}
+            transition={{ duration: 0.75, ease: EASE }}
+            className="absolute rounded-full border-[3px]"
+            style={{ left: r.x, top: r.y, transform: 'translate(-50%, -50%)', borderColor: color }}
+          />
+          {/* trailing ring — larger, softer wake */}
+          <motion.span
+            initial={{ width: 0, height: 0, opacity: 0.4 }}
+            animate={{ width: size * 1.3, height: size * 1.3, opacity: 0 }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.07 }}
+            onAnimationComplete={() => remove(r.id)}
             className="absolute rounded-full border-2"
             style={{ left: r.x, top: r.y, transform: 'translate(-50%, -50%)', borderColor: color }}
           />
-        ))}
-      </AnimatePresence>
+        </Fragment>
+      ))}
     </div>
   )
 
