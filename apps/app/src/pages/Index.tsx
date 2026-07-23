@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Icon, type IconName } from '../components/ui/icon'
-import { TextShimmer } from '../components/ui/text-shimmer'
-import OndieMark from '../components/OndieMark'
+import FirstRunReveal from '../components/FirstRunReveal'
 import { setPlanGenerated } from '../lib/plan'
 
 // Remote assets (folder / lights / cards / icons) — the visual centrepiece.
@@ -615,9 +614,6 @@ function ToolChip({ icon, label, active, onClick }: { icon: IconName; label: str
 /* Ask Ondie — the dashboard home                                      */
 /* ------------------------------------------------------------------ */
 
-const STEP_MS = 1250 // per-step dwell → total lands in the 5–8s "analysis" window
-const FINISH_MS = 900
-
 const clip = (s: string, n = 22) => (s.length > n ? `${s.slice(0, n - 1)}…` : s)
 
 // Refero-style suggested prompts — tabbed, click to drop into the input.
@@ -684,7 +680,6 @@ export default function Index() {
   const [songName, setSongName] = useState<string | null>(null)
   const [focused, setFocused] = useState(false)
   const [generating, setGenerating] = useState(false)
-  const [step, setStep] = useState(0)
   const [assetCount, setAssetCount] = useState(0)
   const [releaseDate, setReleaseDate] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -702,12 +697,6 @@ export default function Index() {
     requestAnimationFrame(() => promptRef.current?.focus())
   }
 
-  // Steps mirror what Ondie is actually doing — analysing an uploaded track vs
-  // reading a typed goal — and are paced to feel like real work (~5–8s).
-  const genSteps = songName
-    ? [`Listening to “${clip(songName)}”`, 'Detecting genre & tempo', 'Mapping the 30 days', 'Matching platforms', 'Scheduling posts']
-    : ['Reading your goal', 'Mapping the 30 days', 'Matching platforms', 'Scheduling posts']
-
   const acceptSong = (file: File | undefined) => {
     if (!file) return
     if (!file.type.startsWith('audio/')) return
@@ -719,31 +708,11 @@ export default function Index() {
     setGenerating((g) => g || true)
   }
 
-  // Mock generation: tick through the analysis steps, then persist + open Calendar.
-  useEffect(() => {
-    if (!generating) return
-    const finish = () => {
-      setPlanGenerated(songName || prompt.trim() || PHRASES[0])
-      navigate('/releases') // Review — Ondie reveals the plan modules; calendar is one click away
-    }
-    if (reduced) {
-      setStep(genSteps.length)
-      const t = window.setTimeout(finish, 500)
-      return () => clearTimeout(t)
-    }
-    setStep(0)
-    let i = 0
-    const id = window.setInterval(() => {
-      i += 1
-      setStep(i)
-      if (i >= genSteps.length) {
-        window.clearInterval(id)
-        window.setTimeout(finish, FINISH_MS)
-      }
-    }, STEP_MS)
-    return () => clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [generating])
+  // Called when the reveal finishes (or is skipped): persist the plan, open Review.
+  const openPlan = () => {
+    setPlanGenerated(songName || prompt.trim() || PHRASES[0])
+    navigate('/releases') // Ondie reveals the plan modules; calendar is one click away
+  }
 
   return (
     <div
@@ -952,57 +921,8 @@ export default function Index() {
         </motion.div>
       </div>
 
-      {/* Generating overlay — Ondie planning the release, then opens the Calendar */}
-      {generating ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.25 }}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 20,
-            background: 'var(--ds-surface)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 24,
-          }}
-        >
-          <motion.div animate={reduced ? {} : { scale: [1, 1.06, 1] }} transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}>
-            <OndieMark size={60} />
-          </motion.div>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 30, fontWeight: 400, color: 'var(--ds-text)', margin: '20px 0 6px' }}>
-            {songName ? 'Analysing your track' : 'Planning your release'}
-          </h2>
-          <p style={{ fontSize: 14, color: 'var(--ds-text-secondary)', maxWidth: 380, textAlign: 'center', margin: 0 }}>
-            {songName ? `“${clip(songName, 40)}”` : prompt.trim() ? `“${prompt.trim()}”` : 'Building your 30-day plan…'}
-          </p>
-          <ul style={{ marginTop: 26, display: 'flex', flexDirection: 'column', gap: 13, width: 260, listStyle: 'none', padding: 0 }}>
-            {genSteps.map((s, i) => (
-              <li key={s} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                {i < step ? (
-                  <Icon name="check" size={16} style={{ color: 'var(--ds-accent)' }} />
-                ) : i === step ? (
-                  <span className="h-4 w-4 animate-spin rounded-full border-2" style={{ borderColor: 'var(--ds-border)', borderTopColor: 'var(--ds-accent)' }} />
-                ) : (
-                  <span className="flex h-4 w-4 items-center justify-center">
-                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--ds-text-muted)' }} />
-                  </span>
-                )}
-                {i === step ? (
-                  <TextShimmer as="span" duration={1.4} spread={1.4} className="text-[14px]">
-                    {s}
-                  </TextShimmer>
-                ) : (
-                  <span style={{ fontSize: 14, color: i < step ? 'var(--ds-text)' : 'var(--ds-text-muted)' }}>{s}</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      ) : null}
+      {/* First-run reveal — watch Ondie work: staged artifacts, then open the plan */}
+      {generating ? <FirstRunReveal songName={songName} prompt={prompt} reduced={!!reduced} onComplete={openPlan} /> : null}
     </div>
   )
 }
