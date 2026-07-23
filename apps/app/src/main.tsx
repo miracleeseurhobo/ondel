@@ -16,6 +16,7 @@ import ReleaseOverview from './pages/ReleaseOverview'
 import Inbox from './pages/Inbox'
 import Vault from './pages/Vault'
 import SignIn from './pages/SignIn'
+import VerifyOtp from './pages/VerifyOtp'
 import WorkspaceLayout from './components/WorkspaceLayout'
 import BlankPage from './components/BlankPage'
 import { isSignedIn } from './lib/auth'
@@ -25,7 +26,7 @@ import { applyTheme, getStoredTheme } from './lib/theme'
 // manifesto, workspace) is always light. Apply before first paint to avoid flash.
 {
   const p = window.location.pathname
-  const authRoute = p.startsWith('/signin') || p.startsWith('/sso')
+  const authRoute = p.startsWith('/signin') || p.startsWith('/sso') || p.startsWith('/verify')
   applyTheme(authRoute ? 'light' : getStoredTheme())
 }
 
@@ -78,6 +79,7 @@ function AppRouter() {
           <Route path="/campaigns" element={<BlankPage title="Campaigns" />} />
         </Route>
         <Route path="/signin" element={CLERK_KEY ? <ClerkSignIn /> : <SignIn />} />
+        <Route path="/verify" element={<VerifyOtp />} />
         {CLERK_KEY ? <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} /> : null}
       </Routes>
     </BrowserRouter>

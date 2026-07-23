@@ -9,13 +9,9 @@ import { mockSignIn, mockSignOut } from '../lib/auth'
 import { applyTheme, getStoredTheme } from '../lib/theme'
 import { clearPlan } from '../lib/plan'
 import { logoUrl } from '../lib/logo'
+import { CTA_SHADOW, OAUTH_SHADOW, INPUT_SHADOW } from '../lib/authStyle'
 
-// Shadow tokens (Lemni Light) — depth is shadow-driven, no borders.
-const CTA_SHADOW = 'rgba(0,0,0,0.4) 0px 2px 5px 0px'
-const OAUTH_SHADOW =
-  'rgba(95,122,143,0.25) 0px 1px 2px 0px, rgb(255,255,255) 1px 1px 1px 0px inset'
-const INPUT_SHADOW =
-  'rgba(95,122,143,0.23) 0px 2px 3px 0px, rgba(0,0,0,0.03) -1px -1px 1px 0px inset, rgb(255,255,255) 1px 1px 1px 0px inset'
+// Shadow tokens (Lemni Light) shared with the OTP screen — see lib/authStyle.ts.
 
 const WELCOME =
   "Welcome to Ondel. Your release already has a story unfolding. The people who'll love it. The places it belongs. Let's bring it into focus."
@@ -200,7 +196,8 @@ export default function SignIn({ onOAuth }: { onOAuth?: (strategy: string) => vo
   }
   const emailSubmit = (e: FormEvent) => {
     e.preventDefault()
-    setStatus('welcome')
+    if (!email.trim()) return
+    navigate('/verify', { state: { email: email.trim() } }) // → OTP verification
   }
 
   // Welcome (manifesto) is single-centered; the sign-in form uses a dual layout
